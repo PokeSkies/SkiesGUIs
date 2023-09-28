@@ -17,7 +17,7 @@ More information on configuration can be found on the Wiki here!
 | Command                 | Description                                                   | Permission               |
 |-------------------------|---------------------------------------------------------------|--------------------------|
 | /gui reload             | Reload the Mod                                                | skiesguis.command.reload |
-| /gui open <id> [player] | Open a GUI specified by its ID, optionally for another player | skiesguis.command.open   |
+| /gui open <gui_id> [player] | Open a GUI specified by its ID, optionally for another player | skiesguis.command.open   |
 
 
 ## Planned Features
