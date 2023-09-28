@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "SkiesGUIs",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/PokeSkies/SkiesGUIs"
+  },
+  "license": "All-Rights-Reserved",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "com.pokeskies.skiesguis.SkiesGUIs"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "fabric": "*",
+    "minecraft": "1.20.1"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "<gray>Example GUI",
+  "size": 6,
+  "items": {
+    "test_item": {
+      "slots": [
+        0, 1, 2
+      ],
+      "actions": {
+        "action_1": {
+          "type": "COMMAND_PLAYER",
+          "click": "ALL",
+          "command": "give %player% diamond 1"
+        }
+      },
+      "item": "minecraft:red_stained_glass_pane",
+      "count": 1
+    }
+  }
+}
