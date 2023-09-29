@@ -1,5 +1,5 @@
 # SkiesGUIs
-<img height="50" src="https://camo.githubusercontent.com/a94064bebbf15dfed1fddf70437ea2ac3521ce55ac85650e35137db9de12979d/68747470733a2f2f692e696d6775722e636f6d2f6331444839564c2e706e67"/>
+<img height="50" src="https://camo.githubusercontent.com/a94064bebbf15dfed1fddf70437ea2ac3521ce55ac85650e35137db9de12979d/68747470733a2f2f692e696d6775722e636f6d2f6331444839564c2e706e67" alt="Requires Fabric Kotlin"/>
 
 A Fabric (1.20.1) server-sided GUI creation mod aimed to make creating basic GUIs easier! Creating a new GUI is as easy as creating a new file in the `guis` folder and copying the basic formatting found here.
 
@@ -24,8 +24,7 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 ## Planned Features
 - Open/Close Actions
-- More Action Types
-  - Play Sound, Open GUI, Broadcast, Close, Refresh, XP
+- More Action Types (Refresh, XP)
 - Requirements (view and click)
 - More Placeholders (support Placeholders mod?)
 - Item Priority
