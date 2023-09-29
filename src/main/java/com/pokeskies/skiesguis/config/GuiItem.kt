@@ -20,7 +20,7 @@ class GuiItem(
     val count: Int,
     val name: Optional<String>,
     val lore: List<String>,
-    val tag: Optional<NbtCompound>,
+    val nbt: Optional<NbtCompound>,
     val actions: Map<String, Action>
 ) {
     companion object {
@@ -31,7 +31,7 @@ class GuiItem(
                 Codec.INT.optionalRecordCodec("count", GuiItem::count, 1),
                 Codec.STRING.optionalFieldOf("name").forGetter { it.name },
                 Codec.STRING.listOf().optionalRecordCodec("lore", GuiItem::lore, listOf()),
-                NbtCompound.CODEC.optionalFieldOf("tag").forGetter { it.tag },
+                NbtCompound.CODEC.optionalFieldOf("nbt").forGetter { it.nbt },
                 Codec.unboundedMap(Codec.STRING, Action.CODEC)
                     .optionalRecordCodec("actions", GuiItem::actions, emptyMap())
             ).apply(instance) { item, slots, count, name, lore, tag, actions ->
@@ -43,12 +43,11 @@ class GuiItem(
     fun createButton(): GooeyButton.Builder {
         val stack = ItemStack(item, count)
 
-        if (tag.isPresent) {
-            stack.writeNbt(tag.get())
+        if (nbt.isPresent) {
+            stack.nbt = nbt.get()
         }
 
-        val builder = GooeyButton.builder()
-            .display(stack)
+        val builder = GooeyButton.builder().display(stack)
 
         if (name.isPresent)
             builder.title(Utils.deseralizeText(name.get()))
@@ -61,6 +60,6 @@ class GuiItem(
     }
 
     override fun toString(): String {
-        return "GuiItem(item=$item, slots=$slots, count=$count, name=$name, lore=$lore, tag=$tag, actions=$actions)"
+        return "GuiItem(item=$item, slots=$slots, count=$count, name=$name, lore=$lore, nbt=$nbt, actions=$actions)"
     }
 }
