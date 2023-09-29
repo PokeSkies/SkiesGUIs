@@ -32,12 +32,14 @@ class ConfigManager(val configDir: File) {
     fun copyDefaults() {
         val classLoader = SkiesGUIs::class.java.classLoader
 
+        configDir.mkdirs()
+
         // Main Config
         val configFile = configDir.resolve("config.json")
         if (!configFile.exists()) {
             try {
-                val resourceFile: Path = Path.of(classLoader.getResource("assets/skiesguis/config.json").toURI())
-                Files.copy(resourceFile, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                val inputStream: InputStream = classLoader.getResourceAsStream("assets/skiesguis/config.json")
+                Files.copy(inputStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } catch (e: Exception) {
                 SkiesGUIs.LOGGER.error("Failed to copy the default config file: $e - ${e.message}")
             }
