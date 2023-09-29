@@ -11,21 +11,23 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class CommandPlayer(
     click: ClickType,
-    private val command: String
+    private val commands: List<String>
 ) : Action(click) {
     companion object {
         val CODEC: Codec<CommandPlayer> = RecordCodecBuilder.create {
             actionCodec(it).and(
-                Codec.STRING.recordCodec("command", CommandPlayer::command)
+                Codec.STRING.listOf().recordCodec("commands", CommandPlayer::commands)
             ).apply(it, ::CommandPlayer)
         }
     }
 
     override fun execute(player: ServerPlayerEntity) {
-        SkiesGUIs.INSTANCE.server?.commandManager?.executeWithPrefix(
-            player.commandSource,
-            parsePlaceholders(player, command)
-        )
+        for (command in commands) {
+            SkiesGUIs.INSTANCE.server?.commandManager?.executeWithPrefix(
+                player.commandSource,
+                parsePlaceholders(player, command)
+            )
+        }
     }
 
     override fun getType(): ActionType<*> {

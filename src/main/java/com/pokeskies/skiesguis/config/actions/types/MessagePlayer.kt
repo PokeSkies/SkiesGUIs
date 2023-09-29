@@ -11,18 +11,20 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class MessagePlayer(
     click: ClickType,
-    private val message: String
+    private val message: List<String>
 ) : Action(click) {
     companion object {
         val CODEC: Codec<MessagePlayer> = RecordCodecBuilder.create {
             actionCodec(it).and(
-                Codec.STRING.recordCodec("message", MessagePlayer::message)
+                Codec.STRING.listOf().recordCodec("message", MessagePlayer::message)
             ).apply(it, ::MessagePlayer)
         }
     }
 
     override fun execute(player: ServerPlayerEntity) {
-        player.sendMessage(Utils.deseralizeText(parsePlaceholders(player, message)))
+        for (line in message) {
+            player.sendMessage(Utils.deseralizeText(parsePlaceholders(player, line)))
+        }
     }
 
     override fun getType(): ActionType<*> {

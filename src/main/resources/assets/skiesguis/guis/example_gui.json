@@ -8,9 +8,9 @@
       ],
       "actions": {
         "action_1": {
-          "type": "COMMAND_PLAYER",
+          "type": "COMMAND_CONSOLE",
           "click": "ALL",
-          "command": "give %player% diamond 1"
+          "commands": ["give %player% diamond 1"]
         }
       },
       "item": "minecraft:red_stained_glass_pane",
