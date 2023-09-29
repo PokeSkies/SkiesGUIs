@@ -27,7 +27,7 @@ class GuiItem(
         val CODEC: Codec<GuiItem> = RecordCodecBuilder.create { instance ->
             instance.group(
                 Registries.ITEM.codec.recordCodec("item", GuiItem::item),
-                Codec.INT.listOf().recordCodec("slots", GuiItem::slots),
+                Codec.INT.listOf().optionalRecordCodec("slots", GuiItem::slots, listOf()),
                 Codec.INT.optionalRecordCodec("count", GuiItem::count, 1),
                 Codec.STRING.optionalFieldOf("name").forGetter { it.name },
                 Codec.STRING.listOf().optionalRecordCodec("lore", GuiItem::lore, listOf()),
