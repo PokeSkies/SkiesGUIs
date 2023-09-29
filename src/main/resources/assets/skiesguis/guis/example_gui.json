@@ -1,20 +1,74 @@
 {
-  "title": "<gray>Example GUI",
-  "size": 6,
+  "title": "<dark_gray>Example GUI",
+  "size": 3,
   "items": {
-    "test_item": {
-      "slots": [
-        0, 1, 2
-      ],
+    "background": {
+      "item": "minecraft:blue_stained_glass_pane",
+      "slots": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+      "name": ""
+    },
+    "item_1": {
+      "item": "minecraft:diamond_sword",
+      "slots": [10],
+      "count": 1,
+      "name": "<blue><b>Example Sword",
+      "lore": ["<gray><italic>Example lore!"],
+      "nbt": {
+        "Enchantments": [
+          {
+            "lvl": 3,
+            "id": "minecraft:unbreaking"
+          }
+        ],
+        "HideFlags": 1
+      },
       "actions": {
         "action_1": {
           "type": "COMMAND_CONSOLE",
           "click": "ALL",
-          "commands": ["give %player% diamond 1"]
+          "commands": ["give %player% diamond_sword 1"]
+        },
+        "action_2": {
+          "type": "MESSAGE",
+          "click": "ALL",
+          "message": ["<blue>You have received the Example Sword!"]
         }
+      }
+    },
+    "pokemon_1": {
+      "item": "cobblemon:pokemon_model",
+      "slots": [11],
+      "count": 1,
+      "name": "<blue><b>Pikachu",
+      "lore": [
+        "<gray><italic>Left Click for a normal Pikachu",
+        "<gray><italic>Right Click for a <gold>shiny Pikachu"
+      ],
+      "nbt": {
+        "species": "cobblemon:pikachu"
       },
-      "item": "minecraft:red_stained_glass_pane",
-      "count": 1
+      "actions": {
+        "normal_action": {
+          "type": "COMMAND_CONSOLE",
+          "click": "LEFT_CLICK",
+          "commands": ["pokegiveother %player% pikachu 1"]
+        },
+        "shiny_action": {
+          "type": "COMMAND_CONSOLE",
+          "click": "RIGHT_CLICK",
+          "commands": ["pokegiveother %player% pikachu 1 shiny"]
+        },
+        "normal_message": {
+          "type": "MESSAGE",
+          "click": "LEFT_CLICK",
+          "message": ["<blue>You have received a normal Pikachu!"]
+        },
+        "shiny_message": {
+          "type": "MESSAGE",
+          "click": "RIGHT_CLICK",
+          "message": ["<gold>You have received a shiny Pikachu!"]
+        }
+      }
     }
   }
 }
