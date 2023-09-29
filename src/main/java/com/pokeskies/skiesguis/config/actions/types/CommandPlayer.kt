@@ -22,6 +22,11 @@ class CommandPlayer(
     }
 
     override fun execute(player: ServerPlayerEntity) {
+        if (SkiesGUIs.INSTANCE.server?.commandManager == null) {
+            SkiesGUIs.LOGGER.error("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
+            return
+        }
+
         for (command in commands) {
             SkiesGUIs.INSTANCE.server?.commandManager?.executeWithPrefix(
                 player.commandSource,
