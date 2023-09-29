@@ -16,9 +16,9 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 ## Commands/Permissions
 
-| Command                 | Description                                                   | Permission               |
-|-------------------------|---------------------------------------------------------------|--------------------------|
-| /gui reload             | Reload the Mod                                                | skiesguis.command.reload |
+| Command                     | Description                                                   | Permission               |
+|-----------------------------|---------------------------------------------------------------|--------------------------|
+| /gui reload                 | Reload the Mod                                                | skiesguis.command.reload |
 | /gui open <gui_id> [player] | Open a GUI specified by its ID, optionally for another player | skiesguis.command.open   |
 
 
@@ -35,4 +35,4 @@ More information on configuration can be found on the [Wiki](https://github.com/
 - Animations?? (oh god)
 - Custom Commands?? (open up a GUI quickly via a command with custom permissions)
 
-**If you have any suggestions, feel free to message me on Discord (@stampede2011)** 
+**If you have any suggestions, feel free to message me on Discord (@stampede2011)**
