@@ -24,9 +24,15 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 ## Planned Features
 - Open/Close Actions
+- More Action Types
+  - Play Sound, Open GUI, Broadcast, Close, Refresh, XP
 - Requirements (view and click)
 - More Placeholders (support Placeholders mod?)
 - Item Priority
+- More Inventory Types (more types than just the chest GUI)
+- Economy Functions (click costs)
 - Inventory Update Ticking (optionally update GUI at an interval)
 - Animations?? (oh god)
 - Custom Commands?? (open up a GUI quickly via a command with custom permissions)
+
+**If you have any suggestions, feel free to message me on Discord (@stampede2011)** 
