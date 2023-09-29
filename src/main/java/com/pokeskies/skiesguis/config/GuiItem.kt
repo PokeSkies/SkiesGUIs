@@ -17,7 +17,7 @@ import java.util.*
 class GuiItem(
     val item: Item,
     val slots: List<Int>,
-    val count: Int,
+    val amount: Int,
     val name: Optional<String>,
     val lore: List<String>,
     val nbt: Optional<NbtCompound>,
@@ -28,20 +28,20 @@ class GuiItem(
             instance.group(
                 Registries.ITEM.codec.recordCodec("item", GuiItem::item),
                 Codec.INT.listOf().optionalRecordCodec("slots", GuiItem::slots, listOf()),
-                Codec.INT.optionalRecordCodec("count", GuiItem::count, 1),
+                Codec.INT.optionalRecordCodec("amount", GuiItem::amount, 1),
                 Codec.STRING.optionalFieldOf("name").forGetter { it.name },
                 Codec.STRING.listOf().optionalRecordCodec("lore", GuiItem::lore, listOf()),
                 NbtCompound.CODEC.optionalFieldOf("nbt").forGetter { it.nbt },
                 Codec.unboundedMap(Codec.STRING, Action.CODEC)
                     .optionalRecordCodec("actions", GuiItem::actions, emptyMap())
-            ).apply(instance) { item, slots, count, name, lore, tag, actions ->
-                GuiItem(item, slots, count, name, lore, tag, actions)
+            ).apply(instance) { item, slots, amount, name, lore, tag, actions ->
+                GuiItem(item, slots, amount, name, lore, tag, actions)
             }
         }
     }
 
     fun createButton(): GooeyButton.Builder {
-        val stack = ItemStack(item, count)
+        val stack = ItemStack(item, amount)
 
         if (nbt.isPresent) {
             stack.nbt = nbt.get()
@@ -60,6 +60,6 @@ class GuiItem(
     }
 
     override fun toString(): String {
-        return "GuiItem(item=$item, slots=$slots, count=$count, name=$name, lore=$lore, nbt=$nbt, actions=$actions)"
+        return "GuiItem(item=$item, slots=$slots, amount=$amount, name=$name, lore=$lore, nbt=$nbt, actions=$actions)"
     }
 }

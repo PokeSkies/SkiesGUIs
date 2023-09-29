@@ -10,7 +10,7 @@
     "item_1": {
       "item": "minecraft:diamond_sword",
       "slots": [10],
-      "count": 1,
+      "amount": 1,
       "name": "<blue><b>Example Sword",
       "lore": ["<gray><italic>Example lore!"],
       "nbt": {
@@ -38,7 +38,7 @@
     "pokemon_1": {
       "item": "cobblemon:pokemon_model",
       "slots": [11],
-      "count": 1,
+      "amount": 1,
       "name": "<blue><b>Pikachu",
       "lore": [
         "<gray><italic>Left Click for a normal Pikachu",
