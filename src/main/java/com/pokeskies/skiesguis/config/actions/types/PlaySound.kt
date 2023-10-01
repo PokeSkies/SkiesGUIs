@@ -5,18 +5,22 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.requirements.ClickRequirement
+import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.utils.optionalRecordCodec
 import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.registry.Registries
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundEvent
+import java.util.*
 
 class PlaySound(
     click: ClickType,
+    clickRequirements: Optional<ClickRequirement>,
     private val sound: SoundEvent,
     private val volume: Float,
     private val pitch: Float
-) : Action(click) {
+) : Action(click, clickRequirements) {
     companion object {
         val CODEC: Codec<PlaySound> = RecordCodecBuilder.create {
             actionCodec(it).and(
