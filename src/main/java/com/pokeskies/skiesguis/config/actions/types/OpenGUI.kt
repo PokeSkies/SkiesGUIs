@@ -35,6 +35,6 @@ class OpenGUI(
     }
 
     override fun getType(): ActionType<*> {
-        return ActionType.OPENGUI
+        return ActionType.OPEN_GUI
     }
 }

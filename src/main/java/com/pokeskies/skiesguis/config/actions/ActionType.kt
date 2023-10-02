@@ -21,7 +21,8 @@ data class ActionType<A : Action>(val id: String, val codec: Codec<A>) {
         val MESSAGE: ActionType<MessagePlayer> = create("MESSAGE", MessagePlayer.CODEC)
         val BROADCAST: ActionType<MessageBroadcast> = create("BROADCAST", MessageBroadcast.CODEC)
         val PLAYSOUND: ActionType<PlaySound> = create("PLAYSOUND", PlaySound.CODEC)
-        val OPENGUI: ActionType<OpenGUI> = create("OPENGUI", OpenGUI.CODEC)
-        val CLOSE: ActionType<CloseGUI> = create("CLOSE", CloseGUI.CODEC)
+        val OPEN_GUI: ActionType<OpenGUI> = create("OPEN_GUI", OpenGUI.CODEC)
+        val CLOSE_GUI: ActionType<CloseGUI> = create("CLOSE_GUI", CloseGUI.CODEC)
+        val GIVE_XP: ActionType<GiveXP> = create("GIVE_XP", GiveXP.CODEC)
     }
 }

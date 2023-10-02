@@ -22,6 +22,6 @@ class CloseGUI(
     }
 
     override fun getType(): ActionType<*> {
-        return ActionType.CLOSE
+        return ActionType.CLOSE_GUI
     }
 }
