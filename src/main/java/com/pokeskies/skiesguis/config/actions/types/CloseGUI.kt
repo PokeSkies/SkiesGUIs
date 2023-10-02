@@ -6,11 +6,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.requirements.ClickRequirement
+import com.pokeskies.skiesguis.config.requirements.Requirement
 import net.minecraft.server.network.ServerPlayerEntity
+import java.util.Optional
 
 class CloseGUI(
-    click: ClickType
-) : Action(click) {
+    click: ClickType,
+    clickRequirements: Optional<ClickRequirement>,
+) : Action(click, clickRequirements) {
     companion object {
         val CODEC: Codec<CloseGUI> = RecordCodecBuilder.create {
             actionCodec(it).apply(it, ::CloseGUI)
