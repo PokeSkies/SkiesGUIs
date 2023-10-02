@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.SkiesGUIs
 import net.kyori.adventure.text.minimessage.MiniMessage
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NbtString
 import net.minecraft.text.Text
 import java.util.function.Function
 
@@ -14,6 +12,11 @@ object Utils {
 
     fun deseralizeText(text: String): Text {
         return SkiesGUIs.INSTANCE.adventure!!.toNative(miniMessage.deserialize(text))
+    }
+
+    fun debug(message: String) {
+        if (SkiesGUIs.INSTANCE.configManager.config.debug)
+            SkiesGUIs.LOGGER.debug(message)
     }
 }
 

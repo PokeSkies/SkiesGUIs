@@ -4,11 +4,8 @@ import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import com.mojang.datafixers.Products
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.config.requirements.ClickRequirement
-import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.utils.optionalRecordCodec
-import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.StringIdentifiable
 import java.util.*
@@ -39,8 +36,9 @@ abstract class Action(
     fun checkClickRequirements(player: ServerPlayerEntity): Boolean {
         if (clickRequirements.isPresent) {
             for (requirement in clickRequirements.get().requirements) {
-                if (!requirement.value.check(player))
+                if (!requirement.value.check(player)) {
                     return false
+                }
             }
         }
         return true
@@ -56,5 +54,9 @@ abstract class Action(
 
     fun parsePlaceholders(player: ServerPlayerEntity, value: String): String {
         return value.replace("%player%", player.name.string)
+    }
+
+    override fun toString(): String {
+        return "Action(click=$click, clickRequirements=$clickRequirements)"
     }
 }

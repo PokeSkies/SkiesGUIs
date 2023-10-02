@@ -7,7 +7,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.ClickRequirement
-import com.pokeskies.skiesguis.config.requirements.Requirement
+import com.pokeskies.skiesguis.utils.Utils
 import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.server.network.ServerPlayerEntity
 import java.util.*
@@ -26,6 +26,7 @@ class CommandPlayer(
     }
 
     override fun execute(player: ServerPlayerEntity) {
+        Utils.debug("Attempting to execute a ${getType().id} Action: $this")
         if (SkiesGUIs.INSTANCE.server?.commandManager == null) {
             SkiesGUIs.LOGGER.error("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
             return
@@ -41,5 +42,9 @@ class CommandPlayer(
 
     override fun getType(): ActionType<*> {
         return ActionType.COMMAND_PLAYER
+    }
+
+    override fun toString(): String {
+        return "CommandPlayer(commands=$commands)"
     }
 }

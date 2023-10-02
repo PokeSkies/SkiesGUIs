@@ -6,7 +6,6 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.ClickRequirement
-import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.utils.Utils
 import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.server.network.ServerPlayerEntity
@@ -26,6 +25,7 @@ class MessagePlayer(
     }
 
     override fun execute(player: ServerPlayerEntity) {
+        Utils.debug("Attempting to execute a ${getType().id} Action: $this")
         for (line in message) {
             player.sendMessage(Utils.deseralizeText(parsePlaceholders(player, line)))
         }
@@ -33,5 +33,9 @@ class MessagePlayer(
 
     override fun getType(): ActionType<*> {
         return ActionType.MESSAGE
+    }
+
+    override fun toString(): String {
+        return "MessagePlayer(message=$message)"
     }
 }

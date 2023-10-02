@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.config.requirements
 
-import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import net.minecraft.util.StringIdentifiable
 
 enum class ComparisonType(val identifier: String) : StringIdentifiable {

@@ -5,9 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.utils.Utils
 import com.pokeskies.skiesguis.utils.recordCodec
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
@@ -54,7 +52,7 @@ class ItemRequirement(
                 if (amount.isPresent) {
                     return amountFound == amount.get()
                 } else {
-                    return amountFound > 1
+                    return amountFound >= 1
                 }
             }
             ComparisonType.NOT_EQUALS -> {

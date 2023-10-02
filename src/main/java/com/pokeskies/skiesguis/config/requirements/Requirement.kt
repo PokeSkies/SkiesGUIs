@@ -4,12 +4,9 @@ import com.mojang.datafixers.Products
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.SkiesGUIs
-import com.pokeskies.skiesguis.config.actions.Action
-import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.utils.optionalRecordCodec
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.StringIdentifiable
-import java.util.*
 
 abstract class Requirement(
     val comparison: ComparisonType

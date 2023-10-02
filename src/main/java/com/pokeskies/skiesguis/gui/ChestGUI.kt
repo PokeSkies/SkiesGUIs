@@ -9,7 +9,7 @@ import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
-import java.util.TreeMap
+import java.util.*
 
 class ChestGUI(
     private val player: ServerPlayerEntity,

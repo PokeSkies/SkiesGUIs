@@ -6,12 +6,14 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.ClickRequirement
-import com.pokeskies.skiesguis.config.requirements.Requirement
+import com.pokeskies.skiesguis.utils.Utils
 import com.pokeskies.skiesguis.utils.optionalRecordCodec
 import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.registry.Registries
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
+import net.minecraft.util.StringIdentifiable
 import java.util.*
 
 class PlaySound(
@@ -34,10 +36,15 @@ class PlaySound(
     }
 
     override fun execute(player: ServerPlayerEntity) {
-        player.playSound(sound, volume, pitch)
+        Utils.debug("Attempting to execute a ${getType().id} Action: $this")
+        player.playSound(sound, SoundCategory.MASTER, volume, pitch)
     }
 
     override fun getType(): ActionType<*> {
         return ActionType.PLAYSOUND
+    }
+
+    override fun toString(): String {
+        return "PlaySound(sound=$sound, volume=$volume, pitch=$pitch)"
     }
 }
