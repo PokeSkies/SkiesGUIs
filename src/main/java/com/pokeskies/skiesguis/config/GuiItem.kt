@@ -4,7 +4,9 @@ import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.config.actions.Action
+import com.pokeskies.skiesguis.config.requirements.ClickRequirement
 import com.pokeskies.skiesguis.config.requirements.Requirement
+import com.pokeskies.skiesguis.config.requirements.ViewRequirement
 import com.pokeskies.skiesguis.utils.Utils
 import com.pokeskies.skiesguis.utils.optionalRecordCodec
 import com.pokeskies.skiesguis.utils.recordCodec
@@ -24,7 +26,7 @@ class GuiItem(
     val lore: List<String>,
     val nbt: Optional<NbtCompound>,
     val priority: Int,
-    val viewRequirements: Map<String, Requirement>,
+    val viewRequirements: Optional<ViewRequirement>,
     val actions: Map<String, Action>
 ) {
     companion object {
@@ -36,9 +38,8 @@ class GuiItem(
                 Codec.STRING.optionalFieldOf("name").forGetter { it.name },
                 Codec.STRING.listOf().optionalRecordCodec("lore", GuiItem::lore, listOf()),
                 NbtCompound.CODEC.optionalFieldOf("nbt").forGetter { it.nbt },
-                Codec.INT.optionalRecordCodec("priority", GuiItem::priority, 1),
-                Codec.unboundedMap(Codec.STRING, Requirement.CODEC)
-                    .optionalRecordCodec("view_requirements", GuiItem::viewRequirements, emptyMap()),
+                Codec.INT.optionalRecordCodec("priority", GuiItem::priority, 0),
+                ViewRequirement.CODEC.optionalFieldOf("view_requirements").forGetter { it.viewRequirements },
                 Codec.unboundedMap(Codec.STRING, Action.CODEC)
                     .optionalRecordCodec("actions", GuiItem::actions, emptyMap()),
             ).apply(instance) { item, slots, amount, name, lore, nbt, priority, viewRequirements, actions ->
@@ -67,9 +68,11 @@ class GuiItem(
     }
 
     fun checkViewRequirements(player: ServerPlayerEntity): Boolean {
-        for (requirement in viewRequirements) {
-            if (!requirement.value.check(player))
-                return false
+        if (viewRequirements.isPresent) {
+            for (requirement in viewRequirements.get().requirements) {
+                if (!requirement.value.check(player))
+                    return false
+            }
         }
         return true
     }

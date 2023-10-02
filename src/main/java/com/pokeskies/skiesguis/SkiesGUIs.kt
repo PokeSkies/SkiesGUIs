@@ -1,5 +1,7 @@
 package com.pokeskies.skiesguis
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.pokeskies.skiesguis.commands.GUICommand
 import com.pokeskies.skiesguis.config.ConfigManager
 import net.fabricmc.api.ModInitializer
@@ -19,6 +21,7 @@ class SkiesGUIs : ModInitializer {
         val LOGGER = LogManager.getLogger("skiesguis")
     }
 
+    lateinit var gson: Gson
     lateinit var configDir: File
     lateinit var configManager: ConfigManager
 
@@ -28,6 +31,7 @@ class SkiesGUIs : ModInitializer {
     override fun onInitialize() {
         INSTANCE = this
 
+        this.gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         this.configDir = File(FabricLoader.getInstance().configDirectory, "skiesguis")
         this.configManager = ConfigManager(configDir)
 

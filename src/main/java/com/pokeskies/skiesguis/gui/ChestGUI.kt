@@ -36,13 +36,15 @@ class ChestGUI(
     private fun refresh() {
         for ((slot, slotEntry) in items) {
             for ((priority, itemEntry) in slotEntry) {
-                if (itemEntry.value.checkViewRequirements(player)) {
-                    template.set(slot, itemEntry.value.createButton()
+                val guiItem = itemEntry.value
+                if (guiItem.checkViewRequirements(player)) {
+                    template.set(slot, guiItem.createButton()
                         .onClick { ctx ->
-                            for (actionEntry in itemEntry.value.actions) {
+                            for (actionEntry in guiItem.actions) {
                                 val action = actionEntry.value
                                 if (action.matchesClick(ctx.clickType)) {
                                     if (action.checkClickRequirements(player)) {
+                                        action.executeSuccessActions(player)
                                         action.execute(player)
                                     } else {
                                         action.executeDenyActions(player)

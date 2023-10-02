@@ -2,6 +2,8 @@ package com.pokeskies.skiesguis.config
 
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
 import com.mojang.serialization.Codec
@@ -110,5 +112,20 @@ class ConfigManager(val configDir: File) {
             e.printStackTrace()
         }
         return value
+    }
+
+    fun <T> saveFile(filename: String?, `object`: T, codec: Codec<T>) {
+        val file = File(configDir, filename)
+        try {
+            FileWriter(file).use { fileWriter ->
+                val data = JsonOps.INSTANCE.withEncoder(codec)
+                    .apply(`object`)
+                    .result()
+                fileWriter.write(SkiesGUIs.INSTANCE.gson.toJson(data.get()))
+                fileWriter.flush()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

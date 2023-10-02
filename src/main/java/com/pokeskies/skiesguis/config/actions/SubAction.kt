@@ -5,10 +5,9 @@ import com.pokeskies.skiesguis.config.requirements.ClickRequirement
 import java.util.*
 
 abstract class SubAction(
-    click: ClickType,
-    clickRequirements: Optional<ClickRequirement>
-): Action(click, clickRequirements) {
+    click: ClickType
+): Action(click, Optional.empty()) {
     companion object {
-        val CODEC: Codec<Action> = ActionType.CODEC.dispatch("type", {it.getType() }, { it.codec })
+        val CODEC: Codec<SubAction> = ActionType.CODEC.dispatch("type", {it.getType() }, { it.codec as Codec<out SubAction>? })
     }
 }

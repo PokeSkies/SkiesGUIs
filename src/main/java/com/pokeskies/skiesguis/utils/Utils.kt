@@ -16,7 +16,7 @@ object Utils {
 
     fun debug(message: String) {
         if (SkiesGUIs.INSTANCE.configManager.config.debug)
-            SkiesGUIs.LOGGER.debug(message)
+            SkiesGUIs.LOGGER.debug("[SkiesGUIs] DEBUG: $message")
     }
 }
 

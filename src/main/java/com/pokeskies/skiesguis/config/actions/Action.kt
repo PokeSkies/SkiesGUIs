@@ -52,6 +52,14 @@ abstract class Action(
         }
     }
 
+    fun executeSuccessActions(player: ServerPlayerEntity) {
+        if (clickRequirements.isPresent) {
+            for ((id, action) in clickRequirements.get().successActions) {
+                action.execute(player)
+            }
+        }
+    }
+
     fun parsePlaceholders(player: ServerPlayerEntity, value: String): String {
         return value.replace("%player%", player.name.string)
     }

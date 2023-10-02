@@ -8,6 +8,8 @@ import com.mojang.brigadier.context.CommandContext
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.ConfigManager
+import com.pokeskies.skiesguis.config.GuiConfig
+import com.pokeskies.skiesguis.config.MainConfig
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
@@ -37,6 +39,15 @@ class GUICommand {
                             .requires(Permissions.require("skiesguis.command.reload", 4))
                             .executes(GUICommand::reload)
                     )
+                    .then(CommandManager.literal("printnbt")
+                        .requires(Permissions.require("skiesguis.command.printnbt", 4))
+                        .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
+                        .executes(GUICommand::printNBT)
+                    )
+                    .then(CommandManager.literal("debug")
+                        .requires(Permissions.require("skiesguis.command.debug", 4))
+                        .executes(GUICommand::debug)
+                    )
                     .then(CommandManager.literal("open")
                         .requires(Permissions.require("skiesguis.command.open", 4))
                         .then(CommandManager.argument("gui_id", StringArgumentType.string())
@@ -51,11 +62,6 @@ class GUICommand {
                             .executes(GUICommand::openGUISelf)
                         )
                     )
-                    .then(CommandManager.literal("printnbt")
-                        .requires(Permissions.require("skiesguis.command.printnbt", 4))
-                        .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
-                        .executes(GUICommand::printNBT)
-                    )
                 )
             }
         }
@@ -63,6 +69,58 @@ class GUICommand {
         private fun reload(ctx: CommandContext<ServerCommandSource>): Int {
             SkiesGUIs.INSTANCE.reload()
             ctx.source.sendMessage(Utils.deseralizeText("<green>Reloaded SkiesGUIs"))
+            return 1
+        }
+
+        private fun printNBT(ctx: CommandContext<ServerCommandSource>): Int {
+            val player = ctx.source.player
+            if (player != null) {
+                val mainHand = player.getStackInHand(Hand.MAIN_HAND)
+                if (mainHand.isEmpty) {
+                    player.sendMessage(Component.text("Hold something in your Main Hand to view it's NBT Data!").color(NamedTextColor.RED))
+                    return 1
+                }
+
+                val nbt = mainHand.nbt
+                if (nbt == null) {
+                    player.sendMessage(Component.text("This item has no NBT Data!").color(NamedTextColor.RED))
+                    return 1
+                }
+
+                val result = JsonOps.INSTANCE.withEncoder(NbtCompound.CODEC)
+                    .apply(nbt)
+                    .result()
+                if (result.isEmpty) {
+                    player.sendMessage(Component.text("There was an error while encoding this item's NBT!").color(NamedTextColor.RED))
+                    return 1
+                }
+
+                val jsonOutput = SkiesGUIs.INSTANCE.gson.toJson(result.get())
+
+                val builder: TextComponent.Builder = Component.text()
+                jsonOutput.split("\n").forEach { builder.append(Component.text(it)).appendNewline() }
+
+                player.sendMessage(
+                    Component.text("Click to copy the NBT of ")
+                        .append(mainHand.item.name.asComponent())
+                        .color(NamedTextColor.GREEN)
+                        .hoverEvent(HoverEvent.showText(builder.build()))
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, jsonOutput))
+                )
+            }
+            return 1
+        }
+
+        private fun debug(ctx: CommandContext<ServerCommandSource>): Int {
+            val newMode = !SkiesGUIs.INSTANCE.configManager.config.debug
+            SkiesGUIs.INSTANCE.configManager.config.debug = newMode
+            SkiesGUIs.INSTANCE.configManager.saveFile("config.json", SkiesGUIs.INSTANCE.configManager.config, MainConfig.CODEC)
+
+            if (newMode) {
+                ctx.source.sendMessage(Component.text("Debug mode has been enabled!").color(NamedTextColor.GREEN))
+            } else {
+                ctx.source.sendMessage(Component.text("Debug mode has been disabled!").color(NamedTextColor.RED))
+            }
             return 1
         }
 
@@ -99,45 +157,6 @@ class GUICommand {
             }
 
             UIManager.openUIForcefully(player, ChestGUI(player, guiID, guiConfig))
-            return 1
-        }
-
-        private fun printNBT(ctx: CommandContext<ServerCommandSource>): Int {
-            val player = ctx.source.player
-            if (player != null) {
-                val mainHand = player.getStackInHand(Hand.MAIN_HAND)
-                if (mainHand.isEmpty) {
-                    player.sendMessage(Component.text("Hold something in your Main Hand to view it's NBT Data!").color(NamedTextColor.RED))
-                    return 1
-                }
-
-                val nbt = mainHand.nbt
-                if (nbt == null) {
-                    player.sendMessage(Component.text("This item has no NBT Data!").color(NamedTextColor.RED))
-                    return 1
-                }
-
-                val result = JsonOps.INSTANCE.withEncoder(NbtCompound.CODEC)
-                    .apply(nbt)
-                    .result()
-                if (result.isEmpty) {
-                    player.sendMessage(Component.text("There was an error while encoding this item's NBT!").color(NamedTextColor.RED))
-                    return 1
-                }
-
-                val jsonOutput = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(result.get())
-
-                val builder: TextComponent.Builder = Component.text()
-                jsonOutput.split("\n").forEach { builder.append(Component.text(it)).appendNewline() }
-
-                player.sendMessage(
-                    Component.text("Click to copy the NBT of ")
-                        .append(mainHand.item.name.asComponent())
-                        .color(NamedTextColor.GREEN)
-                        .hoverEvent(HoverEvent.showText(builder.build()))
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, jsonOutput))
-                )
-            }
             return 1
         }
     }

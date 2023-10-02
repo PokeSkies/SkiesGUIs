@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.utils.recordCodec
 
 class MainConfig(
-    val debug: Boolean
+    var debug: Boolean
 ) {
     companion object {
         val CODEC: Codec<MainConfig> = RecordCodecBuilder.create { instance ->
