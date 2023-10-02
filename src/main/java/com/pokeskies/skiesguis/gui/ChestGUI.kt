@@ -35,11 +35,8 @@ class ChestGUI(
 
     private fun refresh() {
         for ((slot, slotEntry) in items) {
-            println("Slot $slot has ${slotEntry.size} items!")
             for ((priority, itemEntry) in slotEntry) {
-                println("Priority $priority is ${itemEntry.key} with ${itemEntry.value.viewRequirements.size} view requirements!")
                 if (itemEntry.value.checkViewRequirements(player)) {
-                    println("Requirements check for ${itemEntry.key} has passed! Setting to slot $slot")
                     template.set(slot, itemEntry.value.createButton()
                         .onClick { ctx ->
                             for (actionEntry in itemEntry.value.actions) {
@@ -48,7 +45,6 @@ class ChestGUI(
                                     if (action.checkClickRequirements(player)) {
                                         action.execute(player)
                                     } else {
-                                        println("execute deny actions for $action")
                                         action.executeDenyActions(player)
                                     }
                                 }
@@ -58,8 +54,6 @@ class ChestGUI(
 
                     // Since the slot is being filled at the highest priority, all remaining entries are lower priority
                     break
-                } else {
-                    println("Requirements check for ${itemEntry.key} has failed! Moving to the next priority or next slot")
                 }
             }
         }
