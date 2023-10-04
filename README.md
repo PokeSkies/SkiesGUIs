@@ -5,6 +5,18 @@ A Fabric (1.20.1) server-sided GUI creation mod aimed to make creating basic GUI
 
 More information on configuration can be found on the [Wiki](https://github.com/PokeSkies/SkiesGUIs/wiki)!
 
+## Features
+- Create practically infinite GUIs *(idk, haven't tested that)*
+- Customize everything about items in the inventory
+  - Multi slot definitions *(one item definition, multiple slots)*
+  - Name/Lore customization with [MiniMessage formatting](https://docs.advntr.dev/minimessage/format.html)
+  - Full access to NBT *(custom model data, Pokemon, etc.)*
+- Item view requirements/conditionals *(with success/deny actions)*
+- Item click actions
+- Item click requirements/conditionals *(with success/deny actions)*
+- 8 action types *(for now)*
+- 2 requirement types *(for now)*
+
 ## Installation
 1. Download the latest version of the mod from the Releases tab.
 2. Download all required dependencies:
@@ -22,8 +34,8 @@ More information on configuration can be found on the [Wiki](https://github.com/
 | /gui printnbt               | Print the NBT data of the item in your hand, if present       | skiesguis.command.printnbt |
 | /gui debug                  | Toggle the debug mode for more insight into errors            | skiesguis.command.deug     |
 
-
 ## Planned Features
+- Better/more debugging and error handling
 - Economy Integrations (impactor)
 - More Placeholders (support Placeholders mod?)
 - More Action Types
