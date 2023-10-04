@@ -8,6 +8,7 @@ import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.registry.Registries
 import net.minecraft.server.network.ServerPlayerEntity
@@ -15,28 +16,17 @@ import java.util.*
 import kotlin.jvm.optionals.getOrDefault
 
 class ItemRequirement(
-    comparison: ComparisonType,
-    val item: Item,
-    val amount: Optional<Int>,
-    val nbt: Optional<NbtCompound>,
-) : Requirement(comparison) {
-    companion object {
-        val CODEC: Codec<ItemRequirement> = RecordCodecBuilder.create { instance ->
-            requirementCodec(instance).and(
-                instance.group(
-                    Registries.ITEM.codec.recordCodec("item", ItemRequirement::item),
-                    Codec.INT.optionalFieldOf("amount").forGetter { it.amount },
-                    NbtCompound.CODEC.optionalFieldOf("nbt").forGetter { it.nbt },
-                )
-            ).apply(instance, ::ItemRequirement)
-        }
-    }
-
+    type: RequirementType = RequirementType.ITEM,
+    comparison: ComparisonType = ComparisonType.EQUALS,
+    val item: Item = Items.BARRIER,
+    val amount: Int? = null,
+    val nbt: NbtCompound? = null,
+) : Requirement(type, comparison) {
     override fun check(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
             return false
 
-        val targetAmount = amount.getOrDefault(1)
+        val targetAmount = amount ?: 1
         var amountFound = 0
 
         for (itemStack in player.inventory.main) {
@@ -49,15 +39,15 @@ class ItemRequirement(
 
         return when (comparison) {
             ComparisonType.EQUALS -> {
-                if (amount.isPresent) {
-                    return amountFound == amount.get()
+                if (amount != null) {
+                    return amountFound == amount
                 } else {
                     return amountFound >= 1
                 }
             }
             ComparisonType.NOT_EQUALS -> {
-                if (amount.isPresent) {
-                    return amountFound != amount.get()
+                if (amount != null) {
+                    return amountFound != amount
                 } else {
                     return amountFound == 0
                 }
@@ -74,21 +64,21 @@ class ItemRequirement(
             return false
         }
 
-        if (nbt.isPresent) {
+        if (nbt != null) {
             val checkNBT = checkItem.nbt ?: return false
 
-            if (checkNBT != nbt.get())
+            if (checkNBT != nbt)
                 return false
         }
 
         return true
     }
 
-    override fun getType(): RequirementType<*> {
-        return RequirementType.PERMISSION
-    }
-
     override fun getAllowedComparisons(): List<ComparisonType> {
         return ComparisonType.values().toList()
+    }
+
+    override fun toString(): String {
+        return "ItemRequirement(item=$item, amount=$amount, nbt=$nbt)"
     }
 }

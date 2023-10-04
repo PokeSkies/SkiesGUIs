@@ -114,7 +114,7 @@ class GUICommand {
         private fun debug(ctx: CommandContext<ServerCommandSource>): Int {
             val newMode = !SkiesGUIs.INSTANCE.configManager.config.debug
             SkiesGUIs.INSTANCE.configManager.config.debug = newMode
-            SkiesGUIs.INSTANCE.configManager.saveFile("config.json", SkiesGUIs.INSTANCE.configManager.config, MainConfig.CODEC)
+            SkiesGUIs.INSTANCE.configManager.saveFile("config.json", SkiesGUIs.INSTANCE.configManager.config)
 
             if (newMode) {
                 ctx.source.sendMessage(Component.text("Debug mode has been enabled!").color(NamedTextColor.GREEN))

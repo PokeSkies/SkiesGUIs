@@ -1,34 +1,23 @@
 package com.pokeskies.skiesguis.config.actions.types
 
-import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
-import com.pokeskies.skiesguis.config.requirements.ClickRequirement
+import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.server.network.ServerPlayerEntity
-import java.util.*
 
 class MessageBroadcast(
-    click: ClickType,
-    clickRequirements: Optional<ClickRequirement>,
-    private val message: List<String>
-) : Action(click, clickRequirements) {
-    companion object {
-        val CODEC: Codec<MessageBroadcast> = RecordCodecBuilder.create {
-            actionCodec(it).and(
-                Codec.STRING.listOf().recordCodec("message", MessageBroadcast::message)
-            ).apply(it, ::MessageBroadcast)
-        }
-    }
-
+    type: ActionType = ActionType.BROADCAST,
+    click: ClickType = ClickType.ANY,
+    clickRequirements: RequirementOptions? = null,
+    private val message: List<String> = emptyList()
+) : Action(type, click, clickRequirements) {
     override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${getType().id} Action: $this")
+        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         if (SkiesGUIs.INSTANCE.adventure == null) {
-            SkiesGUIs.LOGGER.error("There was an error while executing an action for player ${player.name}: Adventure was somehow null on message broadcast?")
+            Utils.error("There was an error while executing an action for player ${player.name}: Adventure was somehow null on message broadcast?")
             return
         }
 
@@ -37,11 +26,7 @@ class MessageBroadcast(
         }
     }
 
-    override fun getType(): ActionType<*> {
-        return ActionType.BROADCAST
-    }
-
     override fun toString(): String {
-        return "MessageBroadcast(message=$message)"
+        return "MessageBroadcast(type=$type, click=$click, clickRequirements=$clickRequirements, message=$message)"
     }
 }

@@ -1,11 +1,17 @@
 package com.pokeskies.skiesguis.utils
 
+import com.google.gson.*
 import com.mojang.serialization.Codec
+import com.mojang.serialization.JsonOps
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.SkiesGUIs
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.minecraft.registry.Registry
 import net.minecraft.text.Text
+import net.minecraft.util.Identifier
+import java.lang.reflect.Type
 import java.util.function.Function
+
 
 object Utils {
     val miniMessage: MiniMessage = MiniMessage.miniMessage()
@@ -14,9 +20,46 @@ object Utils {
         return SkiesGUIs.INSTANCE.adventure!!.toNative(miniMessage.deserialize(text))
     }
 
-    fun debug(message: String) {
-        if (SkiesGUIs.INSTANCE.configManager.config.debug)
+    fun debug(message: String, bypassCheck: Boolean = false) {
+        if (bypassCheck || SkiesGUIs.INSTANCE.configManager.config.debug)
             SkiesGUIs.LOGGER.debug("[SkiesGUIs] DEBUG: $message")
+    }
+
+    fun error(message: String) {
+        SkiesGUIs.LOGGER.error("[SkiesGUIs] ERROR: $message")
+    }
+
+    // Thank you to Patbox for these wonderful serializers =)
+    data class RegistrySerializer<T>(val registry: Registry<T>) : JsonSerializer<T>, JsonDeserializer<T> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): T? {
+            return if (json.isJsonPrimitive) registry.get(Identifier.tryParse(json.asString)) else null
+        }
+        override fun serialize(src: T, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+            return JsonPrimitive(registry.getId(src).toString())
+        }
+    }
+
+    data class CodecSerializer<T>(val codec: Codec<T>) : JsonSerializer<T>, JsonDeserializer<T> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): T? {
+            return try {
+                codec.decode(JsonOps.INSTANCE, json).getOrThrow(false) { }.first
+            } catch (e: Throwable) {
+                null
+            }
+        }
+
+        override fun serialize(src: T?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+            return try {
+                if (src != null)
+                    codec.encodeStart(JsonOps.INSTANCE, src).getOrThrow(false) { }
+                else
+                    JsonNull.INSTANCE
+            } catch (e: Throwable) {
+                JsonNull.INSTANCE
+            }
+        }
     }
 }
 

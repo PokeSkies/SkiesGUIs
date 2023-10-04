@@ -2,17 +2,18 @@ package com.pokeskies.skiesguis.config
 
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
+import com.pokeskies.skiesguis.utils.Utils
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
+
 
 class ConfigManager(val configDir: File) {
     lateinit var config: MainConfig
@@ -27,7 +28,7 @@ class ConfigManager(val configDir: File) {
 
     fun reload() {
         copyDefaults()
-        config = loadFile("config.json", MainConfig.CODEC)!!
+        config = loadFile("config.json", MainConfig::class.java)!!
         loadGUIs()
     }
 
@@ -43,7 +44,7 @@ class ConfigManager(val configDir: File) {
                 val inputStream: InputStream = classLoader.getResourceAsStream("assets/skiesguis/config.json")
                 Files.copy(inputStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } catch (e: Exception) {
-                SkiesGUIs.LOGGER.error("Failed to copy the default config file: $e - ${e.message}")
+                Utils.error("Failed to copy the default config file: $e - ${e.message}")
             }
         }
 
@@ -57,7 +58,7 @@ class ConfigManager(val configDir: File) {
                     Path.of(classLoader.getResource("assets/skiesguis/guis/example_gui.json").toURI())
                 Files.copy(resourceFile, file.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } catch (e: Exception) {
-                SkiesGUIs.LOGGER.error("Failed to copy the default GUI file: " + e.message)
+                Utils.error("Failed to copy the default GUI file: " + e.message)
             }
         }
     }
@@ -73,27 +74,26 @@ class ConfigManager(val configDir: File) {
                     val fileName = file.name
                     if (file.isFile && fileName.contains(".json")) {
                         val id = fileName.substring(0, fileName.lastIndexOf(".json"))
-                        SkiesGUIs.LOGGER.info("Reading the file $fileName!")
                         val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
                         try {
-                            GUIS[id] = JsonOps.INSTANCE.withParser(GuiConfig.CODEC)
-                                .apply(JsonParser.parseReader(jsonReader))
-                                .getOrThrow(false, SkiesGUIs.LOGGER::warn)
+                            GUIS[id] = SkiesGUIs.INSTANCE.gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
+                            println(GUIS[id])
+                            Utils.debug("Successfully read and loaded the file $fileName!", true)
                         } catch (ex: Exception) {
-                            SkiesGUIs.LOGGER.error("Error while trying to parse the file $fileName as a GUI!")
+                            Utils.error("Error while trying to parse the file $fileName as a GUI!")
                             ex.printStackTrace()
                         }
                     } else {
-                        SkiesGUIs.LOGGER.error("File $fileName is either not a file or is not a .json file!")
+                        Utils.error("File $fileName is either not a file or is not a .json file!")
                     }
                 }
             }
         } else {
-            SkiesGUIs.LOGGER.error("The GUIs directory either does not exist or is not a directory!")
+            Utils.error("The GUIs directory either does not exist or is not a directory!")
         }
     }
 
-    fun <T : Any> loadFile(filename: String, codec: Codec<T>): T? {
+    fun <T : Any> loadFile(filename: String, classObject: Class<T>): T? {
         val file = File(configDir, filename)
         var value: T? = null
         try {
@@ -101,9 +101,7 @@ class ConfigManager(val configDir: File) {
             try {
                 FileReader(file).use { reader ->
                     val jsonReader = JsonReader(reader)
-                    value = JsonOps.INSTANCE.withParser(codec)
-                        .apply(JsonParser.parseReader(jsonReader))
-                        .getOrThrow(false, SkiesGUIs.LOGGER::warn)
+                    value = SkiesGUIs.INSTANCE.gson.fromJson(jsonReader, classObject)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -114,14 +112,11 @@ class ConfigManager(val configDir: File) {
         return value
     }
 
-    fun <T> saveFile(filename: String?, `object`: T, codec: Codec<T>) {
+    fun <T> saveFile(filename: String?, `object`: T) {
         val file = File(configDir, filename)
         try {
             FileWriter(file).use { fileWriter ->
-                val data = JsonOps.INSTANCE.withEncoder(codec)
-                    .apply(`object`)
-                    .result()
-                fileWriter.write(SkiesGUIs.INSTANCE.gson.toJson(data.get()))
+                fileWriter.write(SkiesGUIs.INSTANCE.gson.toJson(`object`))
                 fileWriter.flush()
             }
         } catch (e: Exception) {

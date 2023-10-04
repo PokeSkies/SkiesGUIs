@@ -10,17 +10,10 @@ import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.server.network.ServerPlayerEntity
 
 class PermissionRequirement(
-    comparison: ComparisonType,
-    private val permission: String
-) : Requirement(comparison) {
-    companion object {
-        val CODEC: Codec<PermissionRequirement> = RecordCodecBuilder.create {
-            requirementCodec(it).and(
-                Codec.STRING.optionalRecordCodec("permission", PermissionRequirement::permission, "")
-            ).apply(it, ::PermissionRequirement)
-        }
-    }
-
+    type: RequirementType = RequirementType.PERMISSION,
+    comparison: ComparisonType = ComparisonType.EQUALS,
+    private val permission: String = ""
+) : Requirement(type, comparison) {
     override fun check(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
             return false
@@ -33,11 +26,11 @@ class PermissionRequirement(
         return true
     }
 
-    override fun getType(): RequirementType<*> {
-        return RequirementType.PERMISSION
-    }
-
     override fun getAllowedComparisons(): List<ComparisonType> {
         return listOf(ComparisonType.EQUALS, ComparisonType.NOT_EQUALS)
+    }
+
+    override fun toString(): String {
+        return "PermissionRequirement(permission='$permission')"
     }
 }

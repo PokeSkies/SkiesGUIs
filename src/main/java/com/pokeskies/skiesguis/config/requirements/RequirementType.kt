@@ -1,23 +1,36 @@
 package com.pokeskies.skiesguis.config.requirements
 
-import com.google.common.collect.BiMap
-import com.google.common.collect.HashBiMap
-import com.mojang.serialization.Codec
+import com.google.gson.*
 import com.pokeskies.skiesguis.config.requirements.types.ItemRequirement
 import com.pokeskies.skiesguis.config.requirements.types.PermissionRequirement
+import java.lang.reflect.Type
 
-data class RequirementType<A : Requirement>(val id: String, val codec: Codec<A>) {
+enum class RequirementType(val identifier: String, val clazz: Class<*>) {
+    PERMISSION("permission", PermissionRequirement::class.java),
+    ITEM("item", ItemRequirement::class.java);
+
     companion object {
-        private val map: BiMap<String, RequirementType<*>> = HashBiMap.create()
+        fun valueOfAnyCase(name: String): RequirementType? {
+            for (type in values()) {
+                if (name.equals(type.identifier, true)) return type
+            }
+            return null
+        }
+    }
 
-        fun <A : Requirement> create(id: String, codec: Codec<A>): RequirementType<A> {
-            val type = RequirementType(id, codec)
-            map[id] = type
-            return type
+    internal class RequirementTypeAdaptor : JsonSerializer<Requirement>, JsonDeserializer<Requirement> {
+        override fun serialize(src: Requirement, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+            return context.serialize(src, src::class.java)
         }
 
-        val CODEC: Codec<RequirementType<*>> = Codec.STRING.xmap({ map[it] }, { map.inverse()[it] })
-        val PERMISSION: RequirementType<PermissionRequirement> = create("PERMISSION", PermissionRequirement.CODEC)
-        val ITEM: RequirementType<ItemRequirement> = create("ITEM", ItemRequirement.CODEC)
+        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Requirement {
+            val jsonObject: JsonObject = json.getAsJsonObject()
+            val type: RequirementType? = RequirementType.valueOfAnyCase(jsonObject.get("type").asString)
+            return try {
+                context.deserialize(json, type!!.clazz)
+            } catch (e: NullPointerException) {
+                throw JsonParseException("Could not deserialize requirement type: $type", e)
+            }
+        }
     }
 }

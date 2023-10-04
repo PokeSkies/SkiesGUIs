@@ -1,28 +1,43 @@
 package com.pokeskies.skiesguis.config.actions
 
-import com.google.common.collect.BiMap
-import com.google.common.collect.HashBiMap
-import com.mojang.serialization.Codec
+import com.google.gson.*
 import com.pokeskies.skiesguis.config.actions.types.*
+import net.minecraft.server.command.PlaySoundCommand
+import java.lang.reflect.Type
 
-data class ActionType<A : Action>(val id: String, val codec: Codec<A>) {
+
+enum class ActionType(val identifier: String, val clazz: Class<*>) {
+    COMMAND_CONSOLE("command_console", CommandConsole::class.java),
+    COMMAND_PLAYER("command_player", CommandPlayer::class.java),
+    MESSAGE("message", MessagePlayer::class.java),
+    BROADCAST("broadcast", MessageBroadcast::class.java),
+    PLAYSOUND("playsound", PlaySoundCommand::class.java),
+    OPEN_GUI("open_gui", OpenGUI::class.java),
+    CLOSE_GUI("close_gui", CloseGUI::class.java),
+    GIVE_XP("give_xp", GiveXP::class.java);
+
     companion object {
-        private val map: BiMap<String, ActionType<*>> = HashBiMap.create()
+        fun valueOfAnyCase(name: String): ActionType? {
+            for (type in values()) {
+                if (name.equals(type.identifier, true)) return type
+            }
+            return null
+        }
+    }
 
-        fun <A : Action> create(id: String, codec: Codec<A>): ActionType<A> {
-            val type = ActionType(id, codec)
-            map[id] = type
-            return type
+    internal class ActionTypeAdaptor : JsonSerializer<Action>, JsonDeserializer<Action> {
+        override fun serialize(src: Action, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+            return context.serialize(src, src::class.java)
         }
 
-        val CODEC: Codec<ActionType<*>> = Codec.STRING.xmap({ map[it] }, { map.inverse()[it] })
-        val COMMAND_CONSOLE: ActionType<CommandConsole> = create("COMMAND_CONSOLE", CommandConsole.CODEC)
-        val COMMAND_PLAYER: ActionType<CommandPlayer> = create("COMMAND_PLAYER", CommandPlayer.CODEC)
-        val MESSAGE: ActionType<MessagePlayer> = create("MESSAGE", MessagePlayer.CODEC)
-        val BROADCAST: ActionType<MessageBroadcast> = create("BROADCAST", MessageBroadcast.CODEC)
-        val PLAYSOUND: ActionType<PlaySound> = create("PLAYSOUND", PlaySound.CODEC)
-        val OPEN_GUI: ActionType<OpenGUI> = create("OPEN_GUI", OpenGUI.CODEC)
-        val CLOSE_GUI: ActionType<CloseGUI> = create("CLOSE_GUI", CloseGUI.CODEC)
-        val GIVE_XP: ActionType<GiveXP> = create("GIVE_XP", GiveXP.CODEC)
+        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Action {
+            val jsonObject: JsonObject = json.getAsJsonObject()
+            val type: ActionType? = ActionType.valueOfAnyCase(jsonObject.get("type").asString)
+            return try {
+                context.deserialize(json, type!!.clazz)
+            } catch (e: NullPointerException) {
+                throw JsonParseException("Could not deserialize action type: $type", e)
+            }
+        }
     }
 }

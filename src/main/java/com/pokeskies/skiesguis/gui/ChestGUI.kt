@@ -38,6 +38,7 @@ class ChestGUI(
             for ((priority, itemEntry) in slotEntry) {
                 val guiItem = itemEntry.value
                 if (guiItem.checkViewRequirements(player)) {
+                    guiItem.executeSuccessActions(player)
                     template.set(slot, guiItem.createButton()
                         .onClick { ctx ->
                             for (actionEntry in guiItem.actions) {
@@ -56,6 +57,8 @@ class ChestGUI(
 
                     // Since the slot is being filled at the highest priority, all remaining entries are lower priority
                     break
+                } else {
+                    guiItem.executeDenyActions(player)
                 }
             }
         }
