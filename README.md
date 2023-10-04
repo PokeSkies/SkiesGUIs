@@ -24,16 +24,26 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 
 ## Planned Features
-- More Action Types (Refresh, XP)
-- More Requirement Types (Regex, Placeholders, JavaScript, Location?)
 - Economy Integrations (impactor)
 - More Placeholders (support Placeholders mod?)
+- More Action Types
+    - Refresh
+  - **Please submit suggestions!**
+- More Requirement Types
+    - Regex
+    - Placeholders
+    - JavaScript
+    - Location?
+    - **Please submit suggestions!**
 - Open/Close Actions
 - Requirements Updates
     - Open GUI Requirements
-    - Deny/Success Actions per Requirement?
     - Minimum Requirements with Optionals?
-- More Inventory Types (more types than just the chest GUI)
+- More Inventory Types
+    - CHEST
+    - DISPENSER
+    - HOPPER
+    - etc.
 - Inventory Update Ticking (optionally update GUI at an interval)
 - Animations?? (oh god)
 - Custom Commands?? (open up a GUI quickly via a command with custom permissions)
