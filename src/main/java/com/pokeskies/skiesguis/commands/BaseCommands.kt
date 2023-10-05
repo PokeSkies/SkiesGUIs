@@ -1,16 +1,11 @@
 package com.pokeskies.skiesguis.commands
 
-import ca.landonjw.gooeylibs2.api.UIManager
-import com.google.gson.GsonBuilder
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.ConfigManager
-import com.pokeskies.skiesguis.config.GuiConfig
-import com.pokeskies.skiesguis.config.MainConfig
-import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.kyori.adventure.text.Component
@@ -25,7 +20,7 @@ import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.util.Hand
 
-class GUICommand {
+class BaseCommands {
     companion object {
         /**
          * /skiesguis open <gui_id> [player] - open a GUI by ID for yourself or for another player
@@ -37,29 +32,30 @@ class GUICommand {
                     .then(
                         CommandManager.literal("reload")
                             .requires(Permissions.require("skiesguis.command.reload", 4))
-                            .executes(GUICommand::reload)
+                            .executes(BaseCommands::reload)
                     )
                     .then(CommandManager.literal("printnbt")
-                        .requires(Permissions.require("skiesguis.command.printnbt", 4))
                         .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
-                        .executes(GUICommand::printNBT)
+                        .requires(Permissions.require("skiesguis.command.printnbt", 4))
+                        .executes(BaseCommands::printNBT)
                     )
                     .then(CommandManager.literal("debug")
                         .requires(Permissions.require("skiesguis.command.debug", 4))
-                        .executes(GUICommand::debug)
+                        .executes(BaseCommands::debug)
                     )
                     .then(CommandManager.literal("open")
-                        .requires(Permissions.require("skiesguis.command.open", 4))
                         .then(CommandManager.argument("gui_id", StringArgumentType.string())
                             .suggests { _, builder ->
                                 CommandSource.suggestMatching(ConfigManager.GUIS.keys.stream(), builder)
                             }
                             .then(
                                 CommandManager.argument("player", EntityArgumentType.player())
-                                    .executes(GUICommand::openGUIPlayer)
+                                    .requires(Permissions.require("skiesguis.command.open", 4))
+                                    .executes(BaseCommands::openGUIPlayer)
                             )
                             .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
-                            .executes(GUICommand::openGUISelf)
+                            .requires(Permissions.require("skiesguis.command.open", 4))
+                            .executes(BaseCommands::openGUISelf)
                         )
                     )
                 )
@@ -130,15 +126,15 @@ class GUICommand {
                 if (player != null) {
                     val guiID = StringArgumentType.getString(ctx, "gui_id")
 
-                    val guiConfig = ConfigManager.GUIS[guiID]
-                    if (guiConfig == null) {
+                    val gui = ConfigManager.GUIS[guiID]
+                    if (gui == null) {
                         ctx.source.sendMessage(
                             Utils.deseralizeText("<red>Could not find a GUI with the ID $guiID!")
                         )
                         return 1
                     }
 
-                    UIManager.openUIForcefully(player, ChestGUI(player, guiID, guiConfig))
+                    gui.openGUI(player)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -150,13 +146,13 @@ class GUICommand {
             val player = EntityArgumentType.getPlayer(ctx, "player")
             val guiID = StringArgumentType.getString(ctx, "gui_id")
 
-            val guiConfig = ConfigManager.GUIS[guiID]
-            if (guiConfig == null) {
+            val gui = ConfigManager.GUIS[guiID]
+            if (gui == null) {
                 ctx.source.sendMessage(Utils.deseralizeText("<red>Could not find a GUI with the ID $guiID!"))
                 return 1
             }
 
-            UIManager.openUIForcefully(player, ChestGUI(player, guiID, guiConfig))
+            gui.openGUI(player)
             return 1
         }
     }

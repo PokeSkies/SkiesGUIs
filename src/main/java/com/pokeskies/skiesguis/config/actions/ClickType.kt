@@ -2,11 +2,9 @@ package com.pokeskies.skiesguis.config.actions
 
 import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import com.google.gson.*
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.util.StringIdentifiable
 import java.lang.reflect.Type
-import java.util.*
 
 enum class ClickType(val identifier: String, val buttonClicks: List<ButtonClick>) : StringIdentifiable {
     LEFT_CLICK("left_click", listOf(ButtonClick.LEFT_CLICK)),

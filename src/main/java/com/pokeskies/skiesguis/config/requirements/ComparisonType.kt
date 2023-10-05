@@ -1,10 +1,8 @@
 package com.pokeskies.skiesguis.config.requirements
 
 import com.google.gson.*
-import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.utils.Utils
 import java.lang.reflect.Type
-import java.util.*
 
 enum class ComparisonType(val identifier: String) {
     EQUALS("=="),

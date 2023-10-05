@@ -1,13 +1,7 @@
 package com.pokeskies.skiesguis.config.requirements
 
-import com.mojang.datafixers.Products
-import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.Utils
-import com.pokeskies.skiesguis.utils.optionalRecordCodec
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.util.StringIdentifiable
 
 abstract class Requirement(
     val type: RequirementType? = null,

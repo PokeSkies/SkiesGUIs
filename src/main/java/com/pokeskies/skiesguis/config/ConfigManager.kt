@@ -4,11 +4,8 @@ import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
 import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
-import com.mojang.serialization.Codec
-import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.Utils
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -77,7 +74,6 @@ class ConfigManager(val configDir: File) {
                         val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
                         try {
                             GUIS[id] = SkiesGUIs.INSTANCE.gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
-                            println(GUIS[id])
                             Utils.debug("Successfully read and loaded the file $fileName!", true)
                         } catch (ex: Exception) {
                             Utils.error("Error while trying to parse the file $fileName as a GUI!")

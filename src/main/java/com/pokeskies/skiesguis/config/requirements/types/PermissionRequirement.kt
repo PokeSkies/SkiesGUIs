@@ -1,11 +1,8 @@
 package com.pokeskies.skiesguis.config.requirements.types
 
-import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.utils.optionalRecordCodec
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.server.network.ServerPlayerEntity
 

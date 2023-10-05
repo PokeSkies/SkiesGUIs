@@ -2,6 +2,7 @@ package com.pokeskies.skiesguis.gui
 
 import ca.landonjw.gooeylibs2.api.data.UpdateEmitter
 import ca.landonjw.gooeylibs2.api.page.Page
+import ca.landonjw.gooeylibs2.api.page.PageAction
 import ca.landonjw.gooeylibs2.api.template.Template
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate
 import com.pokeskies.skiesguis.config.GuiConfig
@@ -13,7 +14,6 @@ import java.util.*
 
 class ChestGUI(
     private val player: ServerPlayerEntity,
-    private val guiId: String,
     private val config: GuiConfig
 ) : UpdateEmitter<Page?>(), Page {
     private val template: ChestTemplate =
@@ -62,6 +62,10 @@ class ChestGUI(
                 }
             }
         }
+    }
+
+    override fun onClose(action: PageAction) {
+        config.executeCloseActions(player)
     }
 
     override fun getTemplate(): Template {

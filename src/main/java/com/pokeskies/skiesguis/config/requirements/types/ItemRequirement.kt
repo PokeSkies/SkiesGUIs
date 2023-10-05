@@ -1,19 +1,13 @@
 package com.pokeskies.skiesguis.config.requirements.types
 
-import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.utils.recordCodec
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.registry.Registries
 import net.minecraft.server.network.ServerPlayerEntity
-import java.util.*
-import kotlin.jvm.optionals.getOrDefault
 
 class ItemRequirement(
     type: RequirementType = RequirementType.ITEM,

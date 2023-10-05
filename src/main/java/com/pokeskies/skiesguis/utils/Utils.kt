@@ -22,7 +22,7 @@ object Utils {
 
     fun debug(message: String, bypassCheck: Boolean = false) {
         if (bypassCheck || SkiesGUIs.INSTANCE.configManager.config.debug)
-            SkiesGUIs.LOGGER.debug("[SkiesGUIs] DEBUG: $message")
+            SkiesGUIs.LOGGER.info("[SkiesGUIs] DEBUG: $message")
     }
 
     fun error(message: String) {

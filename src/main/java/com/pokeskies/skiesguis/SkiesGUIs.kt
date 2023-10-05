@@ -2,7 +2,8 @@ package com.pokeskies.skiesguis
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.pokeskies.skiesguis.commands.GUICommand
+import com.pokeskies.skiesguis.commands.BaseCommands
+import com.pokeskies.skiesguis.commands.GUICommands
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
@@ -65,7 +66,10 @@ class SkiesGUIs : ModInitializer {
             this.adventure = null
         })
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->
-            GUICommand.register(
+            BaseCommands.register(
+                dispatcher
+            )
+            GUICommands.register(
                 dispatcher
             )
         }
