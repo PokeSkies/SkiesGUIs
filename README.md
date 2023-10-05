@@ -36,7 +36,6 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 ## Planned Features
 - Better/more debugging and error handling
-- Economy Integrations (impactor)
 - More Placeholders (support Placeholders mod?)
 - More Action Types
     - Refresh

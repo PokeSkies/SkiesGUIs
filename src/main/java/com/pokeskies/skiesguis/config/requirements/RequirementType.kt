@@ -1,13 +1,15 @@
 package com.pokeskies.skiesguis.config.requirements
 
 import com.google.gson.*
+import com.pokeskies.skiesguis.config.requirements.types.CurrencyRequirement
 import com.pokeskies.skiesguis.config.requirements.types.ItemRequirement
 import com.pokeskies.skiesguis.config.requirements.types.PermissionRequirement
 import java.lang.reflect.Type
 
 enum class RequirementType(val identifier: String, val clazz: Class<*>) {
     PERMISSION("permission", PermissionRequirement::class.java),
-    ITEM("item", ItemRequirement::class.java);
+    ITEM("item", ItemRequirement::class.java),
+    CURRENCY("currency", CurrencyRequirement::class.java);
 
     companion object {
         fun valueOfAnyCase(name: String): RequirementType? {

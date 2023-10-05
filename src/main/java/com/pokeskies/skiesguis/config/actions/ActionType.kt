@@ -14,7 +14,10 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
     PLAYSOUND("playsound", PlaySoundCommand::class.java),
     OPEN_GUI("open_gui", OpenGUI::class.java),
     CLOSE_GUI("close_gui", CloseGUI::class.java),
-    GIVE_XP("give_xp", GiveXP::class.java);
+    GIVE_XP("give_xp", GiveXP::class.java),
+    CURRENCY_DEPOSIT("currency_deposit", CurrencyDeposit::class.java),
+    CURRENCY_WITHDRAW("currency_withdraw", CurrencyWithdraw::class.java),
+    CURRENCY_SET("currency_set", CurrencySet::class.java);
 
     companion object {
         fun valueOfAnyCase(name: String): ActionType? {

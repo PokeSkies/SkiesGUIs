@@ -29,6 +29,10 @@ object Utils {
         SkiesGUIs.LOGGER.error("[SkiesGUIs] ERROR: $message")
     }
 
+    fun info(message: String) {
+        SkiesGUIs.LOGGER.error("[SkiesGUIs] $message")
+    }
+
     // Thank you to Patbox for these wonderful serializers =)
     data class RegistrySerializer<T>(val registry: Registry<T>) : JsonSerializer<T>, JsonDeserializer<T> {
         @Throws(JsonParseException::class)

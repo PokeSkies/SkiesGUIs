@@ -91,7 +91,7 @@ class BaseCommands {
                     return 1
                 }
 
-                val jsonOutput = SkiesGUIs.INSTANCE.gson.toJson(result.get())
+                val jsonOutput = SkiesGUIs.INSTANCE.configManager.gson.toJson(result.get())
 
                 val builder: TextComponent.Builder = Component.text()
                 jsonOutput.split("\n").forEach { builder.append(Component.text(it)).appendNewline() }

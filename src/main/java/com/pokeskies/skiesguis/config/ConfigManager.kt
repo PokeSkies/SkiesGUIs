@@ -2,18 +2,41 @@ package com.pokeskies.skiesguis.config
 
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
 import com.pokeskies.skiesguis.SkiesGUIs
+import com.pokeskies.skiesguis.config.actions.Action
+import com.pokeskies.skiesguis.config.actions.ActionType
+import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.requirements.ComparisonType
+import com.pokeskies.skiesguis.config.requirements.Requirement
+import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.economy.EconomyType
 import com.pokeskies.skiesguis.utils.Utils
+import net.minecraft.item.Item
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.registry.Registries
+import net.minecraft.sound.SoundEvent
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
 
-class ConfigManager(val configDir: File) {
+class ConfigManager(private val configDir: File) {
     lateinit var config: MainConfig
+    var gson: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping()
+        .registerTypeAdapter(Action::class.java, ActionType.ActionTypeAdaptor())
+        .registerTypeAdapter(Requirement::class.java, RequirementType.RequirementTypeAdaptor())
+        .registerTypeAdapter(ClickType::class.java, ClickType.ClickTypeAdaptor())
+        .registerTypeAdapter(ComparisonType::class.java, ComparisonType.ComparisonTypeAdaptor())
+        .registerTypeAdapter(EconomyType::class.java, EconomyType.EconomyTypeAdaptor())
+        .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(Registries.ITEM))
+        .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(Registries.SOUND_EVENT))
+        .registerTypeHierarchyAdapter(NbtCompound::class.java, Utils.CodecSerializer(NbtCompound.CODEC))
+        .create()
 
     companion object {
         var GUIS: BiMap<String, GuiConfig> = HashBiMap.create()
@@ -73,8 +96,8 @@ class ConfigManager(val configDir: File) {
                         val id = fileName.substring(0, fileName.lastIndexOf(".json"))
                         val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
                         try {
-                            GUIS[id] = SkiesGUIs.INSTANCE.gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
-                            Utils.debug("Successfully read and loaded the file $fileName!", true)
+                            GUIS[id] = gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
+                            Utils.info("Successfully read and loaded the file $fileName!")
                         } catch (ex: Exception) {
                             Utils.error("Error while trying to parse the file $fileName as a GUI!")
                             ex.printStackTrace()
@@ -97,7 +120,7 @@ class ConfigManager(val configDir: File) {
             try {
                 FileReader(file).use { reader ->
                     val jsonReader = JsonReader(reader)
-                    value = SkiesGUIs.INSTANCE.gson.fromJson(jsonReader, classObject)
+                    value = gson.fromJson(jsonReader, classObject)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -112,7 +135,7 @@ class ConfigManager(val configDir: File) {
         val file = File(configDir, filename)
         try {
             FileWriter(file).use { fileWriter ->
-                fileWriter.write(SkiesGUIs.INSTANCE.gson.toJson(`object`))
+                fileWriter.write(gson.toJson(`object`))
                 fileWriter.flush()
             }
         } catch (e: Exception) {
