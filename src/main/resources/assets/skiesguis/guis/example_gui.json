@@ -20,7 +20,7 @@
       "slots": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
       "name": ""
     },
-    "item_1": {
+    "item_diamond_sword": {
       "item": "minecraft:diamond_sword",
       "slots": [10],
       "amount": 1,
@@ -48,7 +48,7 @@
         }
       }
     },
-    "pokemon_1": {
+    "pokemon_pikachu": {
       "item": "cobblemon:pokemon_model",
       "slots": [11],
       "amount": 1,
@@ -83,7 +83,7 @@
         }
       }
     },
-    "pokemon_2_a": {
+    "pokemon_random_a": {
       "item": "cobblemon:poke_ball",
       "slots": [12],
       "name": "<blue><b>Random Pokemon",
@@ -103,7 +103,7 @@
         }
       }
     },
-    "pokemon_2_b": {
+    "pokemon_random_b": {
       "item": "cobblemon:master_ball",
       "slots": [12],
       "name": "<gold><b>Random Shiny Pokemon",
