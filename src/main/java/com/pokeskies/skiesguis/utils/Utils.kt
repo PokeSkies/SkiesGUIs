@@ -37,7 +37,10 @@ object Utils {
     data class RegistrySerializer<T>(val registry: Registry<T>) : JsonSerializer<T>, JsonDeserializer<T> {
         @Throws(JsonParseException::class)
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): T? {
-            return if (json.isJsonPrimitive) registry.get(Identifier.tryParse(json.asString)) else null
+            var parsed = if (json.isJsonPrimitive) registry.get(Identifier.tryParse(json.asString)) else null
+            if (parsed == null)
+                error("There was an error while deserializing a Registry Type: $registry")
+            return parsed
         }
         override fun serialize(src: T, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
             return JsonPrimitive(registry.getId(src).toString())
@@ -50,6 +53,7 @@ object Utils {
             return try {
                 codec.decode(JsonOps.INSTANCE, json).getOrThrow(false) { }.first
             } catch (e: Throwable) {
+                error("There was an error while deserializing a Codec: $codec")
                 null
             }
         }
@@ -61,6 +65,7 @@ object Utils {
                 else
                     JsonNull.INSTANCE
             } catch (e: Throwable) {
+                error("There was an error while serializing a Codec: $codec")
                 JsonNull.INSTANCE
             }
         }

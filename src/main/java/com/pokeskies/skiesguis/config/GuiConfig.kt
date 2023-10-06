@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 
 class GuiConfig(
@@ -69,6 +70,6 @@ class GuiConfig(
     }
 
     override fun toString(): String {
-        return "GuiConfig(title='$title', size=$size, aliasCommands=$aliasCommands, openRequirements=$openRequirements, openActions=$openActions, items=$items)"
+        return "GuiConfig(title='$title', size=$size, alias_commands=$aliasCommands, open_requirements=$openRequirements, open_actions=$openActions, close_actions=$closeActions, items=$items)"
     }
 }
