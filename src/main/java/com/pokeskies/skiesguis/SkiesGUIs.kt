@@ -36,7 +36,7 @@ class SkiesGUIs : ModInitializer {
         this.configDir = File(FabricLoader.getInstance().configDirectory, "skiesguis")
         this.configManager = ConfigManager(configDir)
 
-        this.economyService = IEconomyService.getEconomyService(configManager.config.currency)
+        this.economyService = IEconomyService.getEconomyService(configManager.config.economy)
 
         ServerLifecycleEvents.SERVER_STARTING.register(ServerStarting { server: MinecraftServer? ->
             this.adventure = FabricServerAudiences.of(

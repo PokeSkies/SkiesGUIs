@@ -1,6 +1,19 @@
 {
   "title": "<dark_gray>Example GUI",
   "size": 3,
+  "alias_commands": ["example"],
+  "open_actions": {
+    "playsound": {
+      "type": "PLAYSOUND",
+      "sound": "cobblemon:pc.on"
+    }
+  },
+  "close_actions": {
+    "playsound": {
+      "type": "PLAYSOUND",
+      "sound": "cobblemon:pc.off"
+    }
+  },
   "items": {
     "background": {
       "item": "minecraft:blue_stained_glass_pane",
@@ -22,15 +35,15 @@
         ],
         "HideFlags": 1
       },
-      "actions": {
+      "click_actions": {
         "action_1": {
           "type": "COMMAND_CONSOLE",
-          "click": "ALL",
+          "click": "ANY",
           "commands": ["give %player% diamond_sword 1"]
         },
         "action_2": {
           "type": "MESSAGE",
-          "click": "ALL",
+          "click": "ANY",
           "message": ["<blue>You have received the Example Sword!"]
         }
       }
@@ -47,7 +60,7 @@
       "nbt": {
         "species": "cobblemon:pikachu"
       },
-      "actions": {
+      "click_actions": {
         "normal_action": {
           "type": "COMMAND_CONSOLE",
           "click": "LEFT_CLICK",
@@ -67,6 +80,54 @@
           "type": "MESSAGE",
           "click": "RIGHT_CLICK",
           "message": ["<gold>You have received a shiny Pikachu!"]
+        }
+      }
+    },
+    "pokemon_2_a": {
+      "item": "cobblemon:poke_ball",
+      "slots": [12],
+      "name": "<blue><b>Random Pokemon",
+      "lore": ["<gray><italic>Click for a random Pokemon"],
+      "priority": 2,
+      "nbt": {
+        "HideTooltip": true
+      },
+      "click_actions": {
+        "pokemon": {
+          "type": "COMMAND_CONSOLE",
+          "commands": ["pokegiveother %player% random"]
+        },
+        "message": {
+          "type": "MESSAGE",
+          "message": ["<blue>You have received a random Pokemon!"]
+        }
+      }
+    },
+    "pokemon_2_b": {
+      "item": "cobblemon:master_ball",
+      "slots": [12],
+      "name": "<gold><b>Random Shiny Pokemon",
+      "lore": ["<gray><italic>Click for a random Shiny Pokemon"],
+      "priority": 1,
+      "nbt": {
+        "HideTooltip": true
+      },
+      "view_requirements": {
+        "requirements": {
+          "permission_1": {
+            "type": "PERMISSION",
+            "permission": "test.permission"
+          }
+        }
+      },
+      "click_actions": {
+        "pokemon": {
+          "type": "COMMAND_CONSOLE",
+          "commands": ["pokegiveother %player% random shiny"]
+        },
+        "message": {
+          "type": "MESSAGE",
+          "message": ["<gold>You have received a random Shiny Pokemon!"]
         }
       }
     }
