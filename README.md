@@ -14,8 +14,12 @@ More information on configuration can be found on the [Wiki](https://github.com/
 - Item view requirements/conditionals *(with success/deny actions)*
 - Item click actions
 - Item click requirements/conditionals *(with success/deny actions)*
-- 8 action types *(for now)*
-- 2 requirement types *(for now)*
+- GUI open and close actions
+- GUI open requirements/conditionals *(with success/deny actions)*
+- 11 action types *(for now)*
+- 3 requirement types *(for now)*
+- Create alias commands to access GUIs
+- Economy Integrations (Impactor)
 
 ## Installation
 1. Download the latest version of the mod from the Releases tab.
@@ -23,8 +27,10 @@ More information on configuration can be found on the [Wiki](https://github.com/
    - [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) 
    - [Fabric Permissions API](https://github.com/PokeSkies/fabric-permissions-api)
    - [GooeyLibs](https://github.com/NickImpact/GooeyLibs/tree/1.20.1)
-2. Install the mod and requirements into your server's `mods` folder.
-3. Configure your GUIs in the `./config/skiesguis/guis/` folder.
+3. Download any optional dependencies:
+   - [Impactor](https://modrinth.com/mod/impactor) **_(OPTIONAL)_**
+4. Install the mod and dependencies into your server's `mods` folder.
+5. Configure your GUIs in the `./config/skiesguis/guis/` folder.
 
 ## Commands/Permissions
 | Command                     | Description                                                   | Permission                 |
@@ -33,6 +39,11 @@ More information on configuration can be found on the [Wiki](https://github.com/
 | /gui open <gui_id> [player] | Open a GUI specified by its ID, optionally for another player | skiesguis.command.open     |
 | /gui printnbt               | Print the NBT data of the item in your hand, if present       | skiesguis.command.printnbt |
 | /gui debug                  | Toggle the debug mode for more insight into errors            | skiesguis.command.deug     |
+
+| Permission              | Description                                          |
+|-------------------------|------------------------------------------------------|
+| skiesguis.open.<gui_id> | Permission to open a GUI when using an Alias Command |
+
 
 ## Planned Features
 - Better/more debugging and error handling
@@ -46,9 +57,7 @@ More information on configuration can be found on the [Wiki](https://github.com/
     - JavaScript
     - Location?
     - **Please submit suggestions!**
-- Open/Close Actions
 - Requirements Updates
-    - Open GUI Requirements
     - Minimum Requirements with Optionals?
 - More Inventory Types
     - CHEST
@@ -57,6 +66,5 @@ More information on configuration can be found on the [Wiki](https://github.com/
     - etc.
 - Inventory Update Ticking (optionally update GUI at an interval)
 - Animations?? (oh god)
-- Custom Commands?? (open up a GUI quickly via a command with custom permissions)
 
 **If you have any suggestions, feel free to message me on Discord (@stampede2011)**
