@@ -63,7 +63,7 @@ class GuiConfig(
     }
 
     fun executeCloseActions(player: ServerPlayerEntity) {
-        for (actionEntry in openActions) {
+        for (actionEntry in closeActions) {
             actionEntry.value.execute(player)
         }
     }
