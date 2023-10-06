@@ -11,10 +11,10 @@ import net.minecraft.server.network.ServerPlayerEntity
 class CurrencyDeposit(
     type: ActionType = ActionType.CURRENCY_DEPOSIT,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
+    requirements: RequirementOptions? = null,
     private val currency: String = "",
     private val amount: Double = 0.0
-) : Action(type, click, clickRequirements) {
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
 
@@ -28,6 +28,6 @@ class CurrencyDeposit(
     }
 
     override fun toString(): String {
-        return "CurrencyDeposit(type=$type, click=$click, clickRequirements=$clickRequirements, currency=$currency, amount=$amount)"
+        return "CurrencyDeposit(type=$type, click=$click, requirements=$requirements, currency=$currency, amount=$amount)"
     }
 }

@@ -11,14 +11,14 @@ import net.minecraft.server.network.ServerPlayerEntity
 class CloseGUI(
     type: ActionType = ActionType.CLOSE_GUI,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
-) : Action(type, click, clickRequirements) {
+    requirements: RequirementOptions? = null,
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         UIManager.closeUI(player)
     }
 
     override fun toString(): String {
-        return "CloseGUI(type=$type, click=$click, clickRequirements=$clickRequirements)"
+        return "CloseGUI(type=$type, click=$click, requirements=$requirements)"
     }
 }

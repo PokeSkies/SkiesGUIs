@@ -11,9 +11,9 @@ import net.minecraft.server.network.ServerPlayerEntity
 class CommandConsole(
     type: ActionType = ActionType.COMMAND_CONSOLE,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
+    requirements: RequirementOptions? = null,
     private val commands: List<String> = emptyList()
-) : Action(type, click, clickRequirements) {
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         if (SkiesGUIs.INSTANCE.server?.commandManager == null) {
@@ -30,6 +30,6 @@ class CommandConsole(
     }
 
     override fun toString(): String {
-        return "CommandConsole(type=$type, click=$click, clickRequirements=$clickRequirements, commands=$commands)"
+        return "CommandConsole(type=$type, click=$click, requirements=$requirements, commands=$commands)"
     }
 }

@@ -41,7 +41,7 @@ class ChestGUI(
                     guiItem.executeSuccessActions(player)
                     template.set(slot, guiItem.createButton()
                         .onClick { ctx ->
-                            for (actionEntry in guiItem.actions) {
+                            for (actionEntry in guiItem.clickActions) {
                                 val action = actionEntry.value
                                 if (action.matchesClick(ctx.clickType)) {
                                     if (action.checkClickRequirements(player)) {

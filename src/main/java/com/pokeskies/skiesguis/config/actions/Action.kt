@@ -8,8 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 abstract class Action(
     val type: ActionType,
     val click: ClickType = ClickType.ANY,
-    @SerializedName("click_requirements")
-    val clickRequirements: RequirementOptions? = null
+    val requirements: RequirementOptions? = null
 ) {
     abstract fun execute(player: ServerPlayerEntity)
 
@@ -18,8 +17,8 @@ abstract class Action(
     }
 
     fun checkClickRequirements(player: ServerPlayerEntity): Boolean {
-        if (clickRequirements != null) {
-            for (requirement in clickRequirements.requirements) {
+        if (requirements != null) {
+            for (requirement in requirements.requirements) {
                 if (!requirement.value.check(player)) {
                     return false
                 }
@@ -29,16 +28,16 @@ abstract class Action(
     }
 
     fun executeDenyActions(player: ServerPlayerEntity) {
-        if (clickRequirements != null) {
-            for ((id, action) in clickRequirements.denyActions) {
+        if (requirements != null) {
+            for ((id, action) in requirements.denyActions) {
                 action.execute(player)
             }
         }
     }
 
     fun executeSuccessActions(player: ServerPlayerEntity) {
-        if (clickRequirements != null) {
-            for ((id, action) in clickRequirements.successActions) {
+        if (requirements != null) {
+            for ((id, action) in requirements.successActions) {
                 action.execute(player)
             }
         }
@@ -49,6 +48,6 @@ abstract class Action(
     }
 
     override fun toString(): String {
-        return "Action(click=$click, clickRequirements=$clickRequirements)"
+        return "Action(type=$type, click=$click, requirements=$requirements)"
     }
 }

@@ -10,9 +10,9 @@ import net.minecraft.server.network.ServerPlayerEntity
 class MessagePlayer(
     type: ActionType = ActionType.MESSAGE,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
+    requirements: RequirementOptions? = null,
     private val message: List<String> = emptyList()
-) : Action(type, click, clickRequirements) {
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         for (line in message) {
@@ -21,6 +21,6 @@ class MessagePlayer(
     }
 
     override fun toString(): String {
-        return "MessagePlayer(type=$type, click=$click, clickRequirements=$clickRequirements, message=$message)"
+        return "MessagePlayer(type=$type, click=$click, requirements=$requirements, message=$message)"
     }
 }

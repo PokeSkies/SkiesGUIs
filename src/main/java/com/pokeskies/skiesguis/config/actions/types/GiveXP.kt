@@ -10,10 +10,10 @@ import net.minecraft.server.network.ServerPlayerEntity
 class GiveXP(
     type: ActionType = ActionType.GIVE_XP,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
+    requirements: RequirementOptions? = null,
     private val amount: Int,
     private val level: Boolean = false
-) : Action(type, click, clickRequirements) {
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         if (level) {
@@ -24,6 +24,6 @@ class GiveXP(
     }
 
     override fun toString(): String {
-        return "GiveXP(type=$type, click=$click, clickRequirements=$clickRequirements, amount=$amount, level=$level)"
+        return "GiveXP(type=$type, click=$click, requirements=$requirements, amount=$amount, level=$level)"
     }
 }

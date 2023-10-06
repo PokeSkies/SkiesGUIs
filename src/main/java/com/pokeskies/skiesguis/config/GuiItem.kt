@@ -22,7 +22,8 @@ class GuiItem(
     val priority: Int = 0,
     @SerializedName("view_requirements")
     val viewRequirements: RequirementOptions? = null,
-    val actions: Map<String, Action> = emptyMap()
+    @SerializedName("click_actions")
+    val clickActions: Map<String, Action> = emptyMap()
 ) {
     fun createButton(): GooeyButton.Builder {
         val stack = ItemStack(item, amount)
@@ -70,6 +71,6 @@ class GuiItem(
     }
 
     override fun toString(): String {
-        return "GuiItem(item=$item, slots=$slots, amount=$amount, name=$name, lore=$lore, nbt=$nbt, priority=$priority, viewRequirements=$viewRequirements, actions=$actions)"
+        return "GuiItem(item=$item, slots=$slots, amount=$amount, name=$name, lore=$lore, nbt=$nbt, priority=$priority, view_requirements=$viewRequirements, click_actions=$clickActions)"
     }
 }

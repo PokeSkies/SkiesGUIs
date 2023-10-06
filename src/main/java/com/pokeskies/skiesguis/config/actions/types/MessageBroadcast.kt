@@ -11,9 +11,9 @@ import net.minecraft.server.network.ServerPlayerEntity
 class MessageBroadcast(
     type: ActionType = ActionType.BROADCAST,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
+    requirements: RequirementOptions? = null,
     private val message: List<String> = emptyList()
-) : Action(type, click, clickRequirements) {
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         if (SkiesGUIs.INSTANCE.adventure == null) {
@@ -27,6 +27,6 @@ class MessageBroadcast(
     }
 
     override fun toString(): String {
-        return "MessageBroadcast(type=$type, click=$click, clickRequirements=$clickRequirements, message=$message)"
+        return "MessageBroadcast(type=$type, click=$click, requirements=$requirements, message=$message)"
     }
 }

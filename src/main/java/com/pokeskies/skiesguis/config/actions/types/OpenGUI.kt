@@ -11,9 +11,9 @@ import net.minecraft.server.network.ServerPlayerEntity
 class OpenGUI(
     type: ActionType = ActionType.OPEN_GUI,
     click: ClickType = ClickType.ANY,
-    clickRequirements: RequirementOptions? = null,
+    requirements: RequirementOptions? = null,
     private val id: String
-) : Action(type, click, clickRequirements) {
+) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         val gui = ConfigManager.GUIS[id]
@@ -26,6 +26,6 @@ class OpenGUI(
     }
 
     override fun toString(): String {
-        return "OpenGUI(type=$type, click=$click, clickRequirements=$clickRequirements, id='$id')"
+        return "OpenGUI(type=$type, click=$click, requirements=$requirements, id='$id')"
     }
 }
