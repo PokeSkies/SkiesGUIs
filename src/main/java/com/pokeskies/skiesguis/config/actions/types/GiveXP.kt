@@ -11,7 +11,7 @@ class GiveXP(
     type: ActionType = ActionType.GIVE_XP,
     click: ClickType = ClickType.ANY,
     requirements: RequirementOptions? = null,
-    private val amount: Int,
+    private val amount: Int = 0,
     private val level: Boolean = false
 ) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {

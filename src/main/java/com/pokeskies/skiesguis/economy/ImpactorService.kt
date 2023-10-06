@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.economy
 
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.Utils
 import net.impactdev.impactor.api.economy.EconomyService
 import net.impactdev.impactor.api.economy.accounts.Account

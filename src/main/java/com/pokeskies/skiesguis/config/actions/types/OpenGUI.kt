@@ -12,7 +12,7 @@ class OpenGUI(
     type: ActionType = ActionType.OPEN_GUI,
     click: ClickType = ClickType.ANY,
     requirements: RequirementOptions? = null,
-    private val id: String
+    private val id: String = ""
 ) : Action(type, click, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")

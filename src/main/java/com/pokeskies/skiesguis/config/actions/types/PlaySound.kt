@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.config.actions.types
 
-import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
@@ -9,7 +8,6 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
-import net.minecraft.sound.SoundEvents
 
 class PlaySound(
     type: ActionType = ActionType.PLAYSOUND,

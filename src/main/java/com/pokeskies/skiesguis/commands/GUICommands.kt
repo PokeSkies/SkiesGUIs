@@ -1,8 +1,6 @@
 package com.pokeskies.skiesguis.commands
 
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.context.CommandContext
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions

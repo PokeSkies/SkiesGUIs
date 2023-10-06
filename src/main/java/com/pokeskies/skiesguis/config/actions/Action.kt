@@ -1,7 +1,6 @@
 package com.pokeskies.skiesguis.config.actions
 
 import ca.landonjw.gooeylibs2.api.button.ButtonClick
-import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import net.minecraft.server.network.ServerPlayerEntity
 
