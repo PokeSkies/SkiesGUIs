@@ -2,7 +2,6 @@ package com.pokeskies.skiesguis.config.actions
 
 import com.google.gson.*
 import com.pokeskies.skiesguis.config.actions.types.*
-import net.minecraft.server.command.PlaySoundCommand
 import java.lang.reflect.Type
 
 
@@ -11,7 +10,7 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
     COMMAND_PLAYER("command_player", CommandPlayer::class.java),
     MESSAGE("message", MessagePlayer::class.java),
     BROADCAST("broadcast", MessageBroadcast::class.java),
-    PLAYSOUND("playsound", PlaySoundCommand::class.java),
+    PLAYSOUND("playsound", PlaySound::class.java),
     OPEN_GUI("open_gui", OpenGUI::class.java),
     CLOSE_GUI("close_gui", CloseGUI::class.java),
     GIVE_XP("give_xp", GiveXP::class.java),
