@@ -11,9 +11,11 @@ import net.minecraft.server.network.ServerPlayerEntity
 class OpenGUI(
     type: ActionType = ActionType.OPEN_GUI,
     click: ClickType = ClickType.ANY,
-    requirements: RequirementOptions? = null,
+    delay: Long = 0,
+    chance: Double = 0.0,
+    requirements: RequirementOptions? = RequirementOptions(),
     private val id: String = ""
-) : Action(type, click, requirements) {
+) : Action(type, click, delay, chance, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         val gui = ConfigManager.GUIS[id]

@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("org.jetbrains.kotlin.jvm").version("1.8.10")
+    id("org.jetbrains.kotlin.jvm").version("1.8.22")
     id("quiet-fabric-loom") version "1.2-SNAPSHOT"
 }
 

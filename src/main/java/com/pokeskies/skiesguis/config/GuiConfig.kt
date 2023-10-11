@@ -43,7 +43,7 @@ class GuiConfig(
     private fun executeDenyActions(player: ServerPlayerEntity) {
         if (openRequirements != null) {
             for ((id, action) in openRequirements.denyActions) {
-                action.execute(player)
+                action.attemptExecution(player)
             }
         }
     }
@@ -51,20 +51,20 @@ class GuiConfig(
     private fun executeSuccessActions(player: ServerPlayerEntity) {
         if (openRequirements != null) {
             for ((id, action) in openRequirements.successActions) {
-                action.execute(player)
+                action.attemptExecution(player)
             }
         }
     }
 
     private fun executeOpenActions(player: ServerPlayerEntity) {
         for (actionEntry in openActions) {
-            actionEntry.value.execute(player)
+            actionEntry.value.attemptExecution(player)
         }
     }
 
     fun executeCloseActions(player: ServerPlayerEntity) {
         for (actionEntry in closeActions) {
-            actionEntry.value.execute(player)
+            actionEntry.value.attemptExecution(player)
         }
     }
 

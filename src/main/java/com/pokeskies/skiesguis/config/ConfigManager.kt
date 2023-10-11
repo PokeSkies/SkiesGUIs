@@ -131,7 +131,7 @@ class ConfigManager(private val configDir: File) {
         return value
     }
 
-    fun <T> saveFile(filename: String?, `object`: T) {
+    fun <T> saveFile(filename: String, `object`: T) {
         val file = File(configDir, filename)
         try {
             FileWriter(file).use { fileWriter ->

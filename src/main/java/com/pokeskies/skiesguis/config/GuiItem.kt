@@ -57,7 +57,7 @@ class GuiItem(
     fun executeDenyActions(player: ServerPlayerEntity) {
         if (viewRequirements != null) {
             for ((id, action) in viewRequirements.denyActions) {
-                action.execute(player)
+                action.attemptExecution(player)
             }
         }
     }
@@ -65,7 +65,7 @@ class GuiItem(
     fun executeSuccessActions(player: ServerPlayerEntity) {
         if (viewRequirements != null) {
             for ((id, action) in viewRequirements.successActions) {
-                action.execute(player)
+                action.attemptExecution(player)
             }
         }
     }

@@ -12,11 +12,13 @@ import net.minecraft.sound.SoundEvent
 class PlaySound(
     type: ActionType = ActionType.PLAYSOUND,
     click: ClickType = ClickType.ANY,
-    requirements: RequirementOptions? = null,
+    delay: Long = 0,
+    chance: Double = 0.0,
+    requirements: RequirementOptions? = RequirementOptions(),
     private val sound: SoundEvent? = null,
     private val volume: Float = 1.0F,
     private val pitch: Float = 1.0F
-) : Action(type, click, requirements) {
+) : Action(type, click, delay, chance, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         if (sound == null) {

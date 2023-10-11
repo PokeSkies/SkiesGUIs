@@ -11,10 +11,12 @@ import net.minecraft.server.network.ServerPlayerEntity
 class CurrencyWithdraw(
     type: ActionType = ActionType.CURRENCY_WITHDRAW,
     click: ClickType = ClickType.ANY,
-    requirements: RequirementOptions? = null,
+    delay: Long = 0,
+    chance: Double = 0.0,
+    requirements: RequirementOptions? = RequirementOptions(),
     private val currency: String = "",
     private val amount: Double = 0.0
-) : Action(type, click, requirements) {
+) : Action(type, click, delay, chance, requirements) {
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
 

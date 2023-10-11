@@ -46,7 +46,7 @@ class ChestGUI(
                                 if (action.matchesClick(ctx.clickType)) {
                                     if (action.checkClickRequirements(player)) {
                                         action.executeSuccessActions(player)
-                                        action.execute(player)
+                                        action.attemptExecution(player)
                                     } else {
                                         action.executeDenyActions(player)
                                     }
