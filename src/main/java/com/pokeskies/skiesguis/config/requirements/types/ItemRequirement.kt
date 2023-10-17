@@ -15,6 +15,7 @@ class ItemRequirement(
     val item: Item = Items.BARRIER,
     val amount: Int? = null,
     val nbt: NbtCompound? = null,
+    val strict: Boolean = true
 ) : Requirement(type, comparison) {
     override fun check(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
@@ -58,7 +59,7 @@ class ItemRequirement(
             return false
         }
 
-        if (nbt != null) {
+        if (strict && nbt != null) {
             val checkNBT = checkItem.nbt ?: return false
 
             if (checkNBT != nbt)
@@ -73,6 +74,7 @@ class ItemRequirement(
     }
 
     override fun toString(): String {
-        return "ItemRequirement(item=$item, amount=$amount, nbt=$nbt)"
+        return "ItemRequirement(item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
     }
+
 }
