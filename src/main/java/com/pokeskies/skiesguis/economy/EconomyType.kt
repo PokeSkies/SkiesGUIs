@@ -8,7 +8,8 @@ import java.lang.reflect.Type
 enum class EconomyType(
     val modId: String
 ) {
-    IMPACTOR("impactor");
+    IMPACTOR("impactor"),
+    PEBBLES("pebbles-economy");
 
     fun isPresent() : Boolean {
         return FabricLoader.getInstance().isModLoaded(modId)

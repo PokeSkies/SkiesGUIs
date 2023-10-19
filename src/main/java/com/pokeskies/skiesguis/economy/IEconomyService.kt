@@ -1,5 +1,6 @@
 package com.pokeskies.skiesguis.economy
 
+import com.pokeskies.skiesguis.economy.services.ImpactorService
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 
