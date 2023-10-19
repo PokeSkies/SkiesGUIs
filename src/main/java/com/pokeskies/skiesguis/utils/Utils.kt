@@ -30,7 +30,7 @@ object Utils {
     }
 
     fun info(message: String) {
-        SkiesGUIs.LOGGER.error("[SkiesGUIs] $message")
+        SkiesGUIs.LOGGER.info("[SkiesGUIs] $message")
     }
 
     // Thank you to Patbox for these wonderful serializers =)
