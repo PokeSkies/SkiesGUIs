@@ -1,0 +1,39 @@
+package com.pokeskies.skiesguis.config.actions.types
+
+import com.pokeskies.skiesguis.config.actions.Action
+import com.pokeskies.skiesguis.config.actions.ActionType
+import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.requirements.ComparisonType
+import com.pokeskies.skiesguis.config.requirements.RequirementOptions
+import com.pokeskies.skiesguis.utils.Utils
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.server.network.ServerPlayerEntity
+
+class GiveItem(
+    type: ActionType = ActionType.GIVE_XP,
+    click: ClickType = ClickType.ANY,
+    delay: Long = 0,
+    chance: Double = 0.0,
+    requirements: RequirementOptions? = RequirementOptions(),
+    val item: Item = Items.BARRIER,
+    val amount: Int = 1,
+    val nbt: NbtCompound? = null
+) : Action(type, click, delay, chance, requirements) {
+    override fun execute(player: ServerPlayerEntity) {
+        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+        val itemStack = ItemStack(item, amount)
+        if (nbt != null) {
+            itemStack.nbt = nbt
+        }
+
+        player.giveItemStack(itemStack)
+    }
+
+    override fun toString(): String {
+        return "GiveItem(item=$item, amount=$amount, nbt=$nbt)"
+    }
+
+}
