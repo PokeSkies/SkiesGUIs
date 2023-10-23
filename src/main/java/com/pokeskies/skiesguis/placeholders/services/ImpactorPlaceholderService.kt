@@ -3,6 +3,7 @@ package com.pokeskies.skiesguis.placeholders.services
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.placeholders.IPlaceholderService
 import com.pokeskies.skiesguis.utils.Utils
+import net.impactdev.impactor.api.platform.players.PlatformPlayer
 import net.impactdev.impactor.api.platform.sources.PlatformSource
 import net.impactdev.impactor.api.utility.Context
 import net.impactdev.impactor.core.text.processors.MiniMessageProcessor
@@ -28,8 +29,9 @@ class ImpactorPlaceholderService : IPlaceholderService {
     }
 
     override fun parsePlaceholders(player: ServerPlayerEntity, text: String): String {
+        val platformPlayer = PlatformPlayer.getOrCreate(player.uuid)
         return SkiesGUIs.INSTANCE.adventure!!.toNative(
-            processor.parse(PlatformSource.server(), text, Context().append(ServerPlayerEntity::class.java, player))
+            processor.parse(platformPlayer, text, Context().append(PlatformSource::class.java, platformPlayer))
         ).string
     }
 }
