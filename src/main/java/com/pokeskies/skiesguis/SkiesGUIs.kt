@@ -15,6 +15,7 @@ import net.kyori.adventure.platform.fabric.FabricServerAudiences
 import net.minecraft.server.MinecraftServer
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.graalvm.polyglot.Engine
 import java.io.File
 
 class SkiesGUIs : ModInitializer {
@@ -32,6 +33,8 @@ class SkiesGUIs : ModInitializer {
     var adventure: FabricServerAudiences? = null
     var server: MinecraftServer? = null
 
+    lateinit var graalEngine: Engine
+
     override fun onInitialize() {
         INSTANCE = this
 
@@ -40,6 +43,10 @@ class SkiesGUIs : ModInitializer {
 
         this.economyService = IEconomyService.getEconomyService(configManager.config.economy)
         this.placeholderManager = PlaceholderManager()
+
+        this.graalEngine = Engine.newBuilder()
+            .option("engine.WarnInterpreterOnly", "false")
+            .build()
 
         ServerLifecycleEvents.SERVER_STARTING.register(ServerStarting { server: MinecraftServer? ->
             this.adventure = FabricServerAudiences.of(
