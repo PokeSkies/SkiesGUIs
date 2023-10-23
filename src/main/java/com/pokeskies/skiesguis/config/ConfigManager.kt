@@ -64,7 +64,7 @@ class ConfigManager(private val configDir: File) {
                 val inputStream: InputStream = classLoader.getResourceAsStream("assets/skiesguis/config.json")
                 Files.copy(inputStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } catch (e: Exception) {
-                Utils.error("Failed to copy the default config file: $e - ${e.message}")
+                Utils.printError("Failed to copy the default config file: $e - ${e.message}")
             }
         }
 
@@ -78,7 +78,7 @@ class ConfigManager(private val configDir: File) {
                     Path.of(classLoader.getResource("assets/skiesguis/guis/example_gui.json").toURI())
                 Files.copy(resourceFile, file.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } catch (e: Exception) {
-                Utils.error("Failed to copy the default GUI file: " + e.message)
+                Utils.printError("Failed to copy the default GUI file: " + e.message)
             }
         }
     }
@@ -97,18 +97,18 @@ class ConfigManager(private val configDir: File) {
                         val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
                         try {
                             GUIS[id] = gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
-                            Utils.info("Successfully read and loaded the file $fileName!")
+                            Utils.printInfo("Successfully read and loaded the file $fileName!")
                         } catch (ex: Exception) {
-                            Utils.error("Error while trying to parse the file $fileName as a GUI!")
+                            Utils.printError("Error while trying to parse the file $fileName as a GUI!")
                             ex.printStackTrace()
                         }
                     } else {
-                        Utils.error("File $fileName is either not a file or is not a .json file!")
+                        Utils.printError("File $fileName is either not a file or is not a .json file!")
                     }
                 }
             }
         } else {
-            Utils.error("The GUIs directory either does not exist or is not a directory!")
+            Utils.printError("The GUIs directory either does not exist or is not a directory!")
         }
     }
 

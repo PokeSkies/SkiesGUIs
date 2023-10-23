@@ -13,13 +13,13 @@ class CurrencyRequirement(
     private val currency: String = "",
     private val amount: Double = 0.0
 ) : Requirement(type, comparison) {
-    override fun check(player: ServerPlayerEntity): Boolean {
+    override fun checkRequirements(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
             return false
 
         val service = SkiesGUIs.INSTANCE.economyService
         if (service == null) {
-            Utils.error("Currency Requirement was checked but no valid Economy Service could be found.")
+            Utils.printError("Currency Requirement was checked but no valid Economy Service could be found.")
             return false
         }
 
@@ -35,7 +35,7 @@ class CurrencyRequirement(
         }
     }
 
-    override fun getAllowedComparisons(): List<ComparisonType> {
+    override fun allowedComparisons(): List<ComparisonType> {
         return ComparisonType.values().toList()
     }
 

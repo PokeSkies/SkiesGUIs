@@ -16,10 +16,10 @@ class CommandPlayer(
     requirements: RequirementOptions? = RequirementOptions(),
     private val commands: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (SkiesGUIs.INSTANCE.server?.commandManager == null) {
-            Utils.error("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
+            Utils.printError("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
             return
         }
 

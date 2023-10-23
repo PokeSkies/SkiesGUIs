@@ -11,7 +11,7 @@ class PermissionRequirement(
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val permission: String = ""
 ) : Requirement(type, comparison) {
-    override fun check(player: ServerPlayerEntity): Boolean {
+    override fun checkRequirements(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
             return false
 
@@ -23,7 +23,7 @@ class PermissionRequirement(
         return true
     }
 
-    override fun getAllowedComparisons(): List<ComparisonType> {
+    override fun allowedComparisons(): List<ComparisonType> {
         return listOf(ComparisonType.EQUALS, ComparisonType.NOT_EQUALS)
     }
 

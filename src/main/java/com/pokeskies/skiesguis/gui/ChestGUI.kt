@@ -5,7 +5,6 @@ import ca.landonjw.gooeylibs2.api.page.Page
 import ca.landonjw.gooeylibs2.api.page.PageAction
 import ca.landonjw.gooeylibs2.api.template.Template
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.utils.Utils
@@ -45,7 +44,7 @@ class ChestGUI(
                             for (actionEntry in guiItem.clickActions) {
                                 val action = actionEntry.value
                                 if (action.matchesClick(ctx.clickType)) {
-                                    if (action.checkClickRequirements(player)) {
+                                    if (action.checkRequirements(player)) {
                                         action.executeSuccessActions(player)
                                         action.attemptExecution(player)
                                     } else {
@@ -74,6 +73,6 @@ class ChestGUI(
     }
 
     override fun getTitle(): Text {
-        return Utils.deseralizeText(Utils.parsePlaceholders(player, config.title))
+        return Utils.deserializeText(Utils.parsePlaceholders(player, config.title))
     }
 }

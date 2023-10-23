@@ -37,7 +37,7 @@ class GUICommands {
                             val gui = ConfigManager.GUIS[guiEntry.key]
 
                             if (gui == null) {
-                                Utils.error("There was an error while running the command '$command' for player '${player.name.string}'! " +
+                                Utils.printError("There was an error while running the command '$command' for player '${player.name.string}'! " +
                                         "The GUI '${guiEntry.key}' returned null. Was it deleted, renamed, or changed?")
                                 ctx.source.sendMessage(
                                     Component.text("Error while attempting to open this GUI! Check the console for more information.")

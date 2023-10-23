@@ -33,7 +33,7 @@ class GuiConfig(
     private fun checkOpenRequirements(player: ServerPlayerEntity): Boolean {
         if (openRequirements != null) {
             for (requirement in openRequirements.requirements) {
-                if (!requirement.value.check(player))
+                if (!requirement.value.checkRequirements(player))
                     return false
             }
         }

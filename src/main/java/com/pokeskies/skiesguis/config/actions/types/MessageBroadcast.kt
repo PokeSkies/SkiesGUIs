@@ -16,15 +16,15 @@ class MessageBroadcast(
     requirements: RequirementOptions? = RequirementOptions(),
     private val message: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (SkiesGUIs.INSTANCE.adventure == null) {
-            Utils.error("There was an error while executing an action for player ${player.name}: Adventure was somehow null on message broadcast?")
+            Utils.printError("There was an error while executing an action for player ${player.name}: Adventure was somehow null on message broadcast?")
             return
         }
 
         for (line in message) {
-            SkiesGUIs.INSTANCE.adventure!!.all().sendMessage(Utils.deseralizeText(Utils.parsePlaceholders(player, line)))
+            SkiesGUIs.INSTANCE.adventure!!.all().sendMessage(Utils.deserializeText(Utils.parsePlaceholders(player, line)))
         }
     }
 

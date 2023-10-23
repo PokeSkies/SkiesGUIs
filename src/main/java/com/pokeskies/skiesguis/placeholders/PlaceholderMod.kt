@@ -6,7 +6,7 @@ enum class PlaceholderMod(val modId: String) {
     IMPACTOR("impactor"),
     PLACEHOLDERAPI("placeholder-api");
 
-    fun isPresent() : Boolean {
+    fun isModPresent() : Boolean {
         return FabricLoader.getInstance().isModLoaded(modId)
     }
 }

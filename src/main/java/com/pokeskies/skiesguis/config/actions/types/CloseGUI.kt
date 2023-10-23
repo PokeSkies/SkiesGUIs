@@ -15,8 +15,8 @@ class CloseGUI(
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         UIManager.closeUI(player)
     }
 

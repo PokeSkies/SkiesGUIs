@@ -24,7 +24,7 @@ class ImpactorPlaceholderService : IPlaceholderService {
     )
 
     init {
-        Utils.info("Impactor mod found! Enabling placeholder integration...")
+        Utils.printInfo("Impactor mod found! Enabling placeholder integration...")
     }
 
     override fun parsePlaceholders(player: ServerPlayerEntity, text: String): String {

@@ -17,12 +17,12 @@ class CurrencyDeposit(
     private val currency: String = "",
     private val amount: Double = 0.0
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
 
         val service = SkiesGUIs.INSTANCE.economyService
         if (service == null) {
-            Utils.error("Currency Deposit Action was executed but no valid Economy Service could be found.")
+            Utils.printError("Currency Deposit Action was executed but no valid Economy Service could be found.")
             return
         }
 

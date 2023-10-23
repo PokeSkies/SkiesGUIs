@@ -13,7 +13,7 @@ interface IEconomyService {
 
     companion object {
         fun getEconomyService(economyType: EconomyType) : IEconomyService? {
-            if (!economyType.isPresent()) return null
+            if (!economyType.isModPresent()) return null
 
             return try {
                 when (economyType) {
@@ -21,7 +21,7 @@ interface IEconomyService {
                     EconomyType.PEBBLES -> PebblesEconomyService()
                 }
             } catch (ex: Exception) {
-                Utils.error("There was an exception while initializing the Economy Service: ${economyType}. Is it loaded?")
+                Utils.printError("There was an exception while initializing the Economy Service: ${economyType}. Is it loaded?")
                 ex.printStackTrace()
                 null
             }

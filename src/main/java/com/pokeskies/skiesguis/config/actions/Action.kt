@@ -2,7 +2,6 @@ package com.pokeskies.skiesguis.config.actions
 
 import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import ca.landonjw.gooeylibs2.api.tasks.Task
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
@@ -19,35 +18,35 @@ abstract class Action(
     open fun attemptExecution(player: ServerPlayerEntity) {
         if (chance > 0.0 && chance < 1.0) {
             val roll = Random.nextFloat()
-            Utils.debug("Attempting chance roll for $type Action. Result is: $roll <= $chance = ${roll <= chance}.")
+            Utils.printDebug("Attempting chance roll for $type Action. Result is: $roll <= $chance = ${roll <= chance}.")
             if (roll > chance) {
-                Utils.debug("Failed chance roll for $type Action.")
+                Utils.printDebug("Failed chance roll for $type Action.")
                 return
             }
         }
 
         if (delay <= 0) {
-            execute(player)
+            executeAction(player)
             return
         }
-        Utils.debug("Delay found for $type Action. Waiting $delay ticks before execution.")
+        Utils.printDebug("Delay found for $type Action. Waiting $delay ticks before execution.")
 
         Task.builder()
-            .execute { task -> execute(player) }
+            .execute { task -> executeAction(player) }
             .delay(delay)
             .build()
     }
 
-    abstract fun execute(player: ServerPlayerEntity)
+    abstract fun executeAction(player: ServerPlayerEntity)
 
     fun matchesClick(buttonClick: ButtonClick): Boolean {
         return click.buttonClicks.contains(buttonClick)
     }
 
-    fun checkClickRequirements(player: ServerPlayerEntity): Boolean {
+    fun checkRequirements(player: ServerPlayerEntity): Boolean {
         if (requirements != null) {
             for (requirement in requirements.requirements) {
-                if (!requirement.value.check(player)) {
+                if (!requirement.value.checkRequirements(player)) {
                     return false
                 }
             }

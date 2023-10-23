@@ -2,7 +2,6 @@ package com.pokeskies.skiesguis.config
 
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.google.gson.annotations.SerializedName
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
@@ -36,10 +35,10 @@ class GuiItem(
         val builder = GooeyButton.builder().display(stack)
 
         if (name != null)
-            builder.title(Utils.deseralizeText(Utils.parsePlaceholders(player, name)))
+            builder.title(Utils.deserializeText(Utils.parsePlaceholders(player, name)))
 
         if (lore.isNotEmpty()) {
-            builder.lore(Text::class.java, lore.stream().map { Utils.deseralizeText(Utils.parsePlaceholders(player, it)) }.toList())
+            builder.lore(Text::class.java, lore.stream().map { Utils.deserializeText(Utils.parsePlaceholders(player, it)) }.toList())
         }
 
         return builder
@@ -48,7 +47,7 @@ class GuiItem(
     fun checkViewRequirements(player: ServerPlayerEntity): Boolean {
         if (viewRequirements != null) {
             for (requirement in viewRequirements.requirements) {
-                if (!requirement.value.check(player))
+                if (!requirement.value.checkRequirements(player))
                     return false
             }
         }

@@ -12,7 +12,7 @@ enum class EconomyType(
     IMPACTOR("impactor", "impactor"),
     PEBBLES("pebbles", "pebbles-economy");
 
-    fun isPresent() : Boolean {
+    fun isModPresent() : Boolean {
         return FabricLoader.getInstance().isModLoaded(modId)
     }
 
@@ -34,7 +34,7 @@ enum class EconomyType(
             val economyType = valueOfAnyCase(json.asString)
 
             if (economyType == null) {
-                Utils.error("Could not deserialize EconomyType '${json.asString}'! Falling back to IMPACTOR")
+                Utils.printError("Could not deserialize EconomyType '${json.asString}'! Falling back to IMPACTOR")
                 return IMPACTOR
             }
 

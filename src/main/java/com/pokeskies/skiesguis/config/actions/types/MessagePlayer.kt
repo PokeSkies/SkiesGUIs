@@ -15,10 +15,10 @@ class MessagePlayer(
     requirements: RequirementOptions? = RequirementOptions(),
     private val message: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         for (line in message) {
-            player.sendMessage(Utils.deseralizeText(Utils.parsePlaceholders(player, line)))
+            player.sendMessage(Utils.deserializeText(Utils.parsePlaceholders(player, line)))
         }
     }
 

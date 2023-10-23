@@ -17,7 +17,7 @@ class ItemRequirement(
     val nbt: NbtCompound? = null,
     val strict: Boolean = true
 ) : Requirement(type, comparison) {
-    override fun check(player: ServerPlayerEntity): Boolean {
+    override fun checkRequirements(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
             return false
 
@@ -69,7 +69,7 @@ class ItemRequirement(
         return true
     }
 
-    override fun getAllowedComparisons(): List<ComparisonType> {
+    override fun allowedComparisons(): List<ComparisonType> {
         return ComparisonType.values().toList()
     }
 

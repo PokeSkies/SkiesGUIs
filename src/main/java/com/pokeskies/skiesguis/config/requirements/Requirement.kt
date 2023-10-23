@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.config.requirements
 
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 
@@ -8,15 +7,15 @@ abstract class Requirement(
     val type: RequirementType? = null,
     val comparison: ComparisonType = ComparisonType.EQUALS
 ) {
-    abstract fun check(player: ServerPlayerEntity): Boolean
+    abstract fun checkRequirements(player: ServerPlayerEntity): Boolean
 
-    open fun getAllowedComparisons(): List<ComparisonType> {
+    open fun allowedComparisons(): List<ComparisonType> {
         return emptyList()
     }
 
     fun checkComparison(): Boolean {
-        if (!getAllowedComparisons().contains(comparison)) {
-            Utils.error("Error while executing a Requirement check! Comparison ${comparison.identifier} is not allowed: ${getAllowedComparisons().map { it.identifier }}")
+        if (!allowedComparisons().contains(comparison)) {
+            Utils.printError("Error while executing a Requirement check! Comparison ${comparison.identifier} is not allowed: ${allowedComparisons().map { it.identifier }}")
             return false
         }
         return true

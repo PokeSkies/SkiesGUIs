@@ -16,11 +16,11 @@ class OpenGUI(
     requirements: RequirementOptions? = RequirementOptions(),
     private val id: String = ""
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         val gui = ConfigManager.GUIS[id]
         if (gui == null) {
-            Utils.error("There was an error while executing an action for player ${player.name}: Could not find a GUI with the ID $id!")
+            Utils.printError("There was an error while executing an action for player ${player.name}: Could not find a GUI with the ID $id!")
             return
         }
 

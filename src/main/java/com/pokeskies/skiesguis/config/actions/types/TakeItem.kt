@@ -3,7 +3,6 @@ package com.pokeskies.skiesguis.config.actions.types
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
-import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.item.Item
@@ -23,8 +22,8 @@ class TakeItem(
     val nbt: NbtCompound? = null,
     val strict: Boolean = true
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         var removed = 0
         for ((i, stack) in player.inventory.main.withIndex()) {
             if (!stack.isEmpty) {

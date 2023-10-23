@@ -19,10 +19,10 @@ class PlaySound(
     private val volume: Float = 1.0F,
     private val pitch: Float = 1.0F
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (sound == null) {
-            Utils.error("There was an error while executing a Sound Action for player ${player.name}: Sound was somehow null?")
+            Utils.printError("There was an error while executing a Sound Action for player ${player.name}: Sound was somehow null?")
             return
         }
         player.playSound(sound, SoundCategory.MASTER, volume, pitch)

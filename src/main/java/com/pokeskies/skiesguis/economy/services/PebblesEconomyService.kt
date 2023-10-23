@@ -7,7 +7,7 @@ import tech.sethi.pebbleseconomy.PebblesEconomyInitializer
 
 class PebblesEconomyService : IEconomyService {
     init {
-        Utils.info("Pebbles Economy Service has been found and loaded for any Currency actions/requirements!")
+        Utils.printInfo("Pebbles Economy Service has been found and loaded for any Currency actions/requirements!")
     }
 
     override fun balance(player: ServerPlayerEntity, currency: String) : Double {

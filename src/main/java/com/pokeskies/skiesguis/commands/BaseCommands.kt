@@ -8,22 +8,16 @@ import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
-import net.impactdev.impactor.api.platform.sources.PlatformSource
-import net.impactdev.impactor.api.text.TextProcessor
-import net.impactdev.impactor.api.utility.Context
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
 import net.minecraft.util.Hand
 
 class BaseCommands {
@@ -68,7 +62,7 @@ class BaseCommands {
 
         private fun reload(ctx: CommandContext<ServerCommandSource>): Int {
             SkiesGUIs.INSTANCE.reload()
-            ctx.source.sendMessage(Utils.deseralizeText("<green>Reloaded SkiesGUIs"))
+            ctx.source.sendMessage(Utils.deserializeText("<green>Reloaded SkiesGUIs"))
             return 1
         }
 
@@ -133,7 +127,7 @@ class BaseCommands {
                     val gui = ConfigManager.GUIS[guiID]
                     if (gui == null) {
                         ctx.source.sendMessage(
-                            Utils.deseralizeText("<red>Could not find a GUI with the ID $guiID!")
+                            Utils.deserializeText("<red>Could not find a GUI with the ID $guiID!")
                         )
                         return 1
                     }
@@ -152,7 +146,7 @@ class BaseCommands {
 
             val gui = ConfigManager.GUIS[guiID]
             if (gui == null) {
-                ctx.source.sendMessage(Utils.deseralizeText("<red>Could not find a GUI with the ID $guiID!"))
+                ctx.source.sendMessage(Utils.deserializeText("<red>Could not find a GUI with the ID $guiID!"))
                 return 1
             }
 

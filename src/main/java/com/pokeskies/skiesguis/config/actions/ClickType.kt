@@ -46,7 +46,7 @@ enum class ClickType(val identifier: String, val buttonClicks: List<ButtonClick>
             val click = valueOfAnyCase(json.asString)
 
             if (click == null) {
-                Utils.error("Could not deserialize Click Type '${json.asString}'!")
+                Utils.printError("Could not deserialize Click Type '${json.asString}'!")
                 return ANY
             }
 

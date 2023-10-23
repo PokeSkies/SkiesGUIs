@@ -4,7 +4,6 @@ import com.pokeskies.skiesguis.placeholders.services.DefaultPlaceholderService
 import com.pokeskies.skiesguis.placeholders.services.ImpactorPlaceholderService
 import com.pokeskies.skiesguis.placeholders.services.PlaceholderAPIService
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
 
 class PlaceholderManager {
     private val services: MutableList<IPlaceholderService> = mutableListOf()
@@ -12,7 +11,7 @@ class PlaceholderManager {
     init {
         services.add(DefaultPlaceholderService())
         for (service in PlaceholderMod.values()) {
-            if (service.isPresent()) {
+            if (service.isModPresent()) {
                 services.add(getServiceForType(service))
             }
         }

@@ -3,7 +3,6 @@ package com.pokeskies.skiesguis.utils
 import com.google.gson.*
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.SkiesGUIs
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.registry.Registry
@@ -11,7 +10,6 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import java.lang.reflect.Type
-import java.util.function.Function
 
 
 object Utils {
@@ -21,20 +19,20 @@ object Utils {
         return SkiesGUIs.INSTANCE.placeholderManager.parse(player, text)
     }
 
-    fun deseralizeText(text: String): Text {
+    fun deserializeText(text: String): Text {
         return SkiesGUIs.INSTANCE.adventure!!.toNative(miniMessage.deserialize(text))
     }
 
-    fun debug(message: String, bypassCheck: Boolean = false) {
+    fun printDebug(message: String, bypassCheck: Boolean = false) {
         if (bypassCheck || SkiesGUIs.INSTANCE.configManager.config.debug)
             SkiesGUIs.LOGGER.info("[SkiesGUIs] DEBUG: $message")
     }
 
-    fun error(message: String) {
+    fun printError(message: String) {
         SkiesGUIs.LOGGER.error("[SkiesGUIs] ERROR: $message")
     }
 
-    fun info(message: String) {
+    fun printInfo(message: String) {
         SkiesGUIs.LOGGER.info("[SkiesGUIs] $message")
     }
 
@@ -44,7 +42,7 @@ object Utils {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): T? {
             var parsed = if (json.isJsonPrimitive) registry.get(Identifier.tryParse(json.asString)) else null
             if (parsed == null)
-                error("There was an error while deserializing a Registry Type: $registry")
+                printError("There was an error while deserializing a Registry Type: $registry")
             return parsed
         }
         override fun serialize(src: T, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
@@ -58,7 +56,7 @@ object Utils {
             return try {
                 codec.decode(JsonOps.INSTANCE, json).getOrThrow(false) { }.first
             } catch (e: Throwable) {
-                error("There was an error while deserializing a Codec: $codec")
+                printError("There was an error while deserializing a Codec: $codec")
                 null
             }
         }
@@ -70,17 +68,9 @@ object Utils {
                 else
                     JsonNull.INSTANCE
             } catch (e: Throwable) {
-                error("There was an error while serializing a Codec: $codec")
+                printError("There was an error while serializing a Codec: $codec")
                 JsonNull.INSTANCE
             }
         }
     }
-}
-
-fun <A, B> Codec<A>.recordCodec(id: String, getter: Function<B, A>): RecordCodecBuilder<B, A> {
-    return this.fieldOf(id).forGetter(getter)
-}
-
-fun <A, B> Codec<A>.optionalRecordCodec(id: String, getter: Function<B, A>, default: A): RecordCodecBuilder<B, A> {
-    return this.fieldOf(id).orElse(default).forGetter(getter)
 }

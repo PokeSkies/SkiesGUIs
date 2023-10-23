@@ -9,7 +9,7 @@ import net.minecraft.text.Text
 
 class PlaceholderAPIService : IPlaceholderService {
     init {
-        Utils.info("PlaceholderAPI mod found! Enabling placeholder integration...")
+        Utils.printInfo("PlaceholderAPI mod found! Enabling placeholder integration...")
     }
     override fun parsePlaceholders(player: ServerPlayerEntity, text: String): String {
         return Placeholders.parseText(Text.of(text), PlaceholderContext.of(player)).string

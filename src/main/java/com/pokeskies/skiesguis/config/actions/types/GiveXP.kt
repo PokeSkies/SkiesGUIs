@@ -16,8 +16,8 @@ class GiveXP(
     private val amount: Int = 0,
     private val level: Boolean = false
 ) : Action(type, click, delay, chance, requirements) {
-    override fun execute(player: ServerPlayerEntity) {
-        Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
+    override fun executeAction(player: ServerPlayerEntity) {
+        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (level) {
             player.addExperienceLevels(amount)
         } else {

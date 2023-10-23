@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture
 
 class ImpactorEconomyService : IEconomyService {
     init {
-        Utils.info("Impactor Economy Service has been found and loaded for any Currency actions/requirements!")
+        Utils.printInfo("Impactor Economy Service has been found and loaded for any Currency actions/requirements!")
     }
 
     override fun balance(player: ServerPlayerEntity, currency: String) : Double {
@@ -46,7 +46,7 @@ class ImpactorEconomyService : IEconomyService {
 
         val currency: Optional<Currency> = EconomyService.instance().currencies().currency(Key.key(id))
         if (currency.isEmpty) {
-            Utils.error("Could not find a currency by the ID $id! Valid currencies: ${EconomyService.instance().currencies()}")
+            Utils.printError("Could not find a currency by the ID $id! Valid currencies: ${EconomyService.instance().currencies()}")
             return EconomyService.instance().currencies().primary()
         }
 
