@@ -51,10 +51,10 @@ class SkiesGUIs : ModInitializer {
             this.adventure = null
         })
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->
-            BaseCommands.register(
+            BaseCommands().register(
                 dispatcher
             )
-            GUICommands.register(
+            GUICommands().register(
                 dispatcher
             )
         }
