@@ -1,4 +1,4 @@
-package com.pokeskies.skiesguis.config.requirements.types
+package com.pokeskies.skiesguis.config.requirements.types.internal
 
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
@@ -8,7 +8,6 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 import org.graalvm.polyglot.Context
 import org.graalvm.polyglot.Value
-import java.lang.Exception
 
 class JavaScriptRequirement(
     type: RequirementType = RequirementType.PERMISSION,
@@ -24,7 +23,11 @@ class JavaScriptRequirement(
             .build()
 
         try {
-            val result: Value = context.eval("js", Utils.parsePlaceholders(player, expression))
+            val parsed = Utils.parsePlaceholders(player, expression)
+
+            Utils.printDebug("Checking a ${type?.identifier} Requirement with parsed expression='$parsed': $this")
+
+            val result: Value = context.eval("js", parsed)
 
             if (!result.isBoolean) {
                 Utils.printError("A Javascript Requirement expression '$expression' did not return a boolean!")
@@ -44,7 +47,7 @@ class JavaScriptRequirement(
     }
 
     override fun toString(): String {
-        return "JavascriptRequirement(expression='$expression')"
+        return "JavascriptRequirement(comparison=$comparison, expression='$expression')"
     }
 
 }

@@ -1,4 +1,4 @@
-package com.pokeskies.skiesguis.config.requirements.types
+package com.pokeskies.skiesguis.config.requirements.types.internal
 
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
@@ -25,6 +25,8 @@ class CurrencyRequirement(
 
         val balance = service.balance(player, currency)
 
+        Utils.printDebug("Checking a ${type?.identifier} Requirement with balance='$balance': $this")
+
         return when (comparison) {
             ComparisonType.EQUALS -> balance == amount
             ComparisonType.NOT_EQUALS -> balance != amount
@@ -40,6 +42,6 @@ class CurrencyRequirement(
     }
 
     override fun toString(): String {
-        return "CurrencyRequirement(currency='$currency', amount=$amount)"
+        return "CurrencyRequirement(comparison=$comparison, currency='$currency', amount=$amount)"
     }
 }

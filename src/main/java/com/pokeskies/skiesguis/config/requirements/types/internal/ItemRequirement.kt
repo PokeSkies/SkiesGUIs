@@ -1,8 +1,9 @@
-package com.pokeskies.skiesguis.config.requirements.types
+package com.pokeskies.skiesguis.config.requirements.types.internal
 
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
@@ -31,6 +32,8 @@ class ItemRequirement(
                 }
             }
         }
+
+        Utils.printDebug("Checking a ${type?.identifier} Requirement with items found='$amountFound': $this")
 
         return when (comparison) {
             ComparisonType.EQUALS -> {
@@ -74,7 +77,7 @@ class ItemRequirement(
     }
 
     override fun toString(): String {
-        return "ItemRequirement(item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
+        return "ItemRequirement(comparison=$comparison, item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
     }
 
 }

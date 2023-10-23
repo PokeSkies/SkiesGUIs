@@ -1,15 +1,20 @@
 package com.pokeskies.skiesguis.config.requirements
 
 import com.google.gson.*
-import com.pokeskies.skiesguis.config.requirements.types.*
+import com.pokeskies.skiesguis.config.requirements.types.extensions.plan.PlanPlaytimeRequirement
+import com.pokeskies.skiesguis.config.requirements.types.internal.*
 import java.lang.reflect.Type
 
 enum class RequirementType(val identifier: String, val clazz: Class<*>) {
+    // Internal
     PERMISSION("permission", PermissionRequirement::class.java),
     ITEM("item", ItemRequirement::class.java),
     CURRENCY("currency", CurrencyRequirement::class.java),
     PLACEHOLDER("placeholder", PlaceholderRequirement::class.java),
-    JAVASCRIPT("javascript", JavaScriptRequirement::class.java);
+    JAVASCRIPT("javascript", JavaScriptRequirement::class.java),
+
+    // Extensions
+    PLAN_PLAYTIME("plan_playtime", PlanPlaytimeRequirement::class.java);
 
     companion object {
         fun valueOfAnyCase(name: String): RequirementType? {

@@ -1,10 +1,9 @@
-package com.pokeskies.skiesguis.config.requirements.types
+package com.pokeskies.skiesguis.config.requirements.types.internal
 
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.Utils
-import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.server.network.ServerPlayerEntity
 
 class PlaceholderRequirement(
@@ -18,9 +17,11 @@ class PlaceholderRequirement(
         if (!checkComparison())
             return false
 
-        val result = Utils.parsePlaceholders(player, input).equals(output, strict)
+        val parsed = Utils.parsePlaceholders(player, input)
 
-        println("The result of ${Utils.parsePlaceholders(player, input)} == $output is $result")
+        Utils.printDebug("Checking a ${type?.identifier} Requirement with parsed input='$parsed': $this")
+
+        val result = parsed.equals(output, strict)
 
         return if (comparison == ComparisonType.EQUALS) result else !result
     }
@@ -30,7 +31,7 @@ class PlaceholderRequirement(
     }
 
     override fun toString(): String {
-        return "PlaceholderRequirement(input='$input', output='$output', strict=$strict)"
+        return "PlaceholderRequirement(comparison=$comparison, input='$input', output='$output', strict=$strict)"
     }
 
 }

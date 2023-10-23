@@ -1,8 +1,9 @@
-package com.pokeskies.skiesguis.config.requirements.types
+package com.pokeskies.skiesguis.config.requirements.types.internal
 
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.server.network.ServerPlayerEntity
 
@@ -14,6 +15,8 @@ class PermissionRequirement(
     override fun checkRequirements(player: ServerPlayerEntity): Boolean {
         if (!checkComparison())
             return false
+
+        Utils.printDebug("Checking a ${type?.identifier} Requirement with permission='$permission': $this")
 
         if (permission.isNotEmpty()) {
             val value = Permissions.check(player, permission)
@@ -28,6 +31,6 @@ class PermissionRequirement(
     }
 
     override fun toString(): String {
-        return "PermissionRequirement(permission='$permission')"
+        return "PermissionRequirement(comparison=$comparison, permission='$permission')"
     }
 }

@@ -13,6 +13,7 @@ base.archivesBaseName = project.properties["mod_name"].toString()
 
 repositories {
     mavenCentral()
+    maven( "https://jitpack.io")
     maven {
         name = "Modrinth"
         url = uri("https://api.modrinth.com/maven")
@@ -51,19 +52,16 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${project.properties["fabric_kotlin_version"].toString()}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.properties["fabric_version"].toString()}")
 
-    // Adventure Text!
     modImplementation(include("net.kyori:adventure-platform-fabric:5.9.0")!!)
-
-    // PermissionsAPI
     modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
-
     modImplementation("eu.pb4:placeholder-api:2.2.0+1.20.2")
+    modImplementation(include("org.graalvm.js:js:21.0.0")!!)
 
     modImplementation("net.impactdev.impactor:common:5.1.1-SNAPSHOT")
     modImplementation("net.impactdev.impactor.api:economy:5.1.1-SNAPSHOT")
     modImplementation("net.impactdev.impactor.api:text:5.1.1-SNAPSHOT")
 
-    modImplementation(include("org.graalvm.js:js:21.0.0")!!)
+    modImplementation("com.github.plan-player-analytics:Plan:5.6.2614")
 
     modImplementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
