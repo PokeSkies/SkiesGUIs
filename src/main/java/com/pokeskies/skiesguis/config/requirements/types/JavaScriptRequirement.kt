@@ -31,9 +31,7 @@ class JavaScriptRequirement(
                 return false
             }
 
-            val bool = result.asBoolean()
-
-            return if (comparison == ComparisonType.EQUALS) bool else !bool
+            return if (comparison == ComparisonType.EQUALS) result.asBoolean() else !result.asBoolean()
         } catch (e: Exception) {
             Utils.printError("An error occurred while parsing the Javascript Requirement expression '$expression': ${e.printStackTrace()}")
         }
