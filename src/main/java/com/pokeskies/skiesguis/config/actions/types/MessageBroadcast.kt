@@ -24,7 +24,7 @@ class MessageBroadcast(
         }
 
         for (line in message) {
-            SkiesGUIs.INSTANCE.adventure!!.all().sendMessage(Utils.deseralizeText(parsePlaceholders(player, line)))
+            SkiesGUIs.INSTANCE.adventure!!.all().sendMessage(Utils.deseralizeText(Utils.parsePlaceholders(player, line)))
         }
     }
 

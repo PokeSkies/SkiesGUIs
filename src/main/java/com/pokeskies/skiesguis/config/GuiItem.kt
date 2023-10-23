@@ -2,6 +2,7 @@ package com.pokeskies.skiesguis.config
 
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.google.gson.annotations.SerializedName
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
@@ -25,7 +26,7 @@ class GuiItem(
     @SerializedName("click_actions")
     val clickActions: Map<String, Action> = emptyMap()
 ) {
-    fun createButton(): GooeyButton.Builder {
+    fun createButton(player: ServerPlayerEntity): GooeyButton.Builder {
         val stack = ItemStack(item, amount)
 
         if (nbt != null) {
@@ -35,10 +36,10 @@ class GuiItem(
         val builder = GooeyButton.builder().display(stack)
 
         if (name != null)
-            builder.title(Utils.deseralizeText(name))
+            builder.title(Utils.deseralizeText(Utils.parsePlaceholders(player, name)))
 
         if (lore.isNotEmpty()) {
-            builder.lore(Text::class.java, lore.stream().map { Utils.deseralizeText(it) }.toList())
+            builder.lore(Text::class.java, lore.stream().map { Utils.deseralizeText(Utils.parsePlaceholders(player, it)) }.toList())
         }
 
         return builder

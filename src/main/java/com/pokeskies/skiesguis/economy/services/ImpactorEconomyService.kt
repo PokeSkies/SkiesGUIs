@@ -11,7 +11,7 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
-class ImpactorService : IEconomyService {
+class ImpactorEconomyService : IEconomyService {
     init {
         Utils.info("Impactor Economy Service has been found and loaded for any Currency actions/requirements!")
     }

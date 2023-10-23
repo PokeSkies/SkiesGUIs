@@ -1,5 +1,6 @@
 package com.pokeskies.skiesguis.config.requirements
 
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 
@@ -11,10 +12,6 @@ abstract class Requirement(
 
     open fun getAllowedComparisons(): List<ComparisonType> {
         return emptyList()
-    }
-
-    fun parsePlaceholders(player: ServerPlayerEntity, value: String): String {
-        return value.replace("%player%", player.name.string)
     }
 
     fun checkComparison(): Boolean {

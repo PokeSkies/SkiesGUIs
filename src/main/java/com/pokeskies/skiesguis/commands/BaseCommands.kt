@@ -8,16 +8,22 @@ import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
+import net.impactdev.impactor.api.platform.sources.PlatformSource
+import net.impactdev.impactor.api.text.TextProcessor
+import net.impactdev.impactor.api.utility.Context
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.text.Text
 import net.minecraft.util.Hand
 
 class BaseCommands {
@@ -29,10 +35,9 @@ class BaseCommands {
         fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
             for (command in listOf("skiesguis", "guis", "gui", "sg")) {
                 dispatcher.register(CommandManager.literal(command)
-                    .then(
-                        CommandManager.literal("reload")
-                            .requires(Permissions.require("skiesguis.command.reload", 4))
-                            .executes(BaseCommands::reload)
+                    .then(CommandManager.literal("reload")
+                        .requires(Permissions.require("skiesguis.command.reload", 4))
+                        .executes(BaseCommands::reload)
                     )
                     .then(CommandManager.literal("printnbt")
                         .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
@@ -48,10 +53,9 @@ class BaseCommands {
                             .suggests { _, builder ->
                                 CommandSource.suggestMatching(ConfigManager.GUIS.keys.stream(), builder)
                             }
-                            .then(
-                                CommandManager.argument("player", EntityArgumentType.player())
-                                    .requires(Permissions.require("skiesguis.command.open", 4))
-                                    .executes(BaseCommands::openGUIPlayer)
+                            .then(CommandManager.argument("player", EntityArgumentType.player())
+                                .requires(Permissions.require("skiesguis.command.open", 4))
+                                .executes(BaseCommands::openGUIPlayer)
                             )
                             .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
                             .requires(Permissions.require("skiesguis.command.open", 4))

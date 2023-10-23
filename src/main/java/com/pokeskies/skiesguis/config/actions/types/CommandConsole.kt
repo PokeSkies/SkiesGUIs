@@ -26,7 +26,7 @@ class CommandConsole(
         for (command in commands) {
             SkiesGUIs.INSTANCE.server!!.commandManager.executeWithPrefix(
                 SkiesGUIs.INSTANCE.server!!.commandSource,
-                parsePlaceholders(player, command)
+                Utils.parsePlaceholders(player, command)
             )
         }
     }

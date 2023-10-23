@@ -57,7 +57,11 @@ dependencies {
     // PermissionsAPI
     modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
 
+    modImplementation("eu.pb4:placeholder-api:2.2.0+1.20.2")
+
+    modImplementation("net.impactdev.impactor:common:5.1.1-SNAPSHOT")
     modImplementation("net.impactdev.impactor.api:economy:5.1.1-SNAPSHOT")
+    modImplementation("net.impactdev.impactor.api:text:5.1.1-SNAPSHOT")
 
     modImplementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }

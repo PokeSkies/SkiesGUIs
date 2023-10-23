@@ -5,6 +5,7 @@ import ca.landonjw.gooeylibs2.api.page.Page
 import ca.landonjw.gooeylibs2.api.page.PageAction
 import ca.landonjw.gooeylibs2.api.template.Template
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.utils.Utils
@@ -35,11 +36,11 @@ class ChestGUI(
 
     private fun refresh() {
         for ((slot, slotEntry) in items) {
-            for ((priority, itemEntry) in slotEntry) {
+            for ((_, itemEntry) in slotEntry) {
                 val guiItem = itemEntry.value
                 if (guiItem.checkViewRequirements(player)) {
                     guiItem.executeSuccessActions(player)
-                    template.set(slot, guiItem.createButton()
+                    template.set(slot, guiItem.createButton(player)
                         .onClick { ctx ->
                             for (actionEntry in guiItem.clickActions) {
                                 val action = actionEntry.value
@@ -73,6 +74,6 @@ class ChestGUI(
     }
 
     override fun getTitle(): Text {
-        return Utils.deseralizeText(config.title)
+        return Utils.deseralizeText(Utils.parsePlaceholders(player, config.title))
     }
 }

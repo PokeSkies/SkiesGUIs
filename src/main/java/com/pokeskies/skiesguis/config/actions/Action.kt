@@ -2,6 +2,7 @@ package com.pokeskies.skiesguis.config.actions
 
 import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import ca.landonjw.gooeylibs2.api.tasks.Task
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
@@ -68,10 +69,6 @@ abstract class Action(
                 action.attemptExecution(player)
             }
         }
-    }
-
-    fun parsePlaceholders(player: ServerPlayerEntity, value: String): String {
-        return value.replace("%player%", player.name.string)
     }
 
     override fun toString(): String {

@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.pokeskies.skiesguis.SkiesGUIs
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.registry.Registry
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import java.lang.reflect.Type
@@ -14,7 +15,11 @@ import java.util.function.Function
 
 
 object Utils {
-    val miniMessage: MiniMessage = MiniMessage.miniMessage()
+    private val miniMessage: MiniMessage = MiniMessage.miniMessage()
+
+    fun parsePlaceholders(player: ServerPlayerEntity, text: String): String {
+        return SkiesGUIs.INSTANCE.placeholderManager.parse(player, text)
+    }
 
     fun deseralizeText(text: String): Text {
         return SkiesGUIs.INSTANCE.adventure!!.toNative(miniMessage.deserialize(text))

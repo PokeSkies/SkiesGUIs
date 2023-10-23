@@ -4,6 +4,7 @@ import com.pokeskies.skiesguis.commands.BaseCommands
 import com.pokeskies.skiesguis.commands.GUICommands
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.economy.IEconomyService
+import com.pokeskies.skiesguis.placeholders.PlaceholderManager
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
@@ -26,6 +27,7 @@ class SkiesGUIs : ModInitializer {
     lateinit var configManager: ConfigManager
 
     var economyService: IEconomyService? = null
+    lateinit var placeholderManager: PlaceholderManager
 
     var adventure: FabricServerAudiences? = null
     var server: MinecraftServer? = null
@@ -37,6 +39,7 @@ class SkiesGUIs : ModInitializer {
         this.configManager = ConfigManager(configDir)
 
         this.economyService = IEconomyService.getEconomyService(configManager.config.economy)
+        this.placeholderManager = PlaceholderManager()
 
         ServerLifecycleEvents.SERVER_STARTING.register(ServerStarting { server: MinecraftServer? ->
             this.adventure = FabricServerAudiences.of(
@@ -59,5 +62,7 @@ class SkiesGUIs : ModInitializer {
 
     fun reload() {
         this.configManager.reload()
+        this.economyService = IEconomyService.getEconomyService(configManager.config.economy)
+        this.placeholderManager = PlaceholderManager()
     }
 }

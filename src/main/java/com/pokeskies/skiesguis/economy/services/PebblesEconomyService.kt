@@ -5,7 +5,7 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 import tech.sethi.pebbleseconomy.PebblesEconomyInitializer
 
-class PebblesService : IEconomyService {
+class PebblesEconomyService : IEconomyService {
     init {
         Utils.info("Pebbles Economy Service has been found and loaded for any Currency actions/requirements!")
     }

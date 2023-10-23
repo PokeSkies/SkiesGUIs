@@ -18,7 +18,7 @@ class MessagePlayer(
     override fun execute(player: ServerPlayerEntity) {
         Utils.debug("Attempting to execute a ${type.identifier} Action: $this")
         for (line in message) {
-            player.sendMessage(Utils.deseralizeText(parsePlaceholders(player, line)))
+            player.sendMessage(Utils.deseralizeText(Utils.parsePlaceholders(player, line)))
         }
     }
 
