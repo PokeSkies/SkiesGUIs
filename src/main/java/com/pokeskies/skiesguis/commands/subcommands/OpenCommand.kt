@@ -23,7 +23,6 @@ class OpenCommand : SubCommand {
                 .then(CommandManager.argument("player", EntityArgumentType.player())
                     .executes(Companion::openGUIPlayer)
                 )
-                .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
                 .executes(Companion::openGUISelf)
             )
             .build()
@@ -45,6 +44,8 @@ class OpenCommand : SubCommand {
                     }
 
                     gui.openGUI(player)
+                } else {
+                    ctx.source.sendMessage(Utils.deserializeText("<red>Please provide a player argument!"))
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
