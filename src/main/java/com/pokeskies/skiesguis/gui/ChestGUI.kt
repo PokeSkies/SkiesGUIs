@@ -20,6 +20,7 @@ class ChestGUI(
         ChestTemplate.Builder(config.size)
             .build()
 
+    // This is a MAP (key=SLOT INDEX, value='MAP(key=PRIORITY, value=GUI ITEM ENTRY)')
     private val items: TreeMap<Int, TreeMap<Int, Map.Entry<String, GuiItem>>> = TreeMap()
 
     init {

@@ -16,10 +16,11 @@ More information on configuration can be found on the [Wiki](https://github.com/
 - Item click requirements/conditionals *(with success/deny actions)*
 - GUI open and close actions
 - GUI open requirements/conditionals *(with success/deny actions)*
-- 11 action types *(for now)*
-- 3 requirement types *(for now)*
+- 13 action types *(for now)*
+- 6 requirement types *(for now)*
 - Create alias commands to access GUIs
-- Economy Integrations (Impactor)
+- Economy Integrations (Impactor, Pebbles Economy)
+- Placeholder Integrations (Impactor, PlaceholderAPI)
 
 ## Installation
 1. Download the latest version of the mod from the Releases tab.
@@ -28,7 +29,10 @@ More information on configuration can be found on the [Wiki](https://github.com/
    - [Fabric Permissions API](https://github.com/PokeSkies/fabric-permissions-api)
    - [GooeyLibs](https://github.com/NickImpact/GooeyLibs/tree/1.20.1)
 3. Download any optional dependencies:
-   - [Impactor](https://modrinth.com/mod/impactor) **_(OPTIONAL)_**
+   - [Impactor](https://modrinth.com/mod/impactor) **_(Economy, Placeholders)_**
+   - Pebbles Economy **_(Economy)_**
+   - [PlaceholderAPI]() **_(Placeholders)_**
+   - [Plan]() **_(Additional Requirements)_**
 4. Install the mod and dependencies into your server's `mods` folder.
 5. Configure your GUIs in the `./config/skiesguis/guis/` folder.
 
@@ -47,14 +51,13 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 ## Planned Features
 - Better/more debugging and error handling
-- More Placeholders (support Placeholders mod?)
 - More Action Types
-    - Refresh
+    - Mod Integrations (Cobblemon, etc.)
+    - Refresh (when Inventory Ticking is added)
   - **Please submit suggestions!**
 - More Requirement Types
-    - Regex
-    - Placeholders
-    - JavaScript
+    - Mod Integrations (Cobblemon, etc.)
+    - Regex?
     - Location?
     - **Please submit suggestions!**
 - Requirements Updates
