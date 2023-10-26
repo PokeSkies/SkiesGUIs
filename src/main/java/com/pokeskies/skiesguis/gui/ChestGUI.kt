@@ -42,20 +42,25 @@ class ChestGUI(
         for ((slot, slotEntry) in items) {
             for ((_, itemEntry) in slotEntry) {
                 val guiItem = itemEntry.value
-                if (guiItem.checkViewRequirements(player)) {
-                    guiItem.executeSuccessActions(player)
+                if (guiItem.viewRequirements?.checkRequirements(player) != false) {
+                    guiItem.viewRequirements?.executeSuccessActions(player)
                     template.set(slot, guiItem.createButton(player)
                         .onClick { ctx ->
-                            for (actionEntry in guiItem.clickActions) {
-                                val action = actionEntry.value
-                                if (action.matchesClick(ctx.clickType)) {
-                                    if (action.checkRequirements(player)) {
-                                        action.executeSuccessActions(player)
-                                        action.attemptExecution(player)
-                                    } else {
-                                        action.executeDenyActions(player)
+                            if (guiItem.clickRequirements?.checkRequirements(player) != false) {
+                                guiItem.clickRequirements?.executeSuccessActions(player)
+                                for (actionEntry in guiItem.clickActions) {
+                                    val action = actionEntry.value
+                                    if (action.matchesClick(ctx.clickType)) {
+                                        if (action.requirements?.checkRequirements(player) != false) {
+                                            action.requirements?.executeSuccessActions(player)
+                                            action.attemptExecution(player)
+                                        } else {
+                                            action.requirements.executeDenyActions(player)
+                                        }
                                     }
                                 }
+                            } else {
+                                guiItem.clickRequirements.executeDenyActions(player)
                             }
                         }
                         .build())
@@ -63,7 +68,7 @@ class ChestGUI(
                     // Since the slot is being filled at the highest priority, all remaining entries are lower priority
                     break
                 } else {
-                    guiItem.executeDenyActions(player)
+                    guiItem.viewRequirements.executeDenyActions(player)
                 }
             }
         }

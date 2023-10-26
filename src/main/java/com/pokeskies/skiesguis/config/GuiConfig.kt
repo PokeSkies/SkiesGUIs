@@ -21,39 +21,13 @@ class GuiConfig(
     val items: Map<String, GuiItem> = emptyMap()
 ) {
     fun openGUI(player: ServerPlayerEntity) {
-        if (!checkOpenRequirements(player)) {
-            executeDenyActions(player)
+        if (openRequirements?.checkRequirements(player) == false) {
+            openRequirements.executeDenyActions(player)
             return
         }
-        executeSuccessActions(player)
+        openRequirements?.executeSuccessActions(player)
         executeOpenActions(player)
         UIManager.openUIForcefully(player, ChestGUI(player, this))
-    }
-
-    private fun checkOpenRequirements(player: ServerPlayerEntity): Boolean {
-        if (openRequirements != null) {
-            for (requirement in openRequirements.requirements) {
-                if (!requirement.value.checkRequirements(player))
-                    return false
-            }
-        }
-        return true
-    }
-
-    private fun executeDenyActions(player: ServerPlayerEntity) {
-        if (openRequirements != null) {
-            for ((id, action) in openRequirements.denyActions) {
-                action.attemptExecution(player)
-            }
-        }
-    }
-
-    private fun executeSuccessActions(player: ServerPlayerEntity) {
-        if (openRequirements != null) {
-            for ((id, action) in openRequirements.successActions) {
-                action.attemptExecution(player)
-            }
-        }
     }
 
     private fun executeOpenActions(player: ServerPlayerEntity) {

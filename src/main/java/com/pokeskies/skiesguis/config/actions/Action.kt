@@ -43,33 +43,6 @@ abstract class Action(
         return click.buttonClicks.contains(buttonClick)
     }
 
-    fun checkRequirements(player: ServerPlayerEntity): Boolean {
-        if (requirements != null) {
-            for (requirement in requirements.requirements) {
-                if (!requirement.value.checkRequirements(player)) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-
-    fun executeDenyActions(player: ServerPlayerEntity) {
-        if (requirements != null) {
-            for ((id, action) in requirements.denyActions) {
-                action.attemptExecution(player)
-            }
-        }
-    }
-
-    fun executeSuccessActions(player: ServerPlayerEntity) {
-        if (requirements != null) {
-            for ((id, action) in requirements.successActions) {
-                action.attemptExecution(player)
-            }
-        }
-    }
-
     override fun toString(): String {
         return "Action(type=$type, click=$click, requirements=$requirements)"
     }

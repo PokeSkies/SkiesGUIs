@@ -23,7 +23,9 @@ class GuiItem(
     @SerializedName("view_requirements")
     val viewRequirements: RequirementOptions? = null,
     @SerializedName("click_actions")
-    val clickActions: Map<String, Action> = emptyMap()
+    val clickActions: Map<String, Action> = emptyMap(),
+    @SerializedName("click_requirements")
+    val clickRequirements: RequirementOptions? = null
 ) {
     fun createButton(player: ServerPlayerEntity): GooeyButton.Builder {
         val stack = ItemStack(item, amount)
@@ -42,32 +44,6 @@ class GuiItem(
         }
 
         return builder
-    }
-
-    fun checkViewRequirements(player: ServerPlayerEntity): Boolean {
-        if (viewRequirements != null) {
-            for (requirement in viewRequirements.requirements) {
-                if (!requirement.value.checkRequirements(player))
-                    return false
-            }
-        }
-        return true
-    }
-
-    fun executeDenyActions(player: ServerPlayerEntity) {
-        if (viewRequirements != null) {
-            for ((id, action) in viewRequirements.denyActions) {
-                action.attemptExecution(player)
-            }
-        }
-    }
-
-    fun executeSuccessActions(player: ServerPlayerEntity) {
-        if (viewRequirements != null) {
-            for ((id, action) in viewRequirements.successActions) {
-                action.attemptExecution(player)
-            }
-        }
     }
 
     override fun toString(): String {
