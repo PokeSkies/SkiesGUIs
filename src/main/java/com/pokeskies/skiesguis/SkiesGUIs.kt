@@ -4,6 +4,7 @@ import com.pokeskies.skiesguis.commands.BaseCommands
 import com.pokeskies.skiesguis.commands.GUICommands
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.economy.IEconomyService
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.placeholders.PlaceholderManager
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
@@ -17,6 +18,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.graalvm.polyglot.Engine
 import java.io.File
+import java.util.UUID
 
 class SkiesGUIs : ModInitializer {
     companion object {
@@ -34,6 +36,8 @@ class SkiesGUIs : ModInitializer {
     var server: MinecraftServer? = null
 
     lateinit var graalEngine: Engine
+
+    var inventoryControllers: MutableMap<UUID, ChestGUI.InventoryController> = mutableMapOf()
 
     override fun onInitialize() {
         INSTANCE = this

@@ -13,6 +13,7 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
     PLAYSOUND("playsound", PlaySound::class.java),
     OPEN_GUI("open_gui", OpenGUI::class.java),
     CLOSE_GUI("close_gui", CloseGUI::class.java),
+    REFRESH_GUI("refresh_gui", RefreshGUI::class.java),
     GIVE_XP("give_xp", GiveXP::class.java),
     CURRENCY_DEPOSIT("currency_deposit", CurrencyDeposit::class.java),
     CURRENCY_WITHDRAW("currency_withdraw", CurrencyWithdraw::class.java),

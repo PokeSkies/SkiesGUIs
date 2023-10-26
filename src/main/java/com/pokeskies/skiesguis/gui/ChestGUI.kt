@@ -5,6 +5,7 @@ import ca.landonjw.gooeylibs2.api.page.Page
 import ca.landonjw.gooeylibs2.api.page.PageAction
 import ca.landonjw.gooeylibs2.api.template.Template
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.utils.Utils
@@ -24,6 +25,9 @@ class ChestGUI(
     private val items: TreeMap<Int, TreeMap<Int, Map.Entry<String, GuiItem>>> = TreeMap()
 
     init {
+        val controller = InventoryController()
+        controller.subscribe(this, Runnable { refresh() })
+        SkiesGUIs.INSTANCE.inventoryControllers[player.uuid] = controller
         for (entry in config.items) {
             for (slot in entry.value.slots) {
                 val priorities = items.getOrDefault(slot, TreeMap())
@@ -67,6 +71,7 @@ class ChestGUI(
 
     override fun onClose(action: PageAction) {
         config.executeCloseActions(player)
+        SkiesGUIs.INSTANCE.inventoryControllers.remove(player.uuid)
     }
 
     override fun getTemplate(): Template {
@@ -76,4 +81,6 @@ class ChestGUI(
     override fun getTitle(): Text {
         return Utils.deserializeText(Utils.parsePlaceholders(player, config.title))
     }
+
+    class InventoryController: UpdateEmitter<ChestGUI?>()
 }
