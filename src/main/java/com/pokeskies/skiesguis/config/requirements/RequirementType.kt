@@ -10,6 +10,7 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
     PERMISSION("permission", PermissionRequirement::class.java),
     ITEM("item", ItemRequirement::class.java),
     CURRENCY("currency", CurrencyRequirement::class.java),
+    DIMENSION("dimension", DimensionRequirement::class.java),
     PLACEHOLDER("placeholder", PlaceholderRequirement::class.java),
     JAVASCRIPT("javascript", JavaScriptRequirement::class.java),
 

@@ -17,7 +17,7 @@ More information on configuration can be found on the [Wiki](https://github.com/
 - GUI open and close actions
 - GUI open requirements/conditionals *(with success/deny actions)*
 - 13 action types *(for now)*
-- 6 requirement types *(for now)*
+- 7 requirement types *(for now)*
 - Create alias commands to access GUIs
 - Economy Integrations (Impactor, Pebbles Economy)
 - Placeholder Integrations (Impactor, PlaceholderAPI)
