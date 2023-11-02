@@ -5,7 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode
 import com.pokeskies.skiesguis.commands.subcommands.DebugCommand
 import com.pokeskies.skiesguis.commands.subcommands.OpenCommand
 import com.pokeskies.skiesguis.commands.subcommands.PrintNBTCommand
-import com.pokeskies.skieskits.commands.subcommands.ReloadCommand
+import com.pokeskies.skiesguis.commands.subcommands.ReloadCommand
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
 

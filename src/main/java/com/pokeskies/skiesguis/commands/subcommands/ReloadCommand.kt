@@ -1,4 +1,4 @@
-package com.pokeskies.skieskits.commands.subcommands
+package com.pokeskies.skiesguis.commands.subcommands
 
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
@@ -13,7 +13,7 @@ class ReloadCommand : SubCommand {
     override fun build(): LiteralCommandNode<ServerCommandSource> {
         return CommandManager.literal("reload")
             .requires(Permissions.require("skiesguis.command.reload", 4))
-            .executes(ReloadCommand::reload)
+            .executes(Companion::reload)
             .build()
     }
 
