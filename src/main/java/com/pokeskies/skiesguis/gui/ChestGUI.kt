@@ -1,10 +1,12 @@
 package com.pokeskies.skiesguis.gui
 
+import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import ca.landonjw.gooeylibs2.api.data.UpdateEmitter
 import ca.landonjw.gooeylibs2.api.page.Page
 import ca.landonjw.gooeylibs2.api.page.PageAction
 import ca.landonjw.gooeylibs2.api.template.Template
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate
+import ca.landonjw.gooeylibs2.api.template.types.InventoryTemplate
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
@@ -20,6 +22,7 @@ class ChestGUI(
     private val template: ChestTemplate =
         ChestTemplate.Builder(config.size)
             .build()
+    private val playerInventory: InventoryTemplate
 
     // This is a MAP (key=SLOT INDEX, value='MAP(key=PRIORITY, value=GUI ITEM ENTRY)')
     private val items: TreeMap<Int, TreeMap<Int, Map.Entry<String, GuiItem>>> = TreeMap()
@@ -35,10 +38,17 @@ class ChestGUI(
                 items[slot] = priorities
             }
         }
+        playerInventory = InventoryTemplate.builder().build();
         refresh()
     }
 
     private fun refresh() {
+        // Just to keep the player's inventory up to date
+        for ((i, stack) in player.inventory.main.withIndex()) {
+            if (!stack.isEmpty) println("$i - ${stack.item.name.string} - ${stack.count}")
+            playerInventory.set(convertIndex(i), GooeyButton.builder().display(stack).build())
+        }
+
         for ((slot, slotEntry) in items) {
             for ((_, itemEntry) in slotEntry) {
                 val guiItem = itemEntry.value
@@ -74,6 +84,10 @@ class ChestGUI(
         }
     }
 
+    private fun convertIndex(index: Int): Int {
+        return if (index < 9) 27 + index else index - 9
+    }
+
     override fun onClose(action: PageAction) {
         config.executeCloseActions(player)
         SkiesGUIs.INSTANCE.inventoryControllers.remove(player.uuid)
@@ -81,6 +95,10 @@ class ChestGUI(
 
     override fun getTemplate(): Template {
         return template
+    }
+
+    override fun getInventoryTemplate(): Optional<InventoryTemplate> {
+        return Optional.of(playerInventory)
     }
 
     override fun getTitle(): Text {
