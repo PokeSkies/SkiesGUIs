@@ -16,7 +16,7 @@ More information on configuration can be found on the [Wiki](https://github.com/
 - Item click requirements/conditionals *(with success/deny actions)*
 - GUI open and close actions
 - GUI open requirements/conditionals *(with success/deny actions)*
-- 13 action types *(for now)*
+- 14 action types *(for now)*
 - 7 requirement types *(for now)*
 - Create alias commands to access GUIs
 - Economy Integrations (Impactor, Pebbles Economy)
@@ -51,9 +51,9 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 ## Planned Features
 - Better/more debugging and error handling
+- In-game GUI editor
 - More Action Types
     - Mod Integrations (Cobblemon, etc.)
-    - Refresh (when Inventory Ticking is added)
   - **Please submit suggestions!**
 - More Requirement Types
     - Mod Integrations (Cobblemon, etc.)
