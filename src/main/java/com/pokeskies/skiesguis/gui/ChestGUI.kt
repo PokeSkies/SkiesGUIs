@@ -45,7 +45,6 @@ class ChestGUI(
     private fun refresh() {
         // Just to keep the player's inventory up to date
         for ((i, stack) in player.inventory.main.withIndex()) {
-            if (!stack.isEmpty) println("$i - ${stack.item.name.string} - ${stack.count}")
             playerInventory.set(convertIndex(i), GooeyButton.builder().display(stack).build())
         }
 
