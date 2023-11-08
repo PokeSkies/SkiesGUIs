@@ -45,7 +45,7 @@ class GUICommands {
                             return@executes 1
                         }
 
-                        gui.openGUI(player)
+                        gui.openGUI(player, guiEntry.key)
                         return@executes 1
                     }
                 )

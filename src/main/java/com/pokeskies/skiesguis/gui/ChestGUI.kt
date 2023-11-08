@@ -17,8 +17,10 @@ import java.util.*
 
 class ChestGUI(
     private val player: ServerPlayerEntity,
+    private val guiId: String,
     private val config: GuiConfig
 ) : UpdateEmitter<Page?>(), Page {
+    private val controller = InventoryController()
     private val template: ChestTemplate =
         ChestTemplate.Builder(config.size)
             .build()
@@ -28,7 +30,6 @@ class ChestGUI(
     private val items: TreeMap<Int, TreeMap<Int, Map.Entry<String, GuiItem>>> = TreeMap()
 
     init {
-        val controller = InventoryController()
         controller.subscribe(this, Runnable { refresh() })
         SkiesGUIs.INSTANCE.inventoryControllers[player.uuid] = controller
         for (entry in config.items) {
@@ -43,6 +44,7 @@ class ChestGUI(
     }
 
     private fun refresh() {
+        Utils.printDebug("Executing refresh of GUI '$guiId' for player ${player.name.string}")
         // Just to keep the player's inventory up to date
         for ((i, stack) in player.inventory.main.withIndex()) {
             playerInventory.set(convertIndex(i), GooeyButton.builder().display(stack).build())
@@ -89,7 +91,7 @@ class ChestGUI(
 
     override fun onClose(action: PageAction) {
         config.executeCloseActions(player)
-        SkiesGUIs.INSTANCE.inventoryControllers.remove(player.uuid)
+        SkiesGUIs.INSTANCE.inventoryControllers.remove(player.uuid, controller)
     }
 
     override fun getTemplate(): Template {

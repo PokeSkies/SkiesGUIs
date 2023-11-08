@@ -26,8 +26,6 @@ object PlanExtensionHelper {
             playtime += queryService!!.commonQueries.fetchPlaytime(uuid, serverUUID, 0, Long.MAX_VALUE)
         }
 
-        println("!!! PLan - $playtime")
-
         return playtime / 1000
     }
 }

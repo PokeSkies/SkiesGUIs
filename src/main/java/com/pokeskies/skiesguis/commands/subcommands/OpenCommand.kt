@@ -43,7 +43,7 @@ class OpenCommand : SubCommand {
                         return 1
                     }
 
-                    gui.openGUI(player)
+                    gui.openGUI(player, guiID)
                 } else {
                     ctx.source.sendMessage(Utils.deserializeText("<red>Please provide a player argument!"))
                 }
@@ -63,7 +63,7 @@ class OpenCommand : SubCommand {
                 return 1
             }
 
-            gui.openGUI(player)
+            gui.openGUI(player, guiID)
             return 1
         }
     }

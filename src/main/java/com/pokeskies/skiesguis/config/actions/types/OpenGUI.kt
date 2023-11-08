@@ -24,7 +24,7 @@ class OpenGUI(
             return
         }
 
-        gui.openGUI(player)
+        gui.openGUI(player, id)
     }
 
     override fun toString(): String {

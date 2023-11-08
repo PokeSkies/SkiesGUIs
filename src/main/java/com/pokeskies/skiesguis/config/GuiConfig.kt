@@ -20,14 +20,14 @@ class GuiConfig(
     val closeActions: Map<String, Action> = emptyMap(),
     val items: Map<String, GuiItem> = emptyMap()
 ) {
-    fun openGUI(player: ServerPlayerEntity) {
+    fun openGUI(player: ServerPlayerEntity, id: String) {
         if (openRequirements?.checkRequirements(player) == false) {
             openRequirements.executeDenyActions(player)
             return
         }
         openRequirements?.executeSuccessActions(player)
         executeOpenActions(player)
-        UIManager.openUIForcefully(player, ChestGUI(player, this))
+        UIManager.openUIForcefully(player, ChestGUI(player, id, this))
     }
 
     private fun executeOpenActions(player: ServerPlayerEntity) {
