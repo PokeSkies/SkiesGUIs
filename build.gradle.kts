@@ -53,13 +53,19 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.properties["fabric_version"].toString()}")
 
     modImplementation(include("net.kyori:adventure-platform-fabric:5.9.0")!!)
+
     modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
+
     modImplementation("eu.pb4:placeholder-api:2.2.0+1.20.2")
-    modImplementation(include("org.graalvm.js:js:21.0.0")!!)
+
+    modImplementation("io.github.miniplaceholders:miniplaceholders-api:2.2.2")
+    modImplementation("io.github.miniplaceholders:miniplaceholders-kotlin-ext:2.2.2")
 
     modImplementation("net.impactdev.impactor:common:5.1.1-SNAPSHOT")
     modImplementation("net.impactdev.impactor.api:economy:5.1.1-SNAPSHOT")
     modImplementation("net.impactdev.impactor.api:text:5.1.1-SNAPSHOT")
+
+    modImplementation(include("org.graalvm.js:js:21.0.0")!!)
 
     modImplementation("com.github.plan-player-analytics:Plan:5.6.2614")
 

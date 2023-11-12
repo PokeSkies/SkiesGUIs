@@ -2,6 +2,7 @@ package com.pokeskies.skiesguis.placeholders
 
 import com.pokeskies.skiesguis.placeholders.services.DefaultPlaceholderService
 import com.pokeskies.skiesguis.placeholders.services.ImpactorPlaceholderService
+import com.pokeskies.skiesguis.placeholders.services.MiniPlaceholdersService
 import com.pokeskies.skiesguis.placeholders.services.PlaceholderAPIService
 import net.minecraft.server.network.ServerPlayerEntity
 
@@ -29,6 +30,7 @@ class PlaceholderManager {
         return when (placeholderMod) {
             PlaceholderMod.IMPACTOR -> ImpactorPlaceholderService()
             PlaceholderMod.PLACEHOLDERAPI -> PlaceholderAPIService()
+            PlaceholderMod.MINIPLACEHOLDERS -> MiniPlaceholdersService()
         }
     }
 }
