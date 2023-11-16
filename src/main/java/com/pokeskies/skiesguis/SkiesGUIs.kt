@@ -18,7 +18,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.graalvm.polyglot.Engine
 import java.io.File
-import java.util.UUID
+import java.util.*
 
 class SkiesGUIs : ModInitializer {
     companion object {
