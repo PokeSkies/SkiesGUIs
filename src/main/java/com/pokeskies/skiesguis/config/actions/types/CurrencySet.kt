@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class CurrencySet(
     type: ActionType = ActionType.CURRENCY_SET,
-    click: ClickType = ClickType.ANY,
+    click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class MessagePlayer(
     type: ActionType = ActionType.MESSAGE,
-    click: ClickType = ClickType.ANY,
+    click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

@@ -9,7 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class GiveXP(
     type: ActionType = ActionType.GIVE_XP,
-    click: ClickType = ClickType.ANY,
+    click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

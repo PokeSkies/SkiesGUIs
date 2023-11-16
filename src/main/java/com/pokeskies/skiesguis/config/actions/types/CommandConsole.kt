@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class CommandConsole(
     type: ActionType = ActionType.COMMAND_CONSOLE,
-    click: ClickType = ClickType.ANY,
+    click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

@@ -11,7 +11,7 @@ import net.minecraft.sound.SoundEvent
 
 class PlaySound(
     type: ActionType = ActionType.PLAYSOUND,
-    click: ClickType = ClickType.ANY,
+    click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

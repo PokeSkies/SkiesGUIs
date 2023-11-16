@@ -2,14 +2,17 @@ package com.pokeskies.skiesguis.config.actions
 
 import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import ca.landonjw.gooeylibs2.api.tasks.Task
+import com.google.gson.annotations.JsonAdapter
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
+import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 import kotlin.random.Random
 
 abstract class Action(
     val type: ActionType,
-    val click: ClickType = ClickType.ANY,
+    @JsonAdapter(FlexibleListAdaptorFactory::class)
+    val click: List<ClickType> = listOf(ClickType.ANY),
     val delay: Long = 0,
     val chance: Double = 0.0,
     val requirements: RequirementOptions? = RequirementOptions()
@@ -40,7 +43,7 @@ abstract class Action(
     abstract fun executeAction(player: ServerPlayerEntity)
 
     fun matchesClick(buttonClick: ButtonClick): Boolean {
-        return click.buttonClicks.contains(buttonClick)
+        return click.any { it.buttonClicks.contains(buttonClick) }
     }
 
     override fun toString(): String {

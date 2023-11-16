@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class OpenGUI(
     type: ActionType = ActionType.OPEN_GUI,
-    click: ClickType = ClickType.ANY,
+    click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),
