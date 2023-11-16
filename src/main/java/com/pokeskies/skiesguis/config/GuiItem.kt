@@ -1,9 +1,11 @@
 package com.pokeskies.skiesguis.config
 
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
+import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -14,9 +16,11 @@ import net.minecraft.text.Text
 
 class GuiItem(
     val item: Item = Items.BARRIER,
+    @JsonAdapter(FlexibleListAdaptorFactory::class)
     val slots: List<Int> = emptyList(),
     val amount: Int = 1,
     val name: String? = null,
+    @JsonAdapter(FlexibleListAdaptorFactory::class)
     val lore: List<String> = emptyList(),
     val nbt: NbtCompound? = null,
     val priority: Int = 0,

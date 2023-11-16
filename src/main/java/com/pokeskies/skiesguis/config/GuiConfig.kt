@@ -1,15 +1,18 @@
 package com.pokeskies.skiesguis.config
 
 import ca.landonjw.gooeylibs2.api.UIManager
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import net.minecraft.server.network.ServerPlayerEntity
 
 class GuiConfig(
     val title: String = "",
     val size: Int = 6,
+    @JsonAdapter(FlexibleListAdaptorFactory::class)
     @SerializedName("alias_commands")
     val aliasCommands: List<String> = listOf(),
     @SerializedName("open_requirements")
