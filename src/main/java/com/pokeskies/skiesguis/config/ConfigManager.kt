@@ -23,6 +23,7 @@ import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
+import java.util.stream.Collectors
 
 
 class ConfigManager(private val configDir: File) {
@@ -88,22 +89,21 @@ class ConfigManager(private val configDir: File) {
 
         val dir = configDir.resolve("guis")
         if (dir.exists() && dir.isDirectory) {
-            val files = dir.listFiles()
-            if (files != null) {
-                for (file in files) {
-                    val fileName = file.name
-                    if (file.isFile && fileName.contains(".json")) {
-                        val id = fileName.substring(0, fileName.lastIndexOf(".json"))
-                        val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
-                        try {
-                            GUIS[id] = gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
-                            Utils.printInfo("Successfully read and loaded the file $fileName!")
-                        } catch (ex: Exception) {
-                            Utils.printError("Error while trying to parse the file $fileName as a GUI!")
-                            ex.printStackTrace()
-                        }
-                    } else {
-                        Utils.printError("File $fileName is either not a file or is not a .json file!")
+            val filePaths = Files.walk(dir.toPath())
+                    .filter { p: Path -> p.toString().endsWith(".json") }
+                    .collect(Collectors.toList())
+
+            for (filePath in filePaths) {
+                val file = filePath.toFile()
+                if (file.isFile) {
+                    val id = file.name.substring(0, file.name.lastIndexOf(".json"))
+                    val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
+                    try {
+                        GUIS[id] = gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
+                        Utils.printInfo("Successfully read and loaded the file ${file.name}!")
+                    } catch (ex: Exception) {
+                        Utils.printError("Error while trying to parse the file ${file.name} as a GUI!")
+                        ex.printStackTrace()
                     }
                 }
             }
