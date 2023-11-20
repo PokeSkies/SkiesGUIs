@@ -11,6 +11,8 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtList
+import net.minecraft.nbt.NbtString
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 
@@ -35,6 +37,26 @@ class GuiItem(
         val stack = ItemStack(item, amount)
 
         if (nbt != null) {
+            // Parses the nbt and attempts to replace any placeholders
+            for (key in ArrayList(nbt.keys)) {
+                val element = nbt.get(key)
+                if (element != null) {
+                    if (element is NbtString) {
+                        nbt.putString(key, Utils.parsePlaceholders(player, element.asString()))
+                    } else if (element is NbtList) {
+                        val parsed = NbtList()
+                        for (entry in element) {
+                            if (entry is NbtString) {
+                                parsed.add(NbtString.of(Utils.parsePlaceholders(player, entry.asString())))
+                            } else {
+                                parsed.add(entry)
+                            }
+                        }
+                        nbt.put(key, parsed)
+                    }
+                }
+            }
+
             stack.nbt = nbt
         }
 
