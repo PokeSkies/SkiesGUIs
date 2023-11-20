@@ -38,11 +38,12 @@ class GuiItem(
 
         if (nbt != null) {
             // Parses the nbt and attempts to replace any placeholders
-            for (key in ArrayList(nbt.keys)) {
+            val parsedNBT = nbt.copy()
+            for (key in nbt.keys) {
                 val element = nbt.get(key)
                 if (element != null) {
                     if (element is NbtString) {
-                        nbt.putString(key, Utils.parsePlaceholders(player, element.asString()))
+                        parsedNBT.putString(key, Utils.parsePlaceholders(player, element.asString()))
                     } else if (element is NbtList) {
                         val parsed = NbtList()
                         for (entry in element) {
@@ -52,12 +53,12 @@ class GuiItem(
                                 parsed.add(entry)
                             }
                         }
-                        nbt.put(key, parsed)
+                        parsedNBT.put(key, parsed)
                     }
                 }
             }
 
-            stack.nbt = nbt
+            stack.nbt = parsedNBT
         }
 
         val builder = GooeyButton.builder().display(stack)
