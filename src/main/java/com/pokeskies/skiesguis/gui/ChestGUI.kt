@@ -45,6 +45,7 @@ class ChestGUI(
 
     private fun refresh() {
         Utils.printDebug("Executing refresh of GUI '$guiId' for player ${player.name.string}")
+        update()
         // Just to keep the player's inventory up to date
         for ((i, stack) in player.inventory.main.withIndex()) {
             playerInventory.set(convertIndex(i), GooeyButton.builder().display(stack).build())
