@@ -1,8 +1,10 @@
 package com.pokeskies.skiesguis.config.requirements.types.internal
 
+import com.google.gson.annotations.JsonAdapter
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.network.ServerPlayerEntity
 
@@ -10,7 +12,8 @@ class PlaceholderRequirement(
     type: RequirementType = RequirementType.PERMISSION,
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val input: String = "",
-    private val output: String = "",
+    @JsonAdapter(FlexibleListAdaptorFactory::class)
+    private val output: List<String> = emptyList(),
     private val strict: Boolean = false
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayerEntity): Boolean {
@@ -21,7 +24,7 @@ class PlaceholderRequirement(
 
         Utils.printDebug("Checking a ${type?.identifier} Requirement with parsed input='$parsed': $this")
 
-        val result = parsed.equals(output, strict)
+        val result = output.any { it.equals(parsed, strict) }
 
         return if (comparison == ComparisonType.EQUALS) result else !result
     }
