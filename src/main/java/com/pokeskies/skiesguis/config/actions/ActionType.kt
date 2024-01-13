@@ -37,11 +37,12 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
 
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Action {
             val jsonObject: JsonObject = json.getAsJsonObject()
-            val type: ActionType? = ActionType.valueOfAnyCase(jsonObject.get("type").asString)
+            val value = jsonObject.get("type").asString
+            val type: ActionType? = ActionType.valueOfAnyCase(value)
             return try {
                 context.deserialize(json, type!!.clazz)
             } catch (e: NullPointerException) {
-                throw JsonParseException("Could not deserialize action type: $type", e)
+                throw JsonParseException("Could not deserialize action type: $value", e)
             }
         }
     }
