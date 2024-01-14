@@ -5,6 +5,8 @@ import net.minecraft.server.network.ServerPlayerEntity
 
 class DefaultPlaceholderService : IPlaceholderService {
     override fun parsePlaceholders(player: ServerPlayerEntity, text: String): String {
-        return text.replace("%player%", player.name.string)
+        return text
+            .replace("%player%", player.name.string)
+            .replace("%player_uuid%", player.uuid.toString())
     }
 }

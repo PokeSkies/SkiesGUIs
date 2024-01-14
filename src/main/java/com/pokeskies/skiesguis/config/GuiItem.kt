@@ -3,21 +3,25 @@ package com.pokeskies.skiesguis.config
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtHelper
 import net.minecraft.nbt.NbtList
 import net.minecraft.nbt.NbtString
+import net.minecraft.registry.Registries
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
+import net.minecraft.util.Identifier
+import java.util.*
 
 class GuiItem(
-    val item: Item = Items.BARRIER,
+    val item: String = "",
     @JsonAdapter(FlexibleListAdaptorFactory::class)
     val slots: List<Int> = emptyList(),
     val amount: Int = 1,
@@ -33,8 +37,41 @@ class GuiItem(
     @SerializedName("click_requirements")
     val clickRequirements: RequirementOptions? = null
 ) {
+    private fun getItemStack(player: ServerPlayerEntity): ItemStack {
+        if (item.isEmpty()) return ItemStack(Items.BARRIER, amount)
+
+        val parsedItem = Utils.parsePlaceholders(player, item)
+
+        // Handles player head parsing
+        if (parsedItem.contains("playerhead-", true)) {
+            val arg = parsedItem.replace("playerhead-", "")
+            val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
+            if (arg.isNotEmpty()) {
+                try {
+                    val uuid = UUID.fromString(arg)
+                    val gameProfile = SkiesGUIs.INSTANCE.server?.userCache?.getByUuid(uuid)
+                    if (gameProfile != null && gameProfile.isPresent) {
+                        itemStack.orCreateNbt.put("SkullOwner", NbtHelper.writeGameProfile(NbtCompound(), gameProfile.get()))
+                        return itemStack
+                    }
+                } catch (_: Exception) {}
+            }
+
+            Utils.printError("Error while attempting to parse Player Head: $parsedItem")
+            return itemStack
+        }
+
+        val newItem = Registries.ITEM.get(Identifier(parsedItem))
+
+        if (Registries.ITEM.defaultId == Registries.ITEM.getId(newItem)) {
+            Utils.printError("Error while getting Item, defaulting to Barrier: $parsedItem")
+            return ItemStack(Items.BARRIER, amount)
+        }
+
+        return ItemStack(newItem, amount)
+    }
     fun createButton(player: ServerPlayerEntity): GooeyButton.Builder {
-        val stack = ItemStack(item, amount)
+        val stack = getItemStack(player)
 
         if (nbt != null) {
             // Parses the nbt and attempts to replace any placeholders
@@ -58,7 +95,13 @@ class GuiItem(
                 }
             }
 
-            stack.nbt = parsedNBT
+            if (stack.nbt != null && !stack.nbt?.isEmpty!!) {
+                for (key in nbt.keys) {
+                    stack.nbt?.put(key, nbt.get(key))
+                }
+            } else {
+                stack.nbt = nbt
+            }
         }
 
         val builder = GooeyButton.builder().display(stack)
