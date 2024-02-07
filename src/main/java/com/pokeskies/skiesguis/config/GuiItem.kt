@@ -30,6 +30,8 @@ class GuiItem(
     val lore: List<String> = emptyList(),
     val nbt: NbtCompound? = null,
     val priority: Int = 0,
+    @SerializedName("custom_model_data")
+    val customModelData: Int? = null,
     @SerializedName("view_requirements")
     val viewRequirements: RequirementOptions? = null,
     @SerializedName("click_actions")
@@ -102,6 +104,10 @@ class GuiItem(
             } else {
                 stack.nbt = nbt
             }
+        }
+
+        if (customModelData != null) {
+            stack.orCreateNbt.putInt("CustomModelData", customModelData)
         }
 
         val builder = GooeyButton.builder().display(stack)
