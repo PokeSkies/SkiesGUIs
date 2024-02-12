@@ -46,20 +46,31 @@ class GuiItem(
 
         // Handles player head parsing
         if (parsedItem.contains("playerhead", true)) {
-            var uuid: UUID = player.uuid
+            var uuid: UUID? = null
             if (parsedItem.contains("-")) {
                 val arg = parsedItem.replace("playerhead-", "")
                 if (arg.isNotEmpty()) {
-                    try {
-                        uuid = UUID.fromString(arg)
-                    } catch (_: Exception) {}
+                    if (arg.contains("-")) {
+                        try {
+                            uuid = UUID.fromString(arg)
+                        } catch (_: Exception) {}
+                    } else {
+                        val targetPlayer = SkiesGUIs.INSTANCE.server?.playerManager?.getPlayer(arg)
+                        if (targetPlayer != null) {
+                            uuid = targetPlayer.uuid
+                        }
+                    }
                 }
+            } else {
+                uuid = player.uuid
             }
             val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
-            val gameProfile = SkiesGUIs.INSTANCE.server?.userCache?.getByUuid(uuid)
-            if (gameProfile != null && gameProfile.isPresent) {
-                itemStack.orCreateNbt.put("SkullOwner", NbtHelper.writeGameProfile(NbtCompound(), gameProfile.get()))
-                return itemStack
+            if (uuid != null) {
+                val gameProfile = SkiesGUIs.INSTANCE.server?.userCache?.getByUuid(uuid)
+                if (gameProfile != null && gameProfile.isPresent) {
+                    itemStack.orCreateNbt.put("SkullOwner", NbtHelper.writeGameProfile(NbtCompound(), gameProfile.get()))
+                    return itemStack
+                }
             }
 
             Utils.printError("Error while attempting to parse Player Head: $parsedItem")
