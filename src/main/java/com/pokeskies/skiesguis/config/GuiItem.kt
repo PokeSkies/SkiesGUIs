@@ -75,6 +75,7 @@ class GuiItem(
 
         return ItemStack(newItem, amount)
     }
+
     fun createButton(player: ServerPlayerEntity): GooeyButton.Builder {
         val stack = getItemStack(player)
 
@@ -119,7 +120,15 @@ class GuiItem(
             builder.title(Utils.deserializeText(Utils.parsePlaceholders(player, name)))
 
         if (lore.isNotEmpty()) {
-            builder.lore(Text::class.java, lore.stream().map { Utils.deserializeText(Utils.parsePlaceholders(player, it)) }.toList())
+            val parsedLore: MutableList<String> = mutableListOf()
+            for (line in lore.stream().map { Utils.parsePlaceholders(player, it) }.toList()) {
+                if (line.contains("\n")) {
+                    line.split("\n").forEach { parsedLore.add(it) }
+                } else {
+                    parsedLore.add(line)
+                }
+            }
+            builder.lore(Text::class.java, parsedLore.stream().map { Utils.deserializeText(it) }.toList())
         }
 
         return builder
