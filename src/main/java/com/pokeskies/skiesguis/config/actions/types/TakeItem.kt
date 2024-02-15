@@ -1,5 +1,6 @@
 package com.pokeskies.skiesguis.config.actions.types
 
+import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
@@ -20,6 +21,8 @@ class TakeItem(
     val item: Item = Items.BARRIER,
     val amount: Int = 1,
     val nbt: NbtCompound? = null,
+    @SerializedName("custom_model_data")
+    val customModelData: Int? = null,
     val strict: Boolean = true
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayerEntity) {
@@ -46,10 +49,22 @@ class TakeItem(
             return false
         }
 
-        if (strict && nbt != null) {
+        var nbtCopy = nbt?.copy()
+
+        if (customModelData != null) {
+            if (nbtCopy != null) {
+                nbtCopy.putInt("CustomModelData", customModelData)
+            } else {
+                val newNBT = NbtCompound()
+                newNBT.putInt("CustomModelData", customModelData)
+                nbtCopy = newNBT
+            }
+        }
+
+        if (strict && nbtCopy != null) {
             val checkNBT = checkItem.nbt ?: return false
 
-            if (checkNBT != nbt)
+            if (checkNBT != nbtCopy)
                 return false
         }
 

@@ -1,5 +1,6 @@
 package com.pokeskies.skiesguis.config.requirements.types.internal
 
+import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
@@ -16,6 +17,8 @@ class ItemRequirement(
     val item: Item = Items.BARRIER,
     val amount: Int? = null,
     val nbt: NbtCompound? = null,
+    @SerializedName("custom_model_data")
+    val customModelData: Int? = null,
     val strict: Boolean = true
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayerEntity): Boolean {
@@ -62,10 +65,22 @@ class ItemRequirement(
             return false
         }
 
-        if (strict && nbt != null) {
+        var nbtCopy = nbt?.copy()
+
+        if (customModelData != null) {
+            if (nbtCopy != null) {
+                nbtCopy.putInt("CustomModelData", customModelData)
+            } else {
+                val newNBT = NbtCompound()
+                newNBT.putInt("CustomModelData", customModelData)
+                nbtCopy = newNBT
+            }
+        }
+
+        if (strict && nbtCopy != null) {
             val checkNBT = checkItem.nbt ?: return false
 
-            if (checkNBT != nbt)
+            if (checkNBT != nbtCopy)
                 return false
         }
 
