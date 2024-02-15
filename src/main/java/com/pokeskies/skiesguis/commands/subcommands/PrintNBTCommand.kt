@@ -19,7 +19,7 @@ import net.minecraft.util.Hand
 class PrintNBTCommand : SubCommand {
     override fun build(): LiteralCommandNode<ServerCommandSource> {
         return CommandManager.literal("printnbt")
-            .requires(Permissions.require("skiesguis.command.printnbt", 1))
+            .requires(Permissions.require("skiesguis.command.printnbt", 2))
             .executes(Companion::printnbt)
             .build()
     }
