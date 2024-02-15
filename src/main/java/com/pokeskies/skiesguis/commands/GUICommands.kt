@@ -15,7 +15,7 @@ class GUICommands {
             for (command in guiEntry.value.aliasCommands) {
                 dispatcher.register(CommandManager.literal(command)
                     .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
-                    .requires(Permissions.require("skiesguis.open.${guiEntry.key}"))
+                    .requires(Permissions.require("skiesguis.open.${guiEntry.key}", 1))
                     .executes { ctx ->
                         val player = ctx.source.player
                         if (player == null) {

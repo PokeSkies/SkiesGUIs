@@ -15,7 +15,7 @@ import net.minecraft.server.command.ServerCommandSource
 class OpenCommand : SubCommand {
     override fun build(): LiteralCommandNode<ServerCommandSource> {
         return CommandManager.literal("open")
-            .requires(Permissions.require("skiesguis.command.open", 4))
+            .requires(Permissions.require("skiesguis.command.open", 1))
             .then(CommandManager.argument("gui_id", StringArgumentType.string())
                 .suggests { _, builder ->
                     CommandSource.suggestMatching(ConfigManager.GUIS.keys.stream(), builder)

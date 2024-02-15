@@ -13,7 +13,7 @@ import net.minecraft.server.command.ServerCommandSource
 class DebugCommand : SubCommand {
     override fun build(): LiteralCommandNode<ServerCommandSource> {
         return CommandManager.literal("debug")
-            .requires(Permissions.require("skiesguis.command.debug", 4))
+            .requires(Permissions.require("skiesguis.command.debug", 1))
             .executes(Companion::debug)
             .build()
     }
