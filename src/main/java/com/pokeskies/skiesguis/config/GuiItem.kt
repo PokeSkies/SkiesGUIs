@@ -112,12 +112,12 @@ class GuiItem(
                 }
             }
 
-            if (stack.nbt != null && !stack.nbt?.isEmpty!!) {
-                for (key in nbt.keys) {
-                    stack.nbt?.put(key, nbt.get(key))
+            if (stack.nbt != null && !stack.nbt!!.isEmpty) {
+                for (key in parsedNBT.keys) {
+                    stack.nbt?.put(key, parsedNBT.get(key))
                 }
             } else {
-                stack.nbt = nbt
+                stack.nbt = parsedNBT
             }
         }
 
