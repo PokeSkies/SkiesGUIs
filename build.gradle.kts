@@ -1,19 +1,24 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("org.jetbrains.kotlin.jvm").version("1.8.22")
-    id("quiet-fabric-loom") version "1.2-SNAPSHOT"
+    java
+    idea
+    id("quiet-fabric-loom") version ("1.6-SNAPSHOT")
+    kotlin("jvm") version ("1.9.22")
 }
-
 val modId = project.properties["mod_id"].toString()
-version = project.properties["version"].toString()
-group = project.properties["group"].toString()
+version = project.properties["mod_version"].toString()
+group = project.properties["mod_group"].toString()
 
-base.archivesBaseName = project.properties["mod_name"].toString()
+val modName = project.properties["mod_name"].toString()
+base.archivesName.set(modName)
+
+val minecraftVersion = project.properties["minecraft_version"].toString()
 
 repositories {
     mavenCentral()
     maven( "https://jitpack.io")
+    maven("https://maven.parchmentmc.org")
     maven {
         name = "Modrinth"
         url = uri("https://api.modrinth.com/maven")
@@ -46,24 +51,28 @@ configurations {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${project.properties["minecraft_version"].toString()}")
-    mappings("net.fabricmc:yarn:${project.properties["yarn_mappings"].toString()}:v2")
+    minecraft("com.mojang:minecraft:$minecraftVersion")
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-$minecraftVersion:${project.properties["parchment_version"]}")
+    })
+
     modImplementation("net.fabricmc:fabric-loader:${project.properties["loader_version"].toString()}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${project.properties["fabric_kotlin_version"].toString()}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.properties["fabric_version"].toString()}")
 
-    modImplementation(include("net.kyori:adventure-platform-fabric:5.9.0")!!)
+    modImplementation(include("net.kyori:adventure-platform-fabric:5.12.0")!!)
 
     modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
 
-    modImplementation("eu.pb4:placeholder-api:2.2.0+1.20.2")
+    modImplementation("eu.pb4:placeholder-api:2.4.0-pre.1+1.20.5")
 
-    modImplementation("io.github.miniplaceholders:miniplaceholders-api:2.2.2")
-    modImplementation("io.github.miniplaceholders:miniplaceholders-kotlin-ext:2.2.2")
+    modImplementation("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
+    modImplementation("io.github.miniplaceholders:miniplaceholders-kotlin-ext:2.2.3")
 
-    modImplementation("net.impactdev.impactor:common:5.1.1-SNAPSHOT")
-    modImplementation("net.impactdev.impactor.api:economy:5.1.1-SNAPSHOT")
-    modImplementation("net.impactdev.impactor.api:text:5.1.1-SNAPSHOT")
+    modImplementation("net.impactdev.impactor:common:5.2.4+1.20.1-SNAPSHOT")
+    modImplementation("net.impactdev.impactor.api:economy:5.2.4-SNAPSHOT")
+    modImplementation("net.impactdev.impactor.api:text:5.2.4-SNAPSHOT")
 
     implementation(include("org.graalvm.sdk:graal-sdk:22.3.0")!!)
     implementation(include("org.graalvm.truffle:truffle-api:22.3.0")!!)
