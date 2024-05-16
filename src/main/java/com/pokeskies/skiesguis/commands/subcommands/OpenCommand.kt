@@ -21,6 +21,7 @@ class OpenCommand : SubCommand {
                     CommandSource.suggestMatching(ConfigManager.GUIS.keys.stream(), builder)
                 }
                 .then(CommandManager.argument("player", EntityArgumentType.player())
+                    .requires(Permissions.require("skiesguis.command.open.others", 2))
                     .executes(Companion::openGUIPlayer)
                 )
                 .executes(Companion::openGUISelf)
