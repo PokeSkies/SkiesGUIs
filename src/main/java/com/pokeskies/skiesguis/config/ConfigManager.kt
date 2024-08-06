@@ -15,16 +15,15 @@ import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.economy.EconomyType
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.item.Item
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.registry.Registries
-import net.minecraft.sound.SoundEvent
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.sounds.SoundEvent
+import net.minecraft.world.item.Item
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.util.stream.Collectors
-
 
 class ConfigManager(private val configDir: File) {
     lateinit var config: MainConfig
@@ -34,9 +33,9 @@ class ConfigManager(private val configDir: File) {
         .registerTypeAdapter(ClickType::class.java, ClickType.ClickTypeAdaptor())
         .registerTypeAdapter(ComparisonType::class.java, ComparisonType.ComparisonTypeAdaptor())
         .registerTypeAdapter(EconomyType::class.java, EconomyType.EconomyTypeAdaptor())
-        .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(Registries.ITEM))
-        .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(Registries.SOUND_EVENT))
-        .registerTypeHierarchyAdapter(NbtCompound::class.java, Utils.CodecSerializer(NbtCompound.CODEC))
+        .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(BuiltInRegistries.ITEM))
+        .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(BuiltInRegistries.SOUND_EVENT))
+        .registerTypeHierarchyAdapter(CompoundTag::class.java, Utils.CodecSerializer(CompoundTag.CODEC))
         .create()
 
     companion object {

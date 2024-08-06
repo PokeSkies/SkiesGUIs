@@ -6,7 +6,7 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class CurrencySet(
     type: ActionType = ActionType.CURRENCY_SET,
@@ -17,7 +17,7 @@ class CurrencySet(
     private val currency: String = "",
     private val amount: Double = 0.0
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
 
         val service = SkiesGUIs.INSTANCE.economyService

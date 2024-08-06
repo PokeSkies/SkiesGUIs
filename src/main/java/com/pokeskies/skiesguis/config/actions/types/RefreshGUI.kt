@@ -6,7 +6,7 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class RefreshGUI(
     type: ActionType = ActionType.CLOSE_GUI,
@@ -15,7 +15,7 @@ class RefreshGUI(
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         SkiesGUIs.INSTANCE.inventoryControllers[player.uuid]?.update()
     }

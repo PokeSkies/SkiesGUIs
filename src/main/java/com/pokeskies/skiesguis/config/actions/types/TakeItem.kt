@@ -6,11 +6,11 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
 
 class TakeItem(
     type: ActionType = ActionType.GIVE_XP,
@@ -20,23 +20,23 @@ class TakeItem(
     requirements: RequirementOptions? = RequirementOptions(),
     val item: Item = Items.BARRIER,
     val amount: Int = 1,
-    val nbt: NbtCompound? = null,
+    val nbt: CompoundTag? = null,
     @SerializedName("custom_model_data")
     val customModelData: Int? = null,
     val strict: Boolean = true
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         var removed = 0
-        for ((i, stack) in player.inventory.main.withIndex()) {
+        for ((i, stack) in player.inventory.items.withIndex()) {
             if (!stack.isEmpty) {
                 if (isItem(stack)) {
                     val stackSize = stack.count
                     if (removed + stackSize >= amount) {
-                        player.inventory.main[i].decrement(amount - removed)
+                        player.inventory.items[i].shrink(amount - removed)
                         break
                     } else {
-                        player.inventory.main[i].decrement(stackSize)
+                        player.inventory.items[i].shrink(stackSize)
                     }
                     removed += stackSize
                 }
@@ -55,7 +55,7 @@ class TakeItem(
             if (nbtCopy != null) {
                 nbtCopy.putInt("CustomModelData", customModelData)
             } else {
-                val newNBT = NbtCompound()
+                val newNBT = CompoundTag()
                 newNBT.putInt("CustomModelData", customModelData)
                 nbtCopy = newNBT
             }

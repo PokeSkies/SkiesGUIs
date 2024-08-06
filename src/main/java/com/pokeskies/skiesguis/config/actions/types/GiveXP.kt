@@ -5,7 +5,7 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class GiveXP(
     type: ActionType = ActionType.GIVE_XP,
@@ -16,12 +16,12 @@ class GiveXP(
     private val amount: Int = 0,
     private val level: Boolean = false
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (level) {
-            player.addExperienceLevels(amount)
+            player.giveExperienceLevels(amount)
         } else {
-            player.addExperience(amount)
+            player.giveExperiencePoints(amount)
         }
     }
 

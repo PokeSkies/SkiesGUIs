@@ -1,13 +1,13 @@
 package com.pokeskies.skiesguis.config.requirements
 
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 abstract class Requirement(
     val type: RequirementType? = null,
     val comparison: ComparisonType = ComparisonType.EQUALS
 ) {
-    abstract fun checkRequirements(player: ServerPlayerEntity): Boolean
+    abstract fun checkRequirements(player: ServerPlayer): Boolean
 
     open fun allowedComparisons(): List<ComparisonType> {
         return emptyList()

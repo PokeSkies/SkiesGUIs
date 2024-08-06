@@ -4,20 +4,20 @@ import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class DimensionRequirement(
     type: RequirementType = RequirementType.DIMENSION,
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val id: String = ""
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayerEntity): Boolean {
+    override fun checkRequirements(player: ServerPlayer): Boolean {
         if (!checkComparison())
             return false
 
         Utils.printDebug("Checking a ${type?.identifier} Requirement with id='$id': $this")
 
-        val value = id.equals(player.world.registryKey.value.toString(), true)
+        val value = id.equals(player.serverLevel().dimension().location().toString(), true)
         return if (comparison == ComparisonType.NOT_EQUALS) !value else value
     }
 

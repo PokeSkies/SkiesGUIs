@@ -3,8 +3,8 @@
 plugins {
     java
     idea
-    id("quiet-fabric-loom") version ("1.6-SNAPSHOT")
-    kotlin("jvm") version ("1.9.22")
+    id("quiet-fabric-loom") version ("1.7-SNAPSHOT")
+    id("org.jetbrains.kotlin.jvm").version("2.0.0")
 }
 val modId = project.properties["mod_id"].toString()
 version = project.properties["mod_version"].toString()
@@ -61,11 +61,11 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${project.properties["fabric_kotlin_version"].toString()}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.properties["fabric_version"].toString()}")
 
-    modImplementation(include("net.kyori:adventure-platform-fabric:5.12.0")!!)
+    modImplementation(include("net.kyori:adventure-platform-fabric:5.14.1")!!)
 
-    modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")
+    modImplementation("me.lucko:fabric-permissions-api:0.3.1")
 
-    modImplementation("eu.pb4:placeholder-api:2.4.0-pre.1+1.20.5")
+    modImplementation("eu.pb4:placeholder-api:2.4.1+1.21")
 
     modImplementation("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
     modImplementation("io.github.miniplaceholders:miniplaceholders-kotlin-ext:2.2.3")
@@ -100,12 +100,12 @@ tasks.remapJar {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
-    options.release.set(17)
+    options.release.set(21)
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     withSourcesJar()
 }
 

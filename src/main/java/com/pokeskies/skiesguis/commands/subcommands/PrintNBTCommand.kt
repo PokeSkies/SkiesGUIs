@@ -11,24 +11,24 @@ import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.server.command.CommandManager
-import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.util.Hand
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.Commands
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.InteractionHand
 
 class PrintNBTCommand : SubCommand {
-    override fun build(): LiteralCommandNode<ServerCommandSource> {
-        return CommandManager.literal("printnbt")
+    override fun build(): LiteralCommandNode<CommandSourceStack> {
+        return Commands.literal("printnbt")
             .requires(Permissions.require("skiesguis.command.printnbt", 2))
             .executes(Companion::printnbt)
             .build()
     }
 
     companion object {
-        fun printnbt(ctx: CommandContext<ServerCommandSource>): Int {
+        fun printnbt(ctx: CommandContext<CommandSourceStack>): Int {
             val player = ctx.source.player
             if (player != null) {
-                val mainHand = player.getStackInHand(Hand.MAIN_HAND)
+                val mainHand = player.getItemInHand(InteractionHand.MAIN_HAND)
                 if (mainHand.isEmpty) {
                     player.sendMessage(Component.text("Hold something in your Main Hand to view it's NBT Data!").color(NamedTextColor.RED))
                     return 1
@@ -40,7 +40,7 @@ class PrintNBTCommand : SubCommand {
                     return 1
                 }
 
-                val result = JsonOps.INSTANCE.withEncoder(NbtCompound.CODEC)
+                val result = JsonOps.INSTANCE.withEncoder(CompoundTag.CODEC)
                     .apply(nbt)
                     .result()
                 if (result.isEmpty) {
@@ -55,7 +55,7 @@ class PrintNBTCommand : SubCommand {
 
                 player.sendMessage(
                     Component.text("Click to copy the NBT of ")
-                        .append(mainHand.item.name.asComponent())
+                        .append(mainHand.item.getName(mainHand))
                         .color(NamedTextColor.GREEN)
                         .hoverEvent(HoverEvent.showText(builder.build()))
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, jsonOutput))

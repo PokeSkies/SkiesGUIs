@@ -6,15 +6,15 @@ import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.minecraft.server.command.CommandManager
-import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.Commands
 
 class GUICommands {
-    fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
+    fun register(dispatcher: CommandDispatcher<CommandSourceStack?>) {
         for (guiEntry in ConfigManager.GUIS) {
             for (command in guiEntry.value.aliasCommands) {
-                dispatcher.register(CommandManager.literal(command)
-                    .requires { obj: ServerCommandSource -> obj.isExecutedByPlayer }
+                dispatcher.register(Commands.literal(command)
+                    .requires { obj: CommandSourceStack -> obj.isPlayer }
                     .requires(Permissions.require("skiesguis.open.${guiEntry.key}", 2))
                     .executes { ctx ->
                         val player = ctx.source.player

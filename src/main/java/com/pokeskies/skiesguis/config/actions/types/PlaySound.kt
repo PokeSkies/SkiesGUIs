@@ -5,13 +5,10 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys
-import net.minecraft.registry.BuiltinRegistries
-import net.minecraft.registry.Registries
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.sound.SoundCategory
-import net.minecraft.sound.SoundEvent
-import net.minecraft.util.Identifier
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.sounds.SoundSource
 
 class PlaySound(
     type: ActionType = ActionType.PLAYSOUND,
@@ -23,13 +20,20 @@ class PlaySound(
     private val volume: Float = 1.0F,
     private val pitch: Float = 1.0F
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (sound.isEmpty()) {
             Utils.printError("There was an error while executing a Sound Action for player ${player.name}: Sound ID was empty")
             return
         }
-        player.playSound(SoundEvent.of(Identifier(sound)), SoundCategory.MASTER, volume, pitch)
+
+        val soundEvent = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(sound))
+        if (soundEvent == null) {
+            Utils.printError("There was an error while executing a Sound Action for player ${player.name}: Could not find a sound event with the ID $sound")
+            return
+        }
+
+        player.playNotifySound(soundEvent, SoundSource.MASTER, volume, pitch)
     }
 
     override fun toString(): String {

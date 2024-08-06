@@ -11,12 +11,12 @@ import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
+import net.minecraft.server.level.ServerPlayer
 import java.util.*
 
 class ChestGUI(
-    private val player: ServerPlayerEntity,
+    private val player: ServerPlayer,
     private val guiId: String,
     private val config: GuiConfig
 ) : UpdateEmitter<Page?>(), Page {
@@ -47,7 +47,7 @@ class ChestGUI(
         Utils.printDebug("Executing refresh of GUI '$guiId' for player ${player.name.string}")
         update()
         // Just to keep the player's inventory up to date
-        for ((i, stack) in player.inventory.main.withIndex()) {
+        for ((i, stack) in player.inventory.items.withIndex()) {
             playerInventory.set(convertIndex(i), GooeyButton.builder().display(stack).build())
         }
 
@@ -103,7 +103,7 @@ class ChestGUI(
         return Optional.of(playerInventory)
     }
 
-    override fun getTitle(): Text {
+    override fun getTitle(): Component {
         return Utils.deserializeText(Utils.parsePlaceholders(player, config.title))
     }
 

@@ -7,7 +7,7 @@ import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class MessagePlayer(
     type: ActionType = ActionType.MESSAGE,
@@ -18,7 +18,7 @@ class MessagePlayer(
     @JsonAdapter(FlexibleListAdaptorFactory::class)
     private val message: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         for (line in message) {
             player.sendMessage(Utils.deserializeText(Utils.parsePlaceholders(player, line)))

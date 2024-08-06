@@ -6,7 +6,7 @@ import net.impactdev.impactor.api.economy.EconomyService
 import net.impactdev.impactor.api.economy.accounts.Account
 import net.impactdev.impactor.api.economy.currency.Currency
 import net.kyori.adventure.key.Key
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import java.math.BigDecimal
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -16,21 +16,21 @@ class ImpactorEconomyService : IEconomyService {
         Utils.printInfo("Impactor Economy Service has been found and loaded for any Currency actions/requirements!")
     }
 
-    override fun balance(player: ServerPlayerEntity, currency: String) : Double {
+    override fun balance(player: ServerPlayer, currency: String) : Double {
         return getAccount(player.uuid, getCurrency(currency)).thenCompose(Account::balanceAsync).join().toDouble()
     }
 
-    override fun withdraw(player: ServerPlayerEntity, amount: Double, currency: String) : Boolean {
+    override fun withdraw(player: ServerPlayer, amount: Double, currency: String) : Boolean {
         return getAccount(player.uuid, getCurrency(currency)).join()
             .withdrawAsync(BigDecimal(amount)).join().successful()
     }
 
-    override fun deposit(player: ServerPlayerEntity, amount: Double, currency: String) : Boolean {
+    override fun deposit(player: ServerPlayer, amount: Double, currency: String) : Boolean {
         return getAccount(player.uuid, getCurrency(currency)).join()
             .depositAsync(BigDecimal(amount)).join().successful()
     }
 
-    override fun set(player: ServerPlayerEntity, amount: Double, currency: String) : Boolean {
+    override fun set(player: ServerPlayer, amount: Double, currency: String) : Boolean {
         return getAccount(player.uuid, getCurrency(currency)).join()
             .setAsync(BigDecimal(amount)).join().successful()
     }

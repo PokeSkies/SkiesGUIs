@@ -7,7 +7,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class GuiConfig(
     val title: String = "",
@@ -23,7 +23,7 @@ class GuiConfig(
     val closeActions: Map<String, Action> = emptyMap(),
     val items: Map<String, GuiItem> = emptyMap()
 ) {
-    fun openGUI(player: ServerPlayerEntity, id: String) {
+    fun openGUI(player: ServerPlayer, id: String) {
         if (openRequirements?.checkRequirements(player) == false) {
             openRequirements.executeDenyActions(player)
             return
@@ -33,13 +33,13 @@ class GuiConfig(
         UIManager.openUIForcefully(player, ChestGUI(player, id, this))
     }
 
-    private fun executeOpenActions(player: ServerPlayerEntity) {
+    private fun executeOpenActions(player: ServerPlayer) {
         for (actionEntry in openActions) {
             actionEntry.value.attemptExecution(player)
         }
     }
 
-    fun executeCloseActions(player: ServerPlayerEntity) {
+    fun executeCloseActions(player: ServerPlayer) {
         for (actionEntry in closeActions) {
             actionEntry.value.attemptExecution(player)
         }
