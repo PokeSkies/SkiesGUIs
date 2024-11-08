@@ -80,8 +80,10 @@ class ItemRequirement(
         if (strict && nbtCopy != null) {
             val checkNBT = checkItem.nbt ?: return false
 
-            if (checkNBT != nbtCopy)
+            if (checkNBT != nbtCopy) {
+                Utils.printDebug("Item Requirement failed due to NBT not matching. Looking for: $nbtCopy, but found: $checkNBT")
                 return false
+            }
         }
 
         return true
