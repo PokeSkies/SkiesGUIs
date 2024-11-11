@@ -7,7 +7,6 @@ import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.SubCommand
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
-import net.minecraft.commands.CommandSource
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.SharedSuggestionProvider

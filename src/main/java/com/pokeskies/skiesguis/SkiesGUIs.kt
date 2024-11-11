@@ -13,6 +13,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerSt
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStopped
 import net.fabricmc.loader.api.FabricLoader
 import net.kyori.adventure.platform.fabric.FabricServerAudiences
+import net.minecraft.nbt.NbtOps
+import net.minecraft.nbt.Tag
+import net.minecraft.resources.RegistryOps
 import net.minecraft.server.MinecraftServer
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -33,7 +36,8 @@ class SkiesGUIs : ModInitializer {
     lateinit var placeholderManager: PlaceholderManager
 
     var adventure: FabricServerAudiences? = null
-    var server: MinecraftServer? = null
+    lateinit var server: MinecraftServer
+    lateinit var nbtOpts: RegistryOps<Tag>
 
     lateinit var graalEngine: Engine
 
@@ -52,13 +56,14 @@ class SkiesGUIs : ModInitializer {
             .option("engine.WarnInterpreterOnly", "false")
             .build()
 
-        ServerLifecycleEvents.SERVER_STARTING.register(ServerStarting { server: MinecraftServer? ->
+        ServerLifecycleEvents.SERVER_STARTING.register(ServerStarting { server: MinecraftServer ->
             this.adventure = FabricServerAudiences.of(
-                server!!
+                server
             )
             this.server = server
+            this.nbtOpts = server.registryAccess().createSerializationContext(NbtOps.INSTANCE)
         })
-        ServerLifecycleEvents.SERVER_STOPPED.register(ServerStopped { server: MinecraftServer? ->
+        ServerLifecycleEvents.SERVER_STOPPED.register(ServerStopped { server: MinecraftServer ->
             this.adventure = null
         })
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->

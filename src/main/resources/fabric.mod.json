@@ -9,7 +9,7 @@
     "repo": "https://github.com/PokeSkies/SkiesGUIs"
   },
   "license": "All-Rights-Reserved",
-  "environment": "server",
+  "environment": "*",
   "entrypoints": {
     "main": [
       "com.pokeskies.skiesguis.SkiesGUIs"
@@ -21,7 +21,6 @@
     "minecraft": ">=1.21",
     "java": ">=21",
     "fabric-language-kotlin": ">=1.11.0",
-    "fabric-permissions-api-v0": "*",
-    "gooeylibs": "*"
+    "fabric-permissions-api-v0": "*"
   }
 }

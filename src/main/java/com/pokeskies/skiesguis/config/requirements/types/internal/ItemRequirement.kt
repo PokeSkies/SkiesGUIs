@@ -1,15 +1,18 @@
 package com.pokeskies.skiesguis.config.requirements.types.internal
 
 import com.google.gson.annotations.SerializedName
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.Utils
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import kotlin.jvm.optionals.getOrNull
 
 class ItemRequirement(
     type: RequirementType = RequirementType.ITEM,
@@ -78,7 +81,7 @@ class ItemRequirement(
         }
 
         if (strict && nbtCopy != null) {
-            val checkNBT = checkItem.nbt ?: return false
+            val checkNBT = DataComponentPatch.CODEC.encodeStart(SkiesGUIs.INSTANCE.nbtOpts, checkItem.componentsPatch).result().getOrNull() ?: return false
 
             if (checkNBT != nbtCopy) {
                 Utils.printDebug("Item Requirement failed due to NBT not matching. Looking for: $nbtCopy, but found: $checkNBT")

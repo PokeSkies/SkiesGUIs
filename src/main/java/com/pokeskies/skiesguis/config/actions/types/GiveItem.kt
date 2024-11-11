@@ -1,11 +1,13 @@
 package com.pokeskies.skiesguis.config.actions.types
 
 import com.google.gson.annotations.SerializedName
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
@@ -41,7 +43,9 @@ class GiveItem(
         }
 
         if (nbtCopy != null) {
-            itemStack.nbt = nbtCopy
+            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, nbtCopy).result().ifPresent { result ->
+                itemStack.applyComponents(result.first)
+            }
         }
 
         player.addItem(itemStack)

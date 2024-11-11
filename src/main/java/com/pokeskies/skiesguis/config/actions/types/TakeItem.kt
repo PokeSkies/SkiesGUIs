@@ -1,16 +1,19 @@
 package com.pokeskies.skiesguis.config.actions.types
 
 import com.google.gson.annotations.SerializedName
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import kotlin.jvm.optionals.getOrNull
 
 class TakeItem(
     type: ActionType = ActionType.GIVE_XP,
@@ -62,7 +65,7 @@ class TakeItem(
         }
 
         if (strict && nbtCopy != null) {
-            val checkNBT = checkItem.nbt ?: return false
+            val checkNBT = DataComponentPatch.CODEC.encodeStart(SkiesGUIs.INSTANCE.nbtOpts, checkItem.componentsPatch).result().getOrNull() ?: return false
 
             if (checkNBT != nbtCopy)
                 return false
