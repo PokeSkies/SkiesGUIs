@@ -96,27 +96,7 @@ class GuiItem(
         val stack = getItemStack(player)
 
         if (nbt != null) {
-            val parsedNBT = nbt.copy()
-            for (key in parsedNBT.allKeys) {
-                val element = parsedNBT.get(key)
-                if (element != null) {
-                    if (element is StringTag) {
-                        parsedNBT.putString(key, Utils.parsePlaceholders(player, element.asString))
-                    } else if (element is ListTag) {
-                        val parsed = ListTag()
-                        for (entry in element) {
-                            if (entry is StringTag) {
-                                parsed.add(StringTag.valueOf(Utils.parsePlaceholders(player, entry.asString)))
-                            } else {
-                                parsed.add(entry)
-                            }
-                        }
-                        parsedNBT.put(key, parsed)
-                    }
-                }
-            }
-
-            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, parsedNBT).result().ifPresent { result ->
+            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, parseNBT(player, nbt)).result().ifPresent { result ->
                 stack.applyComponents(result.first)
             }
         }
@@ -145,6 +125,39 @@ class GuiItem(
         stack.applyComponents(dataComponents.build())
 
         return GooeyButton.builder().display(stack)
+    }
+
+    private fun parseNBT(player: ServerPlayer, tag: CompoundTag): CompoundTag {
+        val parsedNBT = tag.copy()
+        for (key in parsedNBT.allKeys) {
+            var element = parsedNBT.get(key)
+            if (element != null) {
+                when (element) {
+                    is StringTag -> {
+                        element = StringTag.valueOf(Utils.parsePlaceholders(player, element.asString))
+                    }
+                    is ListTag -> {
+                        val parsed = ListTag()
+                        for (entry in element) {
+                            if (entry is StringTag) {
+                                parsed.add(StringTag.valueOf(Utils.parsePlaceholders(player, entry.asString)))
+                            } else {
+                                parsed.add(entry)
+                            }
+                        }
+                        element = parsed
+                    }
+                    is CompoundTag -> {
+                        element = parseNBT(player, element)
+                    }
+                }
+
+                if (element != null) {
+                    parsedNBT.put(key, element)
+                }
+            }
+        }
+        return parsedNBT
     }
 
     override fun toString(): String {
