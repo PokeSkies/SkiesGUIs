@@ -1,6 +1,7 @@
 package com.pokeskies.skiesguis.config.actions.types
 
 import com.google.gson.annotations.JsonAdapter
+import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
@@ -17,7 +18,9 @@ class CommandPlayer(
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),
     @JsonAdapter(FlexibleListAdaptorFactory::class)
-    private val commands: List<String> = emptyList()
+    private val commands: List<String> = emptyList(),
+    @SerializedName("permission_level")
+    private val permissionLevel: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayerEntity) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
@@ -26,9 +29,15 @@ class CommandPlayer(
             return
         }
 
+        var source = player.commandSource
+
+        if (permissionLevel != null) {
+            source = source.withLevel(permissionLevel)
+        }
+
         for (command in commands) {
             SkiesGUIs.INSTANCE.server?.commandManager?.executeWithPrefix(
-                player.commandSource,
+                source,
                 Utils.parsePlaceholders(player, command)
             )
         }
