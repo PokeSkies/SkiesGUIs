@@ -64,8 +64,8 @@ class ChestGUI(
                                     val action = actionEntry.value
                                     if (action.matchesClick(ctx.clickType)) {
                                         if (action.requirements?.checkRequirements(player) != false) {
-                                            action.requirements?.executeSuccessActions(player)
                                             action.attemptExecution(player)
+                                            action.requirements?.executeSuccessActions(player)
                                         } else {
                                             action.requirements.executeDenyActions(player)
                                         }
