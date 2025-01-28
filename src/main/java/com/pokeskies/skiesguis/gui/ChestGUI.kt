@@ -11,14 +11,15 @@ import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
 import com.pokeskies.skiesguis.utils.Utils
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import java.util.*
 
 class ChestGUI(
-    private val player: ServerPlayer,
-    private val guiId: String,
-    private val config: GuiConfig
+    val player: ServerPlayer,
+    val guiId: String,
+    val config: GuiConfig
 ) : UpdateEmitter<Page?>(), Page {
     private val controller = InventoryController()
     private val template: ChestTemplate =
@@ -26,8 +27,15 @@ class ChestGUI(
             .build()
     private val playerInventory: InventoryTemplate
 
+    val manager: MolangManager? by lazy {
+        if(FabricLoader.getInstance().isModLoaded("cobblemon")) {
+            MolangManager(this)
+        } else {
+            null
+        }
+    }
     // This is a MAP (key=SLOT INDEX, value='MAP(key=PRIORITY, value=GUI ITEM ENTRY)')
-    private val items: TreeMap<Int, TreeMap<Int, Map.Entry<String, GuiItem>>> = TreeMap()
+    val items: TreeMap<Int, TreeMap<Int, Pair<String, GuiItem>>> = TreeMap()
 
     init {
         controller.subscribe(this, Runnable { refresh() })
@@ -35,7 +43,7 @@ class ChestGUI(
         for (entry in config.items) {
             for (slot in entry.value.slots) {
                 val priorities = items.getOrDefault(slot, TreeMap())
-                priorities[entry.value.priority] = entry
+                priorities[entry.value.priority] = entry.key to entry.value
                 items[slot] = priorities
             }
         }
@@ -43,7 +51,7 @@ class ChestGUI(
         refresh()
     }
 
-    private fun refresh() {
+    fun refresh() {
         Utils.printDebug("Executing refresh of GUI '$guiId' for player ${player.name.string}")
         update()
         // Just to keep the player's inventory up to date
@@ -53,7 +61,7 @@ class ChestGUI(
 
         for ((slot, slotEntry) in items) {
             for ((_, itemEntry) in slotEntry) {
-                val guiItem = itemEntry.value
+                val guiItem = itemEntry.second
                 if (guiItem.viewRequirements?.checkRequirements(player) != false) {
                     guiItem.viewRequirements?.executeSuccessActions(player)
                     template.set(slot, guiItem.createButton(player)
@@ -103,9 +111,12 @@ class ChestGUI(
         return Optional.of(playerInventory)
     }
 
+    var title = config.title
     override fun getTitle(): Component {
-        return Utils.deserializeText(Utils.parsePlaceholders(player, config.title))
+        return Utils.deserializeText(Utils.parsePlaceholders(player, title))
     }
 
     class InventoryController: UpdateEmitter<ChestGUI?>()
+
+
 }

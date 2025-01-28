@@ -26,10 +26,11 @@ import java.util.*
 class SkiesGUIs : ModInitializer {
     companion object {
         lateinit var INSTANCE: SkiesGUIs
+        val MOD_ID: String = "skiesguis"
         val LOGGER: Logger = LogManager.getLogger("skiesguis")
     }
 
-    private lateinit var configDir: File
+    lateinit var configDir: File
     lateinit var configManager: ConfigManager
 
     var economyService: IEconomyService? = null
