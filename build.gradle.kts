@@ -50,12 +50,6 @@ loom {
     }
 }
 
-val modImplementationInclude by configurations.register("modImplementationInclude")
-
-configurations {
-    modImplementationInclude
-}
-
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
     mappings(loom.layered {
@@ -72,7 +66,9 @@ dependencies {
 
     modImplementation("me.lucko:fabric-permissions-api:0.3.1")
 
-    modImplementation("ca.landonjw.gooeylibs:fabric-api-repack:3.1.0-1.21.1-SNAPSHOT@jar")
+    modImplementation("ca.landonjw.gooeylibs:fabric-api-repack:3.1.0-1.21.1-SNAPSHOT@jar")?.let {
+        include(it)
+    }
 
     modImplementation("eu.pb4:placeholder-api:2.4.1+1.21")
 
