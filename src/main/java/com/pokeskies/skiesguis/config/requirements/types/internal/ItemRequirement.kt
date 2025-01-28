@@ -100,4 +100,3 @@ class ItemRequirement(
         return "ItemRequirement(comparison=$comparison, item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
     }
 }
- 
