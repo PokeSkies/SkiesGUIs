@@ -6,6 +6,10 @@
     "playsound": {
       "type": "PLAYSOUND",
       "sound": "cobblemon:pc.on"
+    },
+    "molang": {
+      "type": "MOLANG",
+      "script": "q.gui.player.tell('test');"
     }
   },
   "close_actions": {

@@ -1,12 +1,16 @@
 package com.pokeskies.skiesguis.config
 
 import ca.landonjw.gooeylibs2.api.UIManager
+import com.cobblemon.mod.common.api.scheduling.afterOnServer
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
+import net.impactdev.impactor.api.scheduler.Ticks
+import net.impactdev.impactor.api.scheduler.v2.Scheduler
+import net.impactdev.impactor.api.scheduler.v2.Schedulers
 import net.minecraft.server.level.ServerPlayer
 
 class GuiConfig(
@@ -28,9 +32,14 @@ class GuiConfig(
             openRequirements.executeDenyActions(player)
             return
         }
+        val gui = ChestGUI(player, id, this)
         openRequirements?.executeSuccessActions(player)
-        executeOpenActions(player)
-        UIManager.openUIForcefully(player, ChestGUI(player, id, this))
+        UIManager.openUIForcefully(player, gui)
+        Schedulers.request(Scheduler.SYNCHRONOUS).ifPresent {
+            it.delayed({
+                executeOpenActions(player)
+            }, Ticks.single())
+        }
     }
 
     private fun executeOpenActions(player: ServerPlayer) {
