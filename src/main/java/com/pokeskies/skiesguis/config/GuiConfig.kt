@@ -1,7 +1,6 @@
 package com.pokeskies.skiesguis.config
 
 import ca.landonjw.gooeylibs2.api.UIManager
-import com.cobblemon.mod.common.api.scheduling.afterOnServer
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action

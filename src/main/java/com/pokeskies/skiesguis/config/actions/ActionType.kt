@@ -40,7 +40,7 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Action {
             val jsonObject: JsonObject = json.getAsJsonObject()
             val value = jsonObject.get("type").asString
-            if(value == "molang" && !FabricLoader.getInstance().isModLoaded("cobblemon")) {
+            if (value == "molang" && !FabricLoader.getInstance().isModLoaded("cobblemon")) {
                 throw JsonParseException("Molang action is not supported without the Cobblemon mod")
             }
             val type: ActionType? = ActionType.valueOfAnyCase(value)
