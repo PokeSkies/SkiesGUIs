@@ -9,7 +9,7 @@ import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class CommandPlayer(
     type: ActionType = ActionType.COMMAND_PLAYER,
@@ -22,21 +22,21 @@ class CommandPlayer(
     @SerializedName("permission_level")
     private val permissionLevel: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
-        if (SkiesGUIs.INSTANCE.server?.commandManager == null) {
+        if (SkiesGUIs.INSTANCE.server.commands == null) {
             Utils.printError("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
             return
         }
 
-        var source = player.commandSource
+        var source = player.createCommandSourceStack()
 
         if (permissionLevel != null) {
-            source = source.withLevel(permissionLevel)
+            source = source.withPermission(permissionLevel)
         }
 
         for (command in commands) {
-            SkiesGUIs.INSTANCE.server?.commandManager?.executeWithPrefix(
+            SkiesGUIs.INSTANCE.server.commands.performPrefixedCommand(
                 source,
                 Utils.parsePlaceholders(player, command)
             )

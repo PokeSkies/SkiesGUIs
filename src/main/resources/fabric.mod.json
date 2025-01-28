@@ -9,19 +9,18 @@
     "repo": "https://github.com/PokeSkies/SkiesGUIs"
   },
   "license": "All-Rights-Reserved",
-  "environment": "server",
+  "environment": "*",
   "entrypoints": {
     "main": [
       "com.pokeskies.skiesguis.SkiesGUIs"
     ]
   },
   "depends": {
-    "fabricloader": ">=0.14.19",
+    "java": ">=21",
+    "minecraft": ">=1.21.1",
+    "fabricloader": ">=0.16.0",
     "fabric": "*",
-    "minecraft": ">=1.20.1",
-    "java": ">=17",
-    "fabric-language-kotlin": ">=1.9.5",
-    "fabric-permissions-api-v0": "*",
-    "gooeylibs": ""
+    "fabric-language-kotlin": ">=1.11.0",
+    "fabric-permissions-api-v0": "*"
   }
 }

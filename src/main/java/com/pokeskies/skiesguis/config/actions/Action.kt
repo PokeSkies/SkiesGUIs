@@ -6,7 +6,7 @@ import com.google.gson.annotations.JsonAdapter
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import kotlin.random.Random
 
 abstract class Action(
@@ -18,7 +18,7 @@ abstract class Action(
     val requirements: RequirementOptions? = RequirementOptions()
 ) {
     // Will do a chance check and then apply any delay
-    open fun attemptExecution(player: ServerPlayerEntity) {
+    open fun attemptExecution(player: ServerPlayer) {
         if (chance > 0.0 && chance < 1.0) {
             val roll = Random.nextFloat()
             Utils.printDebug("Attempting chance roll for $type Action. Result is: $roll <= $chance = ${roll <= chance}.")
@@ -40,7 +40,7 @@ abstract class Action(
             .build()
     }
 
-    abstract fun executeAction(player: ServerPlayerEntity)
+    abstract fun executeAction(player: ServerPlayer)
 
     fun matchesClick(buttonClick: ButtonClick): Boolean {
         return click.any { it.buttonClicks.contains(buttonClick) }

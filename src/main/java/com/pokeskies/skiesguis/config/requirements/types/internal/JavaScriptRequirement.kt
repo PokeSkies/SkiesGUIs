@@ -5,7 +5,7 @@ import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import org.graalvm.polyglot.Context
 import org.graalvm.polyglot.Value
 
@@ -14,7 +14,7 @@ class JavaScriptRequirement(
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val expression: String = ""
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayerEntity): Boolean {
+    override fun checkRequirements(player: ServerPlayer): Boolean {
         if (!checkComparison())
             return false
 

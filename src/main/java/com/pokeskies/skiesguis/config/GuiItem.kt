@@ -8,16 +8,19 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.nbt.NbtHelper
-import net.minecraft.nbt.NbtList
-import net.minecraft.nbt.NbtString
-import net.minecraft.registry.Registries
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.ListTag
+import net.minecraft.nbt.StringTag
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
+import net.minecraft.world.item.component.CustomModelData
+import net.minecraft.world.item.component.ItemLore
+import net.minecraft.world.item.component.ResolvableProfile
 import java.util.*
 
 class GuiItem(
@@ -28,7 +31,7 @@ class GuiItem(
     val name: String? = null,
     @JsonAdapter(FlexibleListAdaptorFactory::class)
     val lore: List<String> = emptyList(),
-    val nbt: NbtCompound? = null,
+    val nbt: CompoundTag? = null,
     val priority: Int = 0,
     @SerializedName("custom_model_data")
     val customModelData: Int? = null,
@@ -39,7 +42,7 @@ class GuiItem(
     @SerializedName("click_requirements")
     val clickRequirements: RequirementOptions? = null
 ) {
-    private fun getItemStack(player: ServerPlayerEntity): ItemStack {
+    private fun getItemStack(player: ServerPlayer): ItemStack {
         if (item.isEmpty()) return ItemStack(Items.BARRIER, amount)
 
         val parsedItem = Utils.parsePlaceholders(player, item)
@@ -55,7 +58,7 @@ class GuiItem(
                             uuid = UUID.fromString(arg)
                         } catch (_: Exception) {}
                     } else {
-                        val targetPlayer = SkiesGUIs.INSTANCE.server?.playerManager?.getPlayer(arg)
+                        val targetPlayer = SkiesGUIs.INSTANCE.server?.playerList?.getPlayerByName(arg)
                         if (targetPlayer != null) {
                             uuid = targetPlayer.uuid
                         }
@@ -66,9 +69,11 @@ class GuiItem(
             }
             val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
             if (uuid != null) {
-                val gameProfile = SkiesGUIs.INSTANCE.server?.userCache?.getByUuid(uuid)
+                val gameProfile = SkiesGUIs.INSTANCE.server?.profileCache?.get(uuid)
                 if (gameProfile != null && gameProfile.isPresent) {
-                    itemStack.orCreateNbt.put("SkullOwner", NbtHelper.writeGameProfile(NbtCompound(), gameProfile.get()))
+                    itemStack.applyComponents(DataComponentPatch.builder()
+                        .set(DataComponents.PROFILE, ResolvableProfile(gameProfile.get()))
+                        .build())
                     return itemStack
                 }
             }
@@ -77,58 +82,33 @@ class GuiItem(
             return itemStack
         }
 
-        val newItem = Registries.ITEM.get(Identifier(parsedItem))
+        val newItem = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(parsedItem))
 
-        if (Registries.ITEM.defaultId == Registries.ITEM.getId(newItem)) {
+        if (newItem.isEmpty) {
             Utils.printError("Error while getting Item, defaulting to Barrier: $parsedItem")
             return ItemStack(Items.BARRIER, amount)
         }
 
-        return ItemStack(newItem, amount)
+        return ItemStack(newItem.get(), amount)
     }
 
-    fun createButton(player: ServerPlayerEntity): GooeyButton.Builder {
+    fun createButton(player: ServerPlayer): GooeyButton.Builder {
         val stack = getItemStack(player)
 
         if (nbt != null) {
-            // Parses the nbt and attempts to replace any placeholders
-            val parsedNBT = nbt.copy()
-            for (key in nbt.keys) {
-                val element = nbt.get(key)
-                if (element != null) {
-                    if (element is NbtString) {
-                        parsedNBT.putString(key, Utils.parsePlaceholders(player, element.asString()))
-                    } else if (element is NbtList) {
-                        val parsed = NbtList()
-                        for (entry in element) {
-                            if (entry is NbtString) {
-                                parsed.add(NbtString.of(Utils.parsePlaceholders(player, entry.asString())))
-                            } else {
-                                parsed.add(entry)
-                            }
-                        }
-                        parsedNBT.put(key, parsed)
-                    }
-                }
-            }
-
-            if (stack.nbt != null && !stack.nbt!!.isEmpty) {
-                for (key in parsedNBT.keys) {
-                    stack.nbt?.put(key, parsedNBT.get(key))
-                }
-            } else {
-                stack.nbt = parsedNBT
+            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, parseNBT(player, nbt)).result().ifPresent { result ->
+                stack.applyComponents(result.first)
             }
         }
+
+        val dataComponents = DataComponentPatch.builder()
 
         if (customModelData != null) {
-            stack.orCreateNbt.putInt("CustomModelData", customModelData)
+            dataComponents.set(DataComponents.CUSTOM_MODEL_DATA, CustomModelData(customModelData))
         }
 
-        val builder = GooeyButton.builder().display(stack)
-
         if (name != null)
-            builder.title(Utils.deserializeText(Utils.parsePlaceholders(player, name)))
+            dataComponents.set(DataComponents.ITEM_NAME, Utils.deserializeText(Utils.parsePlaceholders(player, name)))
 
         if (lore.isNotEmpty()) {
             val parsedLore: MutableList<String> = mutableListOf()
@@ -139,10 +119,45 @@ class GuiItem(
                     parsedLore.add(line)
                 }
             }
-            builder.lore(Text::class.java, parsedLore.stream().map { Utils.deserializeText(it) }.toList())
+            dataComponents.set(DataComponents.LORE, ItemLore(parsedLore.stream().map { Utils.deserializeText(it) }.toList()))
         }
 
-        return builder
+        stack.applyComponents(dataComponents.build())
+
+        return GooeyButton.builder().display(stack)
+    }
+
+    private fun parseNBT(player: ServerPlayer, tag: CompoundTag): CompoundTag {
+        val parsedNBT = tag.copy()
+        for (key in parsedNBT.allKeys) {
+            var element = parsedNBT.get(key)
+            if (element != null) {
+                when (element) {
+                    is StringTag -> {
+                        element = StringTag.valueOf(Utils.parsePlaceholders(player, element.asString))
+                    }
+                    is ListTag -> {
+                        val parsed = ListTag()
+                        for (entry in element) {
+                            if (entry is StringTag) {
+                                parsed.add(StringTag.valueOf(Utils.parsePlaceholders(player, entry.asString)))
+                            } else {
+                                parsed.add(entry)
+                            }
+                        }
+                        element = parsed
+                    }
+                    is CompoundTag -> {
+                        element = parseNBT(player, element)
+                    }
+                }
+
+                if (element != null) {
+                    parsedNBT.put(key, element)
+                }
+            }
+        }
+        return parsedNBT
     }
 
     override fun toString(): String {

@@ -4,7 +4,7 @@ import com.pokeskies.skiesguis.placeholders.services.DefaultPlaceholderService
 import com.pokeskies.skiesguis.placeholders.services.ImpactorPlaceholderService
 import com.pokeskies.skiesguis.placeholders.services.MiniPlaceholdersService
 import com.pokeskies.skiesguis.placeholders.services.PlaceholderAPIService
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class PlaceholderManager {
     private val services: MutableList<IPlaceholderService> = mutableListOf()
@@ -18,7 +18,7 @@ class PlaceholderManager {
         }
     }
 
-    fun parse(player: ServerPlayerEntity, text: String): String {
+    fun parse(player: ServerPlayer, text: String): String {
         var returnValue = text
         for (service in services) {
             returnValue = service.parsePlaceholders(player, returnValue)

@@ -6,7 +6,7 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class OpenGUI(
     type: ActionType = ActionType.OPEN_GUI,
@@ -16,7 +16,7 @@ class OpenGUI(
     requirements: RequirementOptions? = RequirementOptions(),
     private val id: String = ""
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         val gui = ConfigManager.GUIS[id]
         if (gui == null) {

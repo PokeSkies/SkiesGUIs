@@ -7,20 +7,21 @@ import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.SubCommand
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
-import net.minecraft.command.CommandSource
-import net.minecraft.command.argument.EntityArgumentType
-import net.minecraft.server.command.CommandManager
-import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.Commands
+import net.minecraft.commands.SharedSuggestionProvider
+import net.minecraft.commands.arguments.EntityArgument
 
 class OpenCommand : SubCommand {
-    override fun build(): LiteralCommandNode<ServerCommandSource> {
-        return CommandManager.literal("open")
+    override fun build(): LiteralCommandNode<CommandSourceStack> {
+        return Commands.literal("open")
             .requires(Permissions.require("skiesguis.command.open", 2))
-            .then(CommandManager.argument("gui_id", StringArgumentType.string())
+            .then(Commands.argument("gui_id", StringArgumentType.string())
                 .suggests { _, builder ->
-                    CommandSource.suggestMatching(ConfigManager.GUIS.keys.stream(), builder)
+                    SharedSuggestionProvider.suggest(ConfigManager.GUIS.keys.stream(), builder)
                 }
-                .then(CommandManager.argument("player", EntityArgumentType.player())
+                .then(
+                    Commands.argument("player", EntityArgument.player())
                     .requires(Permissions.require("skiesguis.command.open.others", 2))
                     .executes(Companion::openGUIPlayer)
                 )
@@ -30,7 +31,7 @@ class OpenCommand : SubCommand {
     }
 
     companion object {
-        private fun openGUISelf(ctx: CommandContext<ServerCommandSource>): Int {
+        private fun openGUISelf(ctx: CommandContext<CommandSourceStack>): Int {
             try {
                 val player = ctx.source.player
                 if (player != null) {
@@ -54,8 +55,8 @@ class OpenCommand : SubCommand {
             return 1
         }
 
-        private fun openGUIPlayer(ctx: CommandContext<ServerCommandSource>): Int {
-            val player = EntityArgumentType.getPlayer(ctx, "player")
+        private fun openGUIPlayer(ctx: CommandContext<CommandSourceStack>): Int {
+            val player = EntityArgument.getPlayer(ctx, "player")
             val guiID = StringArgumentType.getString(ctx, "gui_id")
 
             val gui = ConfigManager.GUIS[guiID]

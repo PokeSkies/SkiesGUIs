@@ -2,6 +2,7 @@ package com.pokeskies.skiesguis.config.actions
 
 import com.google.gson.*
 import com.pokeskies.skiesguis.config.actions.types.*
+import net.fabricmc.loader.api.FabricLoader
 import java.lang.reflect.Type
 
 
@@ -19,6 +20,7 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
     CURRENCY_WITHDRAW("currency_withdraw", CurrencyWithdraw::class.java),
     CURRENCY_SET("currency_set", CurrencySet::class.java),
     GIVE_ITEM("give_item", GiveItem::class.java),
+    MOLANG("molang", MolangAction::class.java),
     TAKE_ITEM("take_item", TakeItem::class.java);
 
     companion object {
@@ -38,6 +40,9 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Action {
             val jsonObject: JsonObject = json.getAsJsonObject()
             val value = jsonObject.get("type").asString
+            if (value == "molang" && !FabricLoader.getInstance().isModLoaded("cobblemon")) {
+                throw JsonParseException("Molang action is not supported without the Cobblemon mod")
+            }
             val type: ActionType? = ActionType.valueOfAnyCase(value)
             return try {
                 context.deserialize(json, type!!.clazz)

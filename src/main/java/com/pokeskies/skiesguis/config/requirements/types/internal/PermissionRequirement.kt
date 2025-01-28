@@ -5,14 +5,14 @@ import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 class PermissionRequirement(
     type: RequirementType = RequirementType.PERMISSION,
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val permission: String = ""
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayerEntity): Boolean {
+    override fun checkRequirements(player: ServerPlayer): Boolean {
         if (!checkComparison())
             return false
 

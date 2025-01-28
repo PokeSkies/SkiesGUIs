@@ -15,18 +15,20 @@ import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.economy.EconomyType
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.item.Item
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.registry.Registries
-import net.minecraft.sound.SoundEvent
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.sounds.SoundEvent
+import net.minecraft.world.item.Item
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.util.stream.Collectors
 
-
 class ConfigManager(private val configDir: File) {
+    private var assetPackage = "assets/${SkiesGUIs.MOD_ID}"
+
     lateinit var config: MainConfig
     var gson: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping()
         .registerTypeAdapter(Action::class.java, ActionType.ActionTypeAdaptor())
@@ -34,9 +36,9 @@ class ConfigManager(private val configDir: File) {
         .registerTypeAdapter(ClickType::class.java, ClickType.ClickTypeAdaptor())
         .registerTypeAdapter(ComparisonType::class.java, ComparisonType.ComparisonTypeAdaptor())
         .registerTypeAdapter(EconomyType::class.java, EconomyType.EconomyTypeAdaptor())
-        .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(Registries.ITEM))
-        .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(Registries.SOUND_EVENT))
-        .registerTypeHierarchyAdapter(NbtCompound::class.java, Utils.CodecSerializer(NbtCompound.CODEC))
+        .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(BuiltInRegistries.ITEM))
+        .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(BuiltInRegistries.SOUND_EVENT))
+        .registerTypeHierarchyAdapter(CompoundTag::class.java, Utils.CodecSerializer(CompoundTag.CODEC))
         .create()
 
     companion object {
@@ -58,30 +60,8 @@ class ConfigManager(private val configDir: File) {
 
         configDir.mkdirs()
 
-        // Main Config
-        val configFile = configDir.resolve("config.json")
-        if (!configFile.exists()) {
-            try {
-                val inputStream: InputStream = classLoader.getResourceAsStream("assets/skiesguis/config.json")
-                Files.copy(inputStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-            } catch (e: Exception) {
-                Utils.printError("Failed to copy the default config file: $e - ${e.message}")
-            }
-        }
-
-        // If the 'guis' directory does not exist, create it and copy the default example GUI
-        val guiDirectory = configDir.resolve("guis")
-        if (!guiDirectory.exists()) {
-            guiDirectory.mkdirs()
-            val file = guiDirectory.resolve("example_gui.json")
-            try {
-                val resourceFile: Path =
-                    Path.of(classLoader.getResource("assets/skiesguis/guis/example_gui.json").toURI())
-                Files.copy(resourceFile, file.toPath(), StandardCopyOption.REPLACE_EXISTING)
-            } catch (e: Exception) {
-                Utils.printError("Failed to copy the default GUI file: " + e.message)
-            }
-        }
+        attemptDefaultFileCopy(classLoader, "config.json")
+        attemptDefaultDirectoryCopy(classLoader, "guis")
     }
 
     private fun loadGUIs() {
@@ -140,6 +120,43 @@ class ConfigManager(private val configDir: File) {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun attemptDefaultFileCopy(classLoader: ClassLoader, fileName: String) {
+        val file = SkiesGUIs.INSTANCE.configDir.resolve(fileName)
+        if (!file.exists()) {
+            file.mkdirs()
+            try {
+                val stream = classLoader.getResourceAsStream("${assetPackage}/$fileName")
+                    ?: throw NullPointerException("File not found $fileName")
+
+                Files.copy(stream, file.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            } catch (e: Exception) {
+                Utils.printError("Failed to copy the default file '$fileName': $e")
+            }
+        }
+    }
+
+    private fun attemptDefaultDirectoryCopy(classLoader: ClassLoader, directoryName: String) {
+        val directory = SkiesGUIs.INSTANCE.configDir.resolve(directoryName)
+        if (!directory.exists()) {
+            directory.mkdirs()
+            try {
+                val sourceUrl = classLoader.getResource("${assetPackage}/$directoryName")
+                    ?: throw NullPointerException("Directory not found $directoryName")
+                val sourcePath = Paths.get(sourceUrl.toURI())
+
+                Files.walk(sourcePath).use { stream ->
+                    stream.filter { Files.isRegularFile(it) }
+                        .forEach { sourceFile ->
+                            val destinationFile = directory.resolve(sourcePath.relativize(sourceFile).toString())
+                            Files.copy(sourceFile, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                        }
+                }
+            } catch (e: Exception) {
+                Utils.printError("Failed to copy the default directory '$directoryName': " + e.message)
+            }
         }
     }
 }

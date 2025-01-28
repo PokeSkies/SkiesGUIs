@@ -3,10 +3,10 @@ package com.pokeskies.skiesguis.config.actions
 import ca.landonjw.gooeylibs2.api.button.ButtonClick
 import com.google.gson.*
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.util.StringIdentifiable
+import net.minecraft.util.StringRepresentable
 import java.lang.reflect.Type
 
-enum class ClickType(val identifier: String, val buttonClicks: List<ButtonClick>) : StringIdentifiable {
+enum class ClickType(val identifier: String, val buttonClicks: List<ButtonClick>) : StringRepresentable {
     LEFT_CLICK("left_click", listOf(ButtonClick.LEFT_CLICK)),
     SHIFT_LEFT_CLICK("shift_left_click", listOf(ButtonClick.SHIFT_LEFT_CLICK)),
     ANY_LEFT_CLICK("any_left_click", listOf(ButtonClick.LEFT_CLICK, ButtonClick.SHIFT_LEFT_CLICK)),
@@ -24,7 +24,7 @@ enum class ClickType(val identifier: String, val buttonClicks: List<ButtonClick>
 
     ANY("any", ButtonClick.values().toList());
 
-    override fun asString(): String {
+    override fun getSerializedName(): String {
         return this.identifier
     }
 

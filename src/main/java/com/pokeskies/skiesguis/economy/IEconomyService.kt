@@ -2,14 +2,15 @@ package com.pokeskies.skiesguis.economy
 
 import com.pokeskies.skiesguis.economy.services.ImpactorEconomyService
 import com.pokeskies.skiesguis.economy.services.PebblesEconomyService
+//import com.pokeskies.skiesguis.economy.services.PebblesEconomyService
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 interface IEconomyService {
-    fun balance(player: ServerPlayerEntity, currency: String = "") : Double
-    fun withdraw(player: ServerPlayerEntity, amount: Double, currency: String = "") : Boolean
-    fun deposit(player: ServerPlayerEntity, amount: Double, currency: String = "") : Boolean
-    fun set(player: ServerPlayerEntity, amount: Double, currency: String = "") : Boolean
+    fun balance(player: ServerPlayer, currency: String = "") : Double
+    fun withdraw(player: ServerPlayer, amount: Double, currency: String = "") : Boolean
+    fun deposit(player: ServerPlayer, amount: Double, currency: String = "") : Boolean
+    fun set(player: ServerPlayer, amount: Double, currency: String = "") : Boolean
 
     companion object {
         fun getEconomyService(economyType: EconomyType) : IEconomyService? {

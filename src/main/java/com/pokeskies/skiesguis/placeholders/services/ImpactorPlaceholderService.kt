@@ -9,7 +9,7 @@ import net.impactdev.impactor.api.text.TextProcessor
 import net.impactdev.impactor.api.utility.Context
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 /*
     This class will parse Impactor based placeholders if the mod is present. Out of the box, Impactor will
@@ -28,7 +28,7 @@ class ImpactorPlaceholderService : IPlaceholderService {
         Utils.printInfo("Impactor mod found! Enabling placeholder integration...")
     }
 
-    override fun parsePlaceholders(player: ServerPlayerEntity, text: String): String {
+    override fun parsePlaceholders(player: ServerPlayer, text: String): String {
         val platformPlayer = PlatformPlayer.getOrCreate(player.uuid)
         return SkiesGUIs.INSTANCE.adventure!!.toNative(
             processor.parse(platformPlayer, text, Context().append(PlatformSource::class.java, platformPlayer))

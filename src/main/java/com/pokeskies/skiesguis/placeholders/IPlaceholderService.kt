@@ -1,7 +1,7 @@
 package com.pokeskies.skiesguis.placeholders
 
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 
 interface IPlaceholderService {
-    fun parsePlaceholders(player: ServerPlayerEntity, text: String): String
+    fun parsePlaceholders(player: ServerPlayer, text: String): String
 }

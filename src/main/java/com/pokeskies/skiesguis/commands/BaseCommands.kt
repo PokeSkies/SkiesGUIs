@@ -6,18 +6,18 @@ import com.pokeskies.skiesguis.commands.subcommands.DebugCommand
 import com.pokeskies.skiesguis.commands.subcommands.OpenCommand
 import com.pokeskies.skiesguis.commands.subcommands.PrintNBTCommand
 import com.pokeskies.skiesguis.commands.subcommands.ReloadCommand
-import net.minecraft.server.command.CommandManager
-import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.Commands
 
 class BaseCommands {
     private val aliases = listOf("skiesguis", "guis", "gui", "sg")
 
-    fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        val rootCommands: List<LiteralCommandNode<ServerCommandSource>> = aliases.map {
-            CommandManager.literal(it).build()
+    fun register(dispatcher: CommandDispatcher<CommandSourceStack>) {
+        val rootCommands: List<LiteralCommandNode<CommandSourceStack>> = aliases.map {
+            Commands.literal(it).build()
         }
 
-        val subCommands: List<LiteralCommandNode<ServerCommandSource>> = listOf(
+        val subCommands: List<LiteralCommandNode<CommandSourceStack>> = listOf(
             OpenCommand().build(),
             ReloadCommand().build(),
             DebugCommand().build(),

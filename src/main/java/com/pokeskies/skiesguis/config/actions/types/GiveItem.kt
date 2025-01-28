@@ -1,16 +1,18 @@
 package com.pokeskies.skiesguis.config.actions.types
 
 import com.google.gson.annotations.SerializedName
+import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
 
 class GiveItem(
     type: ActionType = ActionType.GIVE_XP,
@@ -20,11 +22,11 @@ class GiveItem(
     requirements: RequirementOptions? = RequirementOptions(),
     val item: Item = Items.BARRIER,
     val amount: Int = 1,
-    val nbt: NbtCompound? = null,
+    val nbt: CompoundTag? = null,
     @SerializedName("custom_model_data")
     val customModelData: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayerEntity) {
+    override fun executeAction(player: ServerPlayer) {
         Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         val itemStack = ItemStack(item, amount)
 
@@ -34,17 +36,19 @@ class GiveItem(
             if (nbtCopy != null) {
                 nbtCopy.putInt("CustomModelData", customModelData)
             } else {
-                val newNBT = NbtCompound()
+                val newNBT = CompoundTag()
                 newNBT.putInt("CustomModelData", customModelData)
                 nbtCopy = newNBT
             }
         }
 
         if (nbtCopy != null) {
-            itemStack.nbt = nbtCopy
+            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, nbtCopy).result().ifPresent { result ->
+                itemStack.applyComponents(result.first)
+            }
         }
 
-        player.giveItemStack(itemStack)
+        player.addItem(itemStack)
     }
 
     override fun toString(): String {
