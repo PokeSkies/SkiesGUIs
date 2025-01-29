@@ -13,26 +13,31 @@ import java.util.concurrent.CompletableFuture
 
 class ImpactorEconomyService : IEconomyService {
     init {
-        Utils.printInfo("Impactor Economy Service has been found and loaded for any Currency actions/requirements!")
+        Utils.printInfo("Impactor has been found and loaded for any Currency actions/requirements!")
     }
 
     override fun balance(player: ServerPlayer, currency: String) : Double {
-        return getAccount(player.uuid, getCurrency(currency)).thenCompose(Account::balanceAsync).join().toDouble()
+        return getAccount(player.uuid, getCurrency(currency)).thenCompose {
+            CompletableFuture.completedFuture(it.balance())
+        }.join().toDouble()
     }
 
     override fun withdraw(player: ServerPlayer, amount: Double, currency: String) : Boolean {
-        return getAccount(player.uuid, getCurrency(currency)).join()
-            .withdrawAsync(BigDecimal(amount)).join().successful()
+        return getAccount(player.uuid, getCurrency(currency)).thenCompose {
+            CompletableFuture.completedFuture(it.withdraw(BigDecimal(amount)))
+        }.join().successful()
     }
 
     override fun deposit(player: ServerPlayer, amount: Double, currency: String) : Boolean {
-        return getAccount(player.uuid, getCurrency(currency)).join()
-            .depositAsync(BigDecimal(amount)).join().successful()
+        return getAccount(player.uuid, getCurrency(currency)).thenCompose {
+            CompletableFuture.completedFuture(it.deposit(BigDecimal(amount)))
+        }.join().successful()
     }
 
     override fun set(player: ServerPlayer, amount: Double, currency: String) : Boolean {
-        return getAccount(player.uuid, getCurrency(currency)).join()
-            .setAsync(BigDecimal(amount)).join().successful()
+        return getAccount(player.uuid, getCurrency(currency)).thenCompose {
+            CompletableFuture.completedFuture(it.set(BigDecimal(amount)))
+        }.join().successful()
     }
 
     private fun getAccount(uuid: UUID, currency: Currency): CompletableFuture<Account> {
