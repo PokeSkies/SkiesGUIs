@@ -10,6 +10,7 @@ import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
+import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
 class MolangAction(
@@ -33,6 +34,12 @@ class MolangAction(
         } else {
             return
         }
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
         screen.manager?.runtime?.resolve(script.asExpressionLike())
+    }
+
+    override fun toString(): String {
+        return "MolangAction(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "script=$script)"
     }
 }

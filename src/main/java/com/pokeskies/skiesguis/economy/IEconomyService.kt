@@ -5,6 +5,7 @@ import com.pokeskies.skiesguis.economy.services.ImpactorEconomyService
 import com.pokeskies.skiesguis.economy.services.PebblesEconomyService
 //import com.pokeskies.skiesguis.economy.services.PebblesEconomyService
 import com.pokeskies.skiesguis.utils.Utils
+import net.impactdev.impactor.api.economy.EconomyService
 import net.minecraft.server.level.ServerPlayer
 import kotlin.reflect.full.primaryConstructor
 
@@ -15,7 +16,7 @@ interface IEconomyService {
     fun set(player: ServerPlayer, amount: Double, currency: String = "") : Boolean
 
     companion object {
-        fun getEconomyService(economyType: EconomyType) : IEconomyService? {
+        private fun getEconomyService(economyType: EconomyType) : IEconomyService? {
             if (!economyType.isModPresent()) return null
 
             return try {
@@ -25,6 +26,12 @@ interface IEconomyService {
                 ex.printStackTrace()
                 null
             }
+        }
+
+        fun getLoadedEconomyServices() : Map<EconomyType, IEconomyService> {
+            return EconomyType.entries.mapNotNull { key ->
+                getEconomyService(key)?.let { key to it }
+            }.toMap()
         }
     }
 }

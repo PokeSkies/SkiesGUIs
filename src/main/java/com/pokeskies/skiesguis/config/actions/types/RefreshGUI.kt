@@ -16,11 +16,11 @@ class RefreshGUI(
     requirements: RequirementOptions? = RequirementOptions(),
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
         SkiesGUIs.INSTANCE.inventoryControllers[player.uuid]?.update()
     }
 
     override fun toString(): String {
-        return "RefreshGUI(type=$type, click=$click, requirements=$requirements)"
+        return "RefreshGUI(click=$click, delay=$delay, chance=$chance, requirements=$requirements)"
     }
 }

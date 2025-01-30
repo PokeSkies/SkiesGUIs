@@ -20,18 +20,22 @@ class MessageBroadcast(
     private val message: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (SkiesGUIs.INSTANCE.adventure == null) {
-            Utils.printError("There was an error while executing an action for player ${player.name}: Adventure was somehow null on message broadcast?")
+            Utils.printError("[ACTION - ${type.name}] There was an error while executing for player ${player.gameProfile.name}: Adventure is null")
             return
         }
 
-        for (line in message) {
-            SkiesGUIs.INSTANCE.adventure!!.all().sendMessage(Utils.deserializeText(Utils.parsePlaceholders(player, line)))
+        val parsedMessages = message.map { Utils.parsePlaceholders(player, it) }
+
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Parsed Messages($parsedMessages): $this")
+
+        for (line in parsedMessages) {
+            SkiesGUIs.INSTANCE.adventure!!.all().sendMessage(Utils.deserializeText(line))
         }
     }
 
     override fun toString(): String {
-        return "MessageBroadcast(type=$type, click=$click, requirements=$requirements, message=$message)"
+        return "MessageBroadcast(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "message=$message)"
     }
 }

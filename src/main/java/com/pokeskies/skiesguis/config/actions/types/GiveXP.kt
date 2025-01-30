@@ -17,7 +17,7 @@ class GiveXP(
     private val level: Boolean = false
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
         if (level) {
             player.giveExperienceLevels(amount)
         } else {
@@ -26,6 +26,7 @@ class GiveXP(
     }
 
     override fun toString(): String {
-        return "GiveXP(type=$type, click=$click, requirements=$requirements, amount=$amount, level=$level)"
+        return "GiveXP(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "amount=$amount, level=$level)"
     }
 }

@@ -30,7 +30,7 @@ enum class ComparisonType(val identifier: String) {
             val click = ComparisonType.valueOfAnyCase(json.asString)
 
             if (click == null) {
-                Utils.printError("Could not deserialize Comparison Type '${json.asString}'!")
+                Utils.printError("Could not deserialize Comparison Type '${json.asString}'! Defaulting to equals.")
                 return EQUALS
             }
 

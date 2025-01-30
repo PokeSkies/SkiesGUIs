@@ -12,12 +12,12 @@ class DimensionRequirement(
     private val id: String = ""
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
-        if (!checkComparison())
-            return false
-
-        Utils.printDebug("Checking a ${type?.identifier} Requirement with id='$id': $this")
+        if (!checkComparison()) return false
 
         val value = id.equals(player.serverLevel().dimension().location().toString(), true)
+
+        Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Player Dimension(${player.serverLevel().dimension().location()}): $this")
+
         return if (comparison == ComparisonType.NOT_EQUALS) !value else value
     }
 

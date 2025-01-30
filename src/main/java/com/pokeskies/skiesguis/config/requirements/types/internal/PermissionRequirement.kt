@@ -13,17 +13,18 @@ class PermissionRequirement(
     private val permission: String = ""
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
-        if (!checkComparison())
+        if (!checkComparison()) return false
+
+        if (permission.isEmpty()) {
+            Utils.printError("[REQUIREMENT - ${type?.name}] Permission field was empty? Why?: $this")
             return false
-
-        Utils.printDebug("Checking a ${type?.identifier} Requirement with permission='$permission': $this")
-
-        if (permission.isNotEmpty()) {
-            val value = Permissions.check(player, permission)
-            return if (comparison == ComparisonType.NOT_EQUALS) !value else value
         }
 
-        return true
+        val value = Permissions.check(player, permission)
+
+        Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Permission Check($value): $this")
+
+        return if (comparison == ComparisonType.NOT_EQUALS) !value else value
     }
 
     override fun allowedComparisons(): List<ComparisonType> {

@@ -19,13 +19,15 @@ class MessagePlayer(
     private val message: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
-        for (line in message) {
-            player.sendMessage(Utils.deserializeText(Utils.parsePlaceholders(player, line)))
+        val parsedMessages = message.map { Utils.parsePlaceholders(player, it) }
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Parsed Messages($parsedMessages): $this")
+        for (line in parsedMessages) {
+            player.sendMessage(Utils.deserializeText(line))
         }
     }
 
     override fun toString(): String {
-        return "MessagePlayer(type=$type, click=$click, requirements=$requirements, message=$message)"
+        return "MessagePlayer(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "message=$message)"
     }
 }

@@ -13,12 +13,11 @@ class PlanPlaytimeRequirement(
     private val time: Long = 0
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
-        if (!checkComparison())
-            return false
+        if (!checkComparison()) return false
 
         val playtime = PlanExtensionHelper.getPlaytime(player.uuid)
 
-        Utils.printDebug("Checking a ${type?.identifier} Requirement with playtime='$playtime': $this")
+        Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Playtime($playtime): $this")
 
         return when (comparison) {
             ComparisonType.EQUALS -> playtime == time
@@ -31,7 +30,7 @@ class PlanPlaytimeRequirement(
     }
 
     override fun allowedComparisons(): List<ComparisonType> {
-        return ComparisonType.values().toList()
+        return ComparisonType.entries
     }
 
     override fun toString(): String {

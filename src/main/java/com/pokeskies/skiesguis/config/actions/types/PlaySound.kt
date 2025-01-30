@@ -24,9 +24,8 @@ class PlaySound(
     private val pitch: Float = 1.0F
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         if (sound.isEmpty()) {
-            Utils.printError("There was an error while executing a Sound Action for player ${player.name}: Sound ID was empty")
+            Utils.printError("[ACTION - ${type.name}] There was an error while executing for player ${player.name}: Sound ID was empty")
             return
         }
 
@@ -34,9 +33,11 @@ class PlaySound(
 
         var category = if (source == null) SoundSource.MASTER else SoundSource.entries.firstOrNull { it.name.equals(source, true) }
         if (category == null) {
-            Utils.printError("There was an error while executing a Sound Action for player ${player.name}: Sound Source '$source' was not found, defaulting to MASTER")
+            Utils.printError("[ACTION - ${type.name}] There was an error while executing for player ${player.name}: Sound Source '$source' was not found, defaulting to MASTER")
             category = SoundSource.MASTER
         }
+
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Holder($holder), Category($category): $this")
 
         player.connection.send(
             ClientboundSoundPacket(
@@ -53,6 +54,7 @@ class PlaySound(
     }
 
     override fun toString(): String {
-        return "PlaySound(sound='$sound', source=$source, volume=$volume, pitch=$pitch)"
+        return "PlaySound(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "sound='$sound', source=$source, volume=$volume, pitch=$pitch)"
     }
 }

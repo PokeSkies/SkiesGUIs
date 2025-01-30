@@ -25,8 +25,7 @@ class ItemRequirement(
     val strict: Boolean = true
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
-        if (!checkComparison())
-            return false
+        if (!checkComparison()) return false
 
         val targetAmount = amount ?: 1
         var amountFound = 0
@@ -39,7 +38,7 @@ class ItemRequirement(
             }
         }
 
-        Utils.printDebug("Checking a ${type?.identifier} Requirement with items found='$amountFound': $this")
+        Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Items Found($amountFound): $this")
 
         return when (comparison) {
             ComparisonType.EQUALS -> {
@@ -84,7 +83,7 @@ class ItemRequirement(
             val checkNBT = DataComponentPatch.CODEC.encodeStart(SkiesGUIs.INSTANCE.nbtOpts, checkItem.componentsPatch).result().getOrNull() ?: return false
 
             if (checkNBT != nbtCopy) {
-                Utils.printDebug("Item Requirement failed due to NBT not matching. Looking for: $nbtCopy, but found: $checkNBT")
+                Utils.printDebug("[REQUIREMENT - ${type?.name}] Failed due to NBT not matching. Looking for: $nbtCopy, but found: $checkNBT")
                 return false
             }
         }
@@ -93,7 +92,7 @@ class ItemRequirement(
     }
 
     override fun allowedComparisons(): List<ComparisonType> {
-        return ComparisonType.values().toList()
+        return ComparisonType.entries
     }
 
     override fun toString(): String {

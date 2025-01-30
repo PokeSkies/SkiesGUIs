@@ -17,14 +17,13 @@ class PlaceholderRequirement(
     private val strict: Boolean = false
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
-        if (!checkComparison())
-            return false
+        if (!checkComparison()) return false
 
         val parsed = Utils.parsePlaceholders(player, input)
 
-        Utils.printDebug("Checking a ${type?.identifier} Requirement with parsed input='$parsed': $this")
-
         val result = output.any { it.equals(parsed, strict) }
+
+        Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Parsed Input($parsed), Output Check($result): $this")
 
         return if (comparison == ComparisonType.EQUALS) result else !result
     }

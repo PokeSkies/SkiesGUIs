@@ -23,27 +23,25 @@ class CommandPlayer(
     private val permissionLevel: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
-        if (SkiesGUIs.INSTANCE.server.commands == null) {
-            Utils.printError("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
-            return
-        }
+        val parsedCommands = commands.map { Utils.parsePlaceholders(player, it) }
 
         var source = player.createCommandSourceStack()
-
         if (permissionLevel != null) {
             source = source.withPermission(permissionLevel)
         }
 
-        for (command in commands) {
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Parsed Commands($parsedCommands): $this")
+
+        for (command in parsedCommands) {
             SkiesGUIs.INSTANCE.server.commands.performPrefixedCommand(
                 source,
-                Utils.parsePlaceholders(player, command)
+                command
             )
         }
     }
 
     override fun toString(): String {
-        return "CommandPlayer(type=$type, click=$click, requirements=$requirements, commands=$commands)"
+        return "CommandPlayer(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "commands=$commands)"
     }
 }

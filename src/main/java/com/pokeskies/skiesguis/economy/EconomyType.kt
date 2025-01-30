@@ -37,12 +37,12 @@ enum class EconomyType(
             return JsonPrimitive(src.identifier)
         }
 
-        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): EconomyType {
+        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): EconomyType? {
             val economyType = valueOfAnyCase(json.asString)
 
             if (economyType == null) {
-                Utils.printError("Could not deserialize EconomyType '${json.asString}'! Falling back to IMPACTOR")
-                return IMPACTOR
+                Utils.printError("Could not deserialize EconomyType '${json.asString}'!")
+                return null
             }
 
             return economyType

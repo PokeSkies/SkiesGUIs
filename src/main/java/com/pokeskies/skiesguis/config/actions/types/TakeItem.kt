@@ -29,7 +29,6 @@ class TakeItem(
     val strict: Boolean = true
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         var removed = 0
         for ((i, stack) in player.inventory.items.withIndex()) {
             if (!stack.isEmpty) {
@@ -45,6 +44,7 @@ class TakeItem(
                 }
             }
         }
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Items Removed ($removed): $this")
     }
 
     private fun isItem(checkItem: ItemStack): Boolean {
@@ -75,6 +75,7 @@ class TakeItem(
     }
 
     override fun toString(): String {
-        return "TakeItem(item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
+        return "TakeItem(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
     }
 }

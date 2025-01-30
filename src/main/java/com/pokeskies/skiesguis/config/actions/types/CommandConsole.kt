@@ -20,21 +20,20 @@ class CommandConsole(
     private val commands: List<String> = emptyList()
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
-        if (SkiesGUIs.INSTANCE.server?.commands == null) {
-            Utils.printError("There was an error while executing an action for player ${player.name}: Server was somehow null on command execution?")
-            return
-        }
+        val parsedCommands = commands.map { Utils.parsePlaceholders(player, it) }
 
-        for (command in commands) {
-            SkiesGUIs.INSTANCE.server!!.commands.performPrefixedCommand(
-                SkiesGUIs.INSTANCE.server!!.createCommandSourceStack(),
-                Utils.parsePlaceholders(player, command)
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Parsed Commands($parsedCommands): $this")
+
+        for (command in parsedCommands) {
+            SkiesGUIs.INSTANCE.server.commands.performPrefixedCommand(
+                SkiesGUIs.INSTANCE.server.createCommandSourceStack(),
+                command
             )
         }
     }
 
     override fun toString(): String {
-        return "CommandConsole(type=$type, click=$click, requirements=$requirements, commands=$commands)"
+        return "CommandConsole(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "commands=$commands)"
     }
 }

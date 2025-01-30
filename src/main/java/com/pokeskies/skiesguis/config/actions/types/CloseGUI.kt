@@ -16,11 +16,12 @@ class CloseGUI(
     requirements: RequirementOptions? = RequirementOptions(),
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
         UIManager.closeUI(player)
     }
 
     override fun toString(): String {
-        return "CloseGUI(type=$type, click=$click, requirements=$requirements)"
+        return "CloseGUI(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "requirements=$requirements)"
     }
 }

@@ -17,17 +17,18 @@ class OpenGUI(
     private val id: String = ""
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         val gui = ConfigManager.GUIS[id]
         if (gui == null) {
-            Utils.printError("There was an error while executing an action for player ${player.name}: Could not find a GUI with the ID $id!")
+            Utils.printError("[ACTION - ${type.name}] There was an error while executing for player ${player.name}: Could not find a GUI with the ID $id!")
             return
         }
+
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), GUI($gui): $this")
 
         gui.openGUI(player, id)
     }
 
     override fun toString(): String {
-        return "OpenGUI(type=$type, click=$click, requirements=$requirements, id='$id')"
+        return "OpenGUI(click=$click, delay=$delay, chance=$chance, requirements=$requirements, id='$id')"
     }
 }

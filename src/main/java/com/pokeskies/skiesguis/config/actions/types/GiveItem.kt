@@ -27,7 +27,6 @@ class GiveItem(
     val customModelData: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        Utils.printDebug("Attempting to execute a ${type.identifier} Action: $this")
         val itemStack = ItemStack(item, amount)
 
         var nbtCopy = nbt?.copy()
@@ -48,11 +47,14 @@ class GiveItem(
             }
         }
 
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), ItemStack(${itemStack}: $this")
+
         player.addItem(itemStack)
     }
 
     override fun toString(): String {
-        return "GiveItem(item=$item, amount=$amount, nbt=$nbt)"
+        return "GiveItem(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
+                "item=$item, amount=$amount, nbt=$nbt)"
     }
 
 }

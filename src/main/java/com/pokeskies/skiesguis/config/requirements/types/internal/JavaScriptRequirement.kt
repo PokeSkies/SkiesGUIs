@@ -15,8 +15,7 @@ class JavaScriptRequirement(
     private val expression: String = ""
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
-        if (!checkComparison())
-            return false
+        if (!checkComparison()) return false
 
         val context = Context.newBuilder()
             .engine(SkiesGUIs.INSTANCE.graalEngine)
@@ -25,18 +24,18 @@ class JavaScriptRequirement(
         try {
             val parsed = Utils.parsePlaceholders(player, expression)
 
-            Utils.printDebug("Checking a ${type?.identifier} Requirement with parsed expression='$parsed': $this")
+            Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Parsed Expression($parsed): $this")
 
             val result: Value = context.eval("js", parsed)
 
             if (!result.isBoolean) {
-                Utils.printError("A Javascript Requirement expression '$expression' did not return a boolean!")
+                Utils.printError("[REQUIREMENT - ${type?.name}] Expression '$expression' did not return a boolean!")
                 return false
             }
 
             return if (comparison == ComparisonType.EQUALS) result.asBoolean() else !result.asBoolean()
         } catch (e: Exception) {
-            Utils.printError("An error occurred while parsing the Javascript Requirement expression '$expression': ${e.printStackTrace()}")
+            Utils.printError("[REQUIREMENT - ${type?.name}] An error occurred while parsing the expression '$expression': ${e.printStackTrace()}")
         }
 
         return false
