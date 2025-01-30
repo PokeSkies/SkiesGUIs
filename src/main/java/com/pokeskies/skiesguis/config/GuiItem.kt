@@ -31,7 +31,8 @@ class GuiItem(
     val name: String? = null,
     @JsonAdapter(FlexibleListAdaptorFactory::class)
     val lore: List<String> = emptyList(),
-    val nbt: CompoundTag? = null,
+    @SerializedName("components", alternate = ["nbt"])
+    val components: CompoundTag? = null,
     val priority: Int = 0,
     @SerializedName("custom_model_data")
     val customModelData: Int? = null,
@@ -58,7 +59,7 @@ class GuiItem(
                             uuid = UUID.fromString(arg)
                         } catch (_: Exception) {}
                     } else {
-                        val targetPlayer = SkiesGUIs.INSTANCE.server?.playerList?.getPlayerByName(arg)
+                        val targetPlayer = SkiesGUIs.INSTANCE.server.playerList?.getPlayerByName(arg)
                         if (targetPlayer != null) {
                             uuid = targetPlayer.uuid
                         }
@@ -69,7 +70,7 @@ class GuiItem(
             }
             val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
             if (uuid != null) {
-                val gameProfile = SkiesGUIs.INSTANCE.server?.profileCache?.get(uuid)
+                val gameProfile = SkiesGUIs.INSTANCE.server.profileCache?.get(uuid)
                 if (gameProfile != null && gameProfile.isPresent) {
                     itemStack.applyComponents(DataComponentPatch.builder()
                         .set(DataComponents.PROFILE, ResolvableProfile(gameProfile.get()))
@@ -95,8 +96,8 @@ class GuiItem(
     fun createButton(player: ServerPlayer): GooeyButton.Builder {
         val stack = getItemStack(player)
 
-        if (nbt != null) {
-            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, parseNBT(player, nbt)).result().ifPresent { result ->
+        if (components != null) {
+            DataComponentPatch.CODEC.decode(SkiesGUIs.INSTANCE.nbtOpts, parseNBT(player, components)).result().ifPresent { result ->
                 stack.applyComponents(result.first)
             }
         }
@@ -161,6 +162,9 @@ class GuiItem(
     }
 
     override fun toString(): String {
-        return "GuiItem(item=$item, slots=$slots, amount=$amount, name=$name, lore=$lore, nbt=$nbt, priority=$priority, view_requirements=$viewRequirements, click_actions=$clickActions)"
+        return "GuiItem(item='$item', slots=$slots, amount=$amount, name=$name, lore=$lore, components=$components, " +
+                "priority=$priority, customModelData=$customModelData, viewRequirements=$viewRequirements, " +
+                "clickActions=$clickActions, clickRequirements=$clickRequirements)"
     }
+
 }
