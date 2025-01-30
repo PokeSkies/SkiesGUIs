@@ -47,6 +47,9 @@
           "type": "MESSAGE",
           "click": "ANY",
           "message": ["<blue>You have received the Example Sword!"]
+        },
+        "refresh": {
+          "type": "REFRESH_GUI"
         }
       }
     },
