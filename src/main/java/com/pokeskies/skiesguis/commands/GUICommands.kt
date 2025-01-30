@@ -1,6 +1,7 @@
 package com.pokeskies.skiesguis.commands
 
 import com.mojang.brigadier.CommandDispatcher
+import com.pokeskies.skiesguis.api.SkiesGUIsAPI
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.Utils
 import me.lucko.fabric.api.permissions.v0.Permissions
@@ -25,6 +26,7 @@ class GUICommands {
                             )
                             return@executes 1
                         }
+
                         if (!Permissions.check(player, "skiesguis.open.${guiEntry.key}")) {
                             ctx.source.sendMessage(
                                 Component.text("You don't have permission to run this command!")
@@ -33,7 +35,7 @@ class GUICommands {
                             return@executes 1
                         }
 
-                        val gui = ConfigManager.GUIS[guiEntry.key]
+                        val gui = SkiesGUIsAPI.getGUIConfig(guiEntry.key)
 
                         if (gui == null) {
                             Utils.printError("There was an error while running the command '$command' for player '${player.name.string}'! " +

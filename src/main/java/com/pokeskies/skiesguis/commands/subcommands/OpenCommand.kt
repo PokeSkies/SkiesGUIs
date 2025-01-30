@@ -38,7 +38,7 @@ class OpenCommand : SubCommand {
                 if (player != null) {
                     val guiID = StringArgumentType.getString(ctx, "gui_id")
 
-                    val gui = ConfigManager.GUIS[guiID]
+                    val gui = SkiesGUIsAPI.getGUIConfig(guiID)
                     if (gui == null) {
                         ctx.source.sendMessage(
                             Utils.deserializeText("<red>Could not find a GUI with the ID $guiID!")

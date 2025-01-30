@@ -18,7 +18,9 @@
     "background": {
       "item": "minecraft:blue_stained_glass_pane",
       "slots": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
-      "name": ""
+      "nbt": {
+        "minecraft:hide_tooltip": {}
+      }
     },
     "item_diamond_sword": {
       "item": "minecraft:diamond_sword",
@@ -27,13 +29,13 @@
       "name": "<blue><b>Example Sword",
       "lore": ["<gray><italic>Example lore!"],
       "nbt": {
-        "Enchantments": [
-          {
-            "lvl": 3,
-            "id": "minecraft:unbreaking"
-          }
-        ],
-        "HideFlags": 1
+        "minecraft:enchantments": {
+          "levels": {
+            "minecraft:unbreaking": 3
+          },
+          "show_in_tooltip": false
+        },
+        "minecraft:hide_additional_tooltip": {}
       },
       "click_actions": {
         "action_1": {
@@ -58,7 +60,10 @@
         "<gray><italic>Right Click for a <gold>shiny Pikachu"
       ],
       "nbt": {
-        "species": "cobblemon:pikachu"
+        "cobblemon:pokemon_item": {
+          "species": "cobblemon:pikachu",
+          "aspects": ["shiny"]
+        }
       },
       "click_actions": {
         "normal_action": {
@@ -90,7 +95,7 @@
       "lore": ["<gray><italic>Click for a random Pokemon"],
       "priority": 2,
       "nbt": {
-        "HideTooltip": true
+        "minecraft:hide_additional_tooltip": {}
       },
       "click_actions": {
         "pokemon": {
@@ -110,7 +115,7 @@
       "lore": ["<gray><italic>Click for a random Shiny Pokemon"],
       "priority": 1,
       "nbt": {
-        "HideTooltip": true
+        "minecraft:hide_additional_tooltip": {}
       },
       "view_requirements": {
         "requirements": {
