@@ -3,6 +3,7 @@ package com.pokeskies.skiesguis.commands.subcommands
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
+import com.pokeskies.skiesguis.api.SkiesGUIsAPI
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.SubCommand
 import com.pokeskies.skiesguis.utils.Utils
@@ -59,7 +60,7 @@ class OpenCommand : SubCommand {
             val player = EntityArgument.getPlayer(ctx, "player")
             val guiID = StringArgumentType.getString(ctx, "gui_id")
 
-            val gui = ConfigManager.GUIS[guiID]
+            val gui = SkiesGUIsAPI.getGUIConfig(guiID)
             if (gui == null) {
                 ctx.source.sendMessage(Utils.deserializeText("<red>Could not find a GUI with the ID $guiID!"))
                 return 1

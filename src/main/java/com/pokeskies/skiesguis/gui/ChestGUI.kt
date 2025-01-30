@@ -20,12 +20,13 @@ class ChestGUI(
     val player: ServerPlayer,
     val guiId: String,
     val config: GuiConfig
-) : UpdateEmitter<Page?>(), Page {
+) : UpdateEmitter<Page>(), Page {
     private val controller = InventoryController()
     private val template: ChestTemplate =
         ChestTemplate.Builder(config.size)
             .build()
     private val playerInventory: InventoryTemplate
+    var title = config.title
 
     val manager: MolangManager? by lazy {
         if(FabricLoader.getInstance().isModLoaded("cobblemon")) {
@@ -34,6 +35,7 @@ class ChestGUI(
             null
         }
     }
+
     // This is a MAP (key=SLOT INDEX, value='MAP(key=PRIORITY, value=GUI ITEM ENTRY)')
     val items: TreeMap<Int, TreeMap<Int, Pair<String, GuiItem>>> = TreeMap()
 
@@ -52,7 +54,7 @@ class ChestGUI(
     }
 
     fun refresh() {
-        Utils.printDebug("Executing refresh of GUI '$guiId' for player ${player.name.string}")
+        Utils.printDebug("[GUI] Refreshing GUI '$guiId' for player ${player.gameProfile.name}")
         update()
         // Just to keep the player's inventory up to date
         for ((i, stack) in player.inventory.items.withIndex()) {
@@ -111,12 +113,9 @@ class ChestGUI(
         return Optional.of(playerInventory)
     }
 
-    var title = config.title
     override fun getTitle(): Component {
         return Utils.deserializeText(Utils.parsePlaceholders(player, title))
     }
 
     class InventoryController: UpdateEmitter<ChestGUI?>()
-
-
 }

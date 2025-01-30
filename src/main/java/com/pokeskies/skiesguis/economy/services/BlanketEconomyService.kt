@@ -4,8 +4,6 @@ import com.pokeskies.skiesguis.economy.IEconomyService
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 import org.blanketeconomy.api.BlanketEconomy
-import org.blanketeconomy.api.BlanketEconomyAPI
-import tech.sethi.pebbleseconomy.PebblesEconomyInitializer
 import java.math.BigDecimal
 
 class BlanketEconomyService : IEconomyService {

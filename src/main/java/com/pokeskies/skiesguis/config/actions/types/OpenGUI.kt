@@ -1,6 +1,6 @@
 package com.pokeskies.skiesguis.config.actions.types
 
-import com.pokeskies.skiesguis.config.ConfigManager
+import com.pokeskies.skiesguis.api.SkiesGUIsAPI
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
@@ -17,7 +17,7 @@ class OpenGUI(
     private val id: String = ""
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        val gui = ConfigManager.GUIS[id]
+        val gui = SkiesGUIsAPI.getGUIConfig(id)
         if (gui == null) {
             Utils.printError("[ACTION - ${type.name}] There was an error while executing for player ${player.name}: Could not find a GUI with the ID $id!")
             return

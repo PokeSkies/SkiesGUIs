@@ -1,11 +1,7 @@
 package com.pokeskies.skiesguis.economy
 
-import com.pokeskies.skiesguis.economy.services.CobbleDollarsEconomyService
-import com.pokeskies.skiesguis.economy.services.ImpactorEconomyService
-import com.pokeskies.skiesguis.economy.services.PebblesEconomyService
 //import com.pokeskies.skiesguis.economy.services.PebblesEconomyService
 import com.pokeskies.skiesguis.utils.Utils
-import net.impactdev.impactor.api.economy.EconomyService
 import net.minecraft.server.level.ServerPlayer
 import kotlin.reflect.full.primaryConstructor
 

@@ -27,8 +27,8 @@ import java.util.*
 class SkiesGUIs : ModInitializer {
     companion object {
         lateinit var INSTANCE: SkiesGUIs
-        val MOD_ID: String = "skiesguis"
-        val LOGGER: Logger = LogManager.getLogger("skiesguis")
+        const val MOD_ID: String = "skiesguis"
+        val LOGGER: Logger = LogManager.getLogger(MOD_ID)
     }
 
     lateinit var configDir: File
@@ -48,7 +48,7 @@ class SkiesGUIs : ModInitializer {
     override fun onInitialize() {
         INSTANCE = this
 
-        this.configDir = File(FabricLoader.getInstance().configDirectory, "skiesguis")
+        this.configDir = File(FabricLoader.getInstance().configDirectory, MOD_ID)
         this.configManager = ConfigManager(configDir)
 
         this.economyServices = IEconomyService.getLoadedEconomyServices()
