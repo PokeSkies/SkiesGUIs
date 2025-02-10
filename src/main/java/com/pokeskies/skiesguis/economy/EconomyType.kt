@@ -25,7 +25,7 @@ enum class EconomyType(
 
     companion object {
         fun valueOfAnyCase(name: String): EconomyType? {
-            for (type in values()) {
+            for (type in entries) {
                 if (name.equals(type.identifier, true)) return type
             }
             return null
