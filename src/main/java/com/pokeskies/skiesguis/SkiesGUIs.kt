@@ -7,6 +7,7 @@ import com.pokeskies.skiesguis.economy.EconomyType
 import com.pokeskies.skiesguis.economy.IEconomyService
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.placeholders.PlaceholderManager
+import com.pokeskies.skiesguis.utils.Scheduler
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
@@ -64,6 +65,7 @@ class SkiesGUIs : ModInitializer {
             )
             this.server = server
             this.nbtOpts = server.registryAccess().createSerializationContext(NbtOps.INSTANCE)
+            Scheduler.start()
         })
         ServerLifecycleEvents.SERVER_STOPPED.register(ServerStopped { server: MinecraftServer ->
             this.adventure = null

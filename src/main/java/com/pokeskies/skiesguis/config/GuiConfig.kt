@@ -7,9 +7,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
-import net.impactdev.impactor.api.scheduler.Ticks
-import net.impactdev.impactor.api.scheduler.v2.Scheduler
-import net.impactdev.impactor.api.scheduler.v2.Schedulers
+import com.pokeskies.skiesguis.utils.Scheduler
 import net.minecraft.server.level.ServerPlayer
 
 class GuiConfig(
@@ -34,11 +32,7 @@ class GuiConfig(
         val gui = ChestGUI(player, id, this)
         openRequirements?.executeSuccessActions(player)
         UIManager.openUIForcefully(player, gui)
-        Schedulers.request(Scheduler.SYNCHRONOUS).ifPresent {
-            it.delayed({
-                executeOpenActions(player)
-            }, Ticks.single())
-        }
+        Scheduler.scheduleTask(1, Scheduler.DelayedAction({ executeOpenActions(player) }))
     }
 
     private fun executeOpenActions(player: ServerPlayer) {
