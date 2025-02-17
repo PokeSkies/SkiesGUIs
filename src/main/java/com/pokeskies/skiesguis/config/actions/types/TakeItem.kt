@@ -56,10 +56,10 @@ class TakeItem(
 
         if (customModelData != null) {
             if (nbtCopy != null) {
-                nbtCopy.putInt("CustomModelData", customModelData)
+                nbtCopy.putInt("minecraft:custom_model_data", customModelData)
             } else {
                 val newNBT = CompoundTag()
-                newNBT.putInt("CustomModelData", customModelData)
+                newNBT.putInt("minecraft:custom_model_data", customModelData)
                 nbtCopy = newNBT
             }
         }
