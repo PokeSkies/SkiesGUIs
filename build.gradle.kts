@@ -64,7 +64,9 @@ dependencies {
 
     modImplementation(include("net.kyori:adventure-platform-fabric:5.14.2")!!)
 
-    modImplementation("me.lucko:fabric-permissions-api:0.3.1")
+    modImplementation("me.lucko:fabric-permissions-api:0.3.1")?.let {
+        include(it)
+    }
 
     modImplementation("ca.landonjw.gooeylibs:fabric-api-repack:3.1.0-1.21.1-SNAPSHOT@jar")?.let {
         include(it)

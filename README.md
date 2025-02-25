@@ -25,9 +25,7 @@ More information on configuration can be found on the [Wiki](https://github.com/
 ## Installation
 1. Download the latest version of the mod from [Modrinth](https://modrinth.com/mod/skiesguis).
 2. Download all required dependencies:
-   - [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) 
-   - [Fabric Permissions API](https://github.com/PokeSkies/fabric-permissions-api)
-   - [GooeyLibs](https://github.com/NickImpact/GooeyLibs/tree/1.20.1)
+   - [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
 3. Download any optional dependencies:
    - [Impactor](https://modrinth.com/mod/impactor) **_(Economy, Placeholders)_**
    - Pebbles Economy **_(Economy)_**
