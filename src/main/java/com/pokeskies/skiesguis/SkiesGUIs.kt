@@ -67,6 +67,9 @@ class SkiesGUIs : ModInitializer {
             this.nbtOpts = server.registryAccess().createSerializationContext(NbtOps.INSTANCE)
             Scheduler.start()
         })
+        ServerLifecycleEvents.SERVER_STARTED.register { server: MinecraftServer ->
+            this.configManager.loadGUIs()
+        }
         ServerLifecycleEvents.SERVER_STOPPED.register(ServerStopped { server: MinecraftServer ->
             this.adventure = null
         })
@@ -84,6 +87,7 @@ class SkiesGUIs : ModInitializer {
         this.configManager.reload()
         this.economyServices = IEconomyService.getLoadedEconomyServices()
         this.placeholderManager = PlaceholderManager()
+        this.configManager.loadGUIs()
     }
 
     fun getLoadedEconomyServices(): Map<EconomyType, IEconomyService> {

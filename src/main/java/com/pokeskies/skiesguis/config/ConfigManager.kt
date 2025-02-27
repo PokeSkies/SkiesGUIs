@@ -52,7 +52,6 @@ class ConfigManager(private val configDir: File) {
     fun reload() {
         copyDefaults()
         config = loadFile("config.json", MainConfig::class.java)!!
-        loadGUIs()
     }
 
     fun copyDefaults() {
@@ -64,7 +63,7 @@ class ConfigManager(private val configDir: File) {
         attemptDefaultDirectoryCopy(classLoader, "guis")
     }
 
-    private fun loadGUIs() {
+    fun loadGUIs() {
         GUIS.clear()
 
         val dir = configDir.resolve("guis")
