@@ -7,7 +7,9 @@ import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -17,7 +19,7 @@ import kotlin.jvm.optionals.getOrNull
 class ItemRequirement(
     type: RequirementType = RequirementType.ITEM,
     comparison: ComparisonType = ComparisonType.EQUALS,
-    val item: Item = Items.BARRIER,
+    val item: String = "",
     val amount: Int? = null,
     val nbt: CompoundTag? = null,
     @SerializedName("custom_model_data")
@@ -63,7 +65,13 @@ class ItemRequirement(
     }
 
     private fun isItem(checkItem: ItemStack): Boolean {
-        if (!checkItem.item.equals(item)) {
+        val newItem = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(item))
+        if (newItem.isEmpty) {
+            Utils.printDebug("[REQUIREMENT - ${type?.name}] Failed due to an empty or invalid item ID. Item ID: $item, returned: $newItem")
+            return false
+        }
+        if (!checkItem.item.equals(newItem.get())) {
+            Utils.printDebug("[REQUIREMENT - ${type?.name}] Failed due to item not matching. Looking for: ${newItem.get()}, but found: ${checkItem.item}")
             return false
         }
 

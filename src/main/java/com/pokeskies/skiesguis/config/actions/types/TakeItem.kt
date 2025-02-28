@@ -8,7 +8,9 @@ import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -21,7 +23,7 @@ class TakeItem(
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),
-    val item: Item = Items.BARRIER,
+    val item: String = "",
     val amount: Int = 1,
     val nbt: CompoundTag? = null,
     @SerializedName("custom_model_data")
@@ -48,7 +50,12 @@ class TakeItem(
     }
 
     private fun isItem(checkItem: ItemStack): Boolean {
-        if (!checkItem.item.equals(item)) {
+        val newItem = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(item))
+        if (newItem.isEmpty) {
+            Utils.printDebug("[ACTION - ${type.name}] Failed due to an empty or invalid item ID. Item ID: $item, returned: $newItem")
+            return false
+        }
+        if (!checkItem.item.equals(newItem.get())) {
             return false
         }
 
