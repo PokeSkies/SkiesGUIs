@@ -9,7 +9,7 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
 class RefreshGUI(
-    type: ActionType = ActionType.CLOSE_GUI,
+    type: ActionType = ActionType.REFRESH_GUI,
     click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,

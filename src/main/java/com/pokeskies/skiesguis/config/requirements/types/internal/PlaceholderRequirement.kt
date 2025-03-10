@@ -9,7 +9,7 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
 class PlaceholderRequirement(
-    type: RequirementType = RequirementType.PERMISSION,
+    type: RequirementType = RequirementType.PLACEHOLDER,
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val input: String = "",
     @JsonAdapter(FlexibleListAdaptorFactory::class)
