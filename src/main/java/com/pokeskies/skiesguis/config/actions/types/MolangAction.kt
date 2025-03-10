@@ -1,6 +1,7 @@
 package com.pokeskies.skiesguis.config.actions.types
 
 import ca.landonjw.gooeylibs2.api.container.GooeyContainer
+import com.cobblemon.mod.common.api.molang.MoLangFunctions.asMoLangValue
 import com.cobblemon.mod.common.util.asExpressionLike
 import com.cobblemon.mod.common.util.resolve
 import com.google.gson.annotations.JsonAdapter
@@ -35,7 +36,10 @@ class MolangAction(
             return
         }
         Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
-        screen.manager?.runtime?.resolve(script.asExpressionLike())
+        screen.manager?.runtime?.resolve(
+            script.asExpressionLike(),
+            mapOf("player" to player.asMoLangValue())
+        )
     }
 
     override fun toString(): String {
