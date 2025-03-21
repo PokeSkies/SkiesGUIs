@@ -10,7 +10,7 @@ import org.graalvm.polyglot.Context
 import org.graalvm.polyglot.Value
 
 class JavaScriptRequirement(
-    type: RequirementType = RequirementType.PERMISSION,
+    type: RequirementType = RequirementType.JAVASCRIPT,
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val expression: String = ""
 ) : Requirement(type, comparison) {

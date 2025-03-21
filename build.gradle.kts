@@ -81,8 +81,9 @@ dependencies {
     modImplementation("net.impactdev.impactor.api:economy:5.3.0-SNAPSHOT")
     modImplementation("net.impactdev.impactor.api:text:5.3.0-SNAPSHOT")
 
-    implementation(include("org.graalvm.sdk:graal-sdk:22.3.0")!!)
-    implementation(include("org.graalvm.truffle:truffle-api:22.3.0")!!)
+    implementation(include("org.graalvm.sdk:graal-sdk:22.3.5")!!)
+    implementation(include("org.graalvm.truffle:truffle-api:22.3.5")!!)
+    implementation(include("org.graalvm.js:js:22.3.5")!!)
 
     modImplementation("com.github.plan-player-analytics:Plan:5.6.2883")
     modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
