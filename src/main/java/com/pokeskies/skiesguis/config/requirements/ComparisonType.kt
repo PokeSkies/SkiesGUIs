@@ -14,7 +14,7 @@ enum class ComparisonType(val identifier: String) {
 
     companion object {
         fun valueOfAnyCase(name: String): ComparisonType? {
-            for (type in values()) {
+            for (type in entries) {
                 if (name.equals(type.identifier, true)) return type
             }
             return null

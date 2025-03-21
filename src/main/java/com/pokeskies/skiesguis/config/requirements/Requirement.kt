@@ -15,7 +15,7 @@ abstract class Requirement(
 
     fun checkComparison(): Boolean {
         if (!allowedComparisons().contains(comparison)) {
-            Utils.printError("Error while executing a Requirement check! Comparison ${comparison.identifier} is not allowed: ${allowedComparisons().map { it.identifier }}")
+            Utils.printError("Error while executing a $type Requirement check! Comparison ${comparison.identifier} is not allowed: ${allowedComparisons().map { it.identifier }}")
             return false
         }
         return true
