@@ -10,10 +10,13 @@ import ca.landonjw.gooeylibs2.api.template.types.InventoryTemplate
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.GuiConfig
 import com.pokeskies.skiesguis.config.GuiItem
+import com.pokeskies.skiesguis.config.tooltips.TooltipBuilder
 import com.pokeskies.skiesguis.utils.Utils
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.item.component.ItemLore
 import java.util.*
 
 class ChestGUI(
@@ -28,8 +31,9 @@ class ChestGUI(
     private val playerInventory: InventoryTemplate
     var title = config.title
 
+    val tooltipOverrides: MutableMap<Int, TooltipBuilder> = mutableMapOf()
     val manager: MolangManager? by lazy {
-        if(FabricLoader.getInstance().isModLoaded("cobblemon")) {
+        if (FabricLoader.getInstance().isModLoaded("cobblemon")) {
             MolangManager(this)
         } else {
             null
@@ -49,7 +53,7 @@ class ChestGUI(
                 items[slot] = priorities
             }
         }
-        playerInventory = InventoryTemplate.builder().build();
+        playerInventory = InventoryTemplate.builder().build()
         refresh()
     }
 
@@ -66,7 +70,12 @@ class ChestGUI(
                 val guiItem = itemEntry.second
                 if (guiItem.viewRequirements?.checkRequirements(player) != false) {
                     guiItem.viewRequirements?.executeSuccessActions(player)
-                    template.set(slot, guiItem.createButton(player)
+                    template.set(slot, guiItem.createButton(player).also {
+                        if (tooltipOverrides[slot] != null) {
+                            val tooltip = tooltipOverrides[slot]!!.buildTooltip(player)
+                            it.with(DataComponents.LORE, ItemLore(tooltip))
+                        }
+                    }
                         .onClick { ctx ->
                             if (guiItem.clickRequirements?.checkRequirements(player) != false) {
                                 guiItem.clickRequirements?.executeSuccessActions(player)
@@ -117,5 +126,5 @@ class ChestGUI(
         return Utils.deserializeText(Utils.parsePlaceholders(player, title))
     }
 
-    class InventoryController: UpdateEmitter<ChestGUI?>()
+    class InventoryController : UpdateEmitter<ChestGUI?>()
 }

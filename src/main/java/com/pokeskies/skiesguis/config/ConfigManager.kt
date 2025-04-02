@@ -13,6 +13,7 @@ import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.config.tooltips.TooltipConfig
 import com.pokeskies.skiesguis.economy.EconomyType
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.registries.BuiltInRegistries
@@ -53,6 +54,7 @@ class ConfigManager(private val configDir: File) {
         copyDefaults()
         config = loadFile("config.json", MainConfig::class.java)!!
         loadGUIs()
+        loadTooltips(configDir.resolve("tooltips")).forEach { TooltipConfig.TOOLTIPS[it.key] = it.value }
     }
 
     fun copyDefaults() {
@@ -156,6 +158,36 @@ class ConfigManager(private val configDir: File) {
                 }
             } catch (e: Exception) {
                 Utils.printError("Failed to copy the default directory '$directoryName': " + e.message)
+            }
+        }
+    }
+
+    fun loadTooltips(directory: File): MutableMap<String, TooltipConfig> {
+        val tooltipConfigs = mutableMapOf<String, TooltipConfig>()
+        if (directory.exists() && directory.isDirectory) {
+            loadConfigsRecursive(directory, tooltipConfigs) { file ->
+                val tooltipConfigName = file.nameWithoutExtension
+                try {
+                    var path = file.toPath()
+                    path = path.subpath(SkiesGUIs.INSTANCE.configDir.toPath().nameCount, path.nameCount)
+                    val tooltipConfig = loadFile(path.toString(), TooltipConfig::class.java) ?: TooltipConfig()
+                    Pair(tooltipConfigName, tooltipConfig)
+                } catch (e: Exception) {
+                    SkiesGUIs.LOGGER.error("Error loading tooltip config from ${file.absolutePath}", e)
+                    Pair(tooltipConfigName, TooltipConfig())
+                }
+            }
+        }
+        return tooltipConfigs
+    }
+
+    private fun <K, V> loadConfigsRecursive(directory: File, map: MutableMap<K, V>, loadAction: (File) -> Pair<K, V>) {
+        directory.listFiles()?.forEach { file ->
+            if (file.isFile && file.name.endsWith(".json")) {
+                val (key, value) = loadAction(file)
+                map[key] = value
+            } else if (file.isDirectory) {
+                loadConfigsRecursive(file, map, loadAction)
             }
         }
     }
