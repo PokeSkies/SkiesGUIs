@@ -4,15 +4,18 @@ import com.google.gson.*
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
+import com.pokeskies.skiesguis.utils.Utils.miniMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.minecraft.core.Registry
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.Style
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import java.lang.reflect.Type
 
 object Utils {
-    private val miniMessage: MiniMessage = MiniMessage.miniMessage()
+    val miniMessage: MiniMessage = MiniMessage.miniMessage()
 
     fun parsePlaceholders(player: ServerPlayer, text: String): String {
         return SkiesGUIs.INSTANCE.placeholderManager.parse(player, text)
@@ -72,4 +75,15 @@ object Utils {
             }
         }
     }
+}
+fun net.kyori.adventure.text.Component.toNative(): Component {
+    return Component.empty().setStyle(Style.EMPTY.withItalic(false))
+        .append(SkiesGUIs.INSTANCE.adventure!!.toNative(this))
+}
+fun String.parseMiniMessage(vararg placeholders: TagResolver): net.kyori.adventure.text.Component {
+    return Utils.miniMessage.deserialize(this, *placeholders)
+}
+
+fun String.parseToNative(vararg placeholders: TagResolver): Component {
+    return this.parseMiniMessage(*placeholders).toNative()
 }

@@ -8,6 +8,8 @@ import com.bedrockk.molang.runtime.value.DoubleValue
 import com.bedrockk.molang.runtime.value.StringValue
 import com.cobblemon.mod.common.api.molang.MoLangFunctions.asMoLangValue
 import com.cobblemon.mod.common.api.molang.MoLangFunctions.setup
+import com.pokeskies.skiesguis.config.tooltips.TooltipBuilder
+import com.pokeskies.skiesguis.config.tooltips.TooltipConfig
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.ItemStack
 
@@ -76,7 +78,15 @@ class MolangManager(gui: ChestGUI) {
             "set_title" to Function { params ->
                 gui.title = params.getString(0) ?: return@Function null
                 gui.refresh()
-            }
+            },
+            "set_tooltip" to Function { params ->
+                val slot = params.getInt(0) ?: return@Function null
+                val tooltip = params.getString(1) ?: return@Function null
+                val builder = TooltipConfig.TOOLTIPS[tooltip] ?: return@Function null
+                gui.tooltipOverrides[slot] = TooltipBuilder(builder)
+                gui.refresh()
+            },
+            "refresh" to Function { gui.refresh() }
         )
     )
 
