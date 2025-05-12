@@ -5,8 +5,6 @@ import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.core.Holder
-import net.minecraft.network.protocol.game.ClientboundSoundPacket
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvent
@@ -29,7 +27,7 @@ class PlaySound(
             return
         }
 
-        val holder = Holder.direct(SoundEvent.createVariableRangeEvent(ResourceLocation.parse(sound)))
+        val soundEvent = SoundEvent.createVariableRangeEvent(ResourceLocation.parse(sound))
 
         var category = if (source == null) SoundSource.MASTER else SoundSource.entries.firstOrNull { it.name.equals(source, true) }
         if (category == null) {
@@ -37,19 +35,13 @@ class PlaySound(
             category = SoundSource.MASTER
         }
 
-        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), Holder($holder), Category($category): $this")
+        Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), SoundEvent($soundEvent), Category($category): $this")
 
-        player.connection.send(
-            ClientboundSoundPacket(
-                holder,
-                category,
-                player.x,
-                player.y,
-                player.z,
-                volume,
-                pitch,
-                player.serverLevel().getRandom().nextLong()
-            )
+        player.playNotifySound(
+            SoundEvent.createVariableRangeEvent(ResourceLocation.parse(sound)),
+            category,
+            volume,
+            pitch,
         )
     }
 

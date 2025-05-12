@@ -35,7 +35,11 @@ abstract class Action(
         Utils.printDebug("Delay found for $type Action. Waiting $delay ticks before execution.")
 
         Task.builder()
-            .execute { task -> executeAction(player) }
+            .execute { task ->
+                player.server.executeIfPossible {
+                    executeAction(player)
+                }
+            }
             .delay(delay)
             .build()
     }
