@@ -37,12 +37,14 @@ class PlaySound(
 
         Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), SoundEvent($soundEvent), Category($category): $this")
 
-        player.playNotifySound(
-            SoundEvent.createVariableRangeEvent(ResourceLocation.parse(sound)),
-            category,
-            volume,
-            pitch,
-        )
+        player.server.executeIfPossible {
+            player.playNotifySound(
+                SoundEvent.createVariableRangeEvent(ResourceLocation.parse(sound)),
+                category,
+                volume,
+                pitch,
+            )
+        }
     }
 
     override fun toString(): String {
