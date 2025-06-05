@@ -65,6 +65,8 @@ class SkiesGUIs : ModInitializer {
             )
             this.server = server
             this.nbtOpts = server.registryAccess().createSerializationContext(NbtOps.INSTANCE)
+            this.placeholderManager.registerServices()
+
             Scheduler.start()
         })
         ServerLifecycleEvents.SERVER_STOPPED.register(ServerStopped { server: MinecraftServer ->

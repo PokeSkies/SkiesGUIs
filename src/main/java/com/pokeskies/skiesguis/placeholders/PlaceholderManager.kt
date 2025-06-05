@@ -11,6 +11,9 @@ class PlaceholderManager {
 
     init {
         services.add(DefaultPlaceholderService())
+    }
+
+    fun registerServices() {
         for (service in PlaceholderMod.values()) {
             if (service.isModPresent()) {
                 services.add(getServiceForType(service))

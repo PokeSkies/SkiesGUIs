@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer
 /*
     This class will parse Impactor based placeholders if the mod is present. Out of the box, Impactor will
     process color codes, which breaks the compatibility with parsing placeholders using other mods.
-    A custom MiniMessage is is created with an empty TagResolver list, that way it will not process
+    A custom MiniMessage is created with an empty TagResolver list, that way it will not process
     any color codes and will just pass a string back with only Impactor placeholders processed.
  */
 class ImpactorPlaceholderService : IPlaceholderService {
