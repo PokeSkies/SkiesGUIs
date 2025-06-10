@@ -27,7 +27,7 @@
       "slots": [10],
       "amount": 1,
       "name": "<blue><b>Example Sword",
-      "lore": ["<gray><italic>Example lore!"],
+      "lore": ["<gray>Example lore!"],
       "nbt": {
         "minecraft:enchantments": {
           "levels": {
@@ -59,8 +59,8 @@
       "amount": 1,
       "name": "<blue><b>Pikachu",
       "lore": [
-        "<gray><italic>Left Click for a normal Pikachu",
-        "<gray><italic>Right Click for a <gold>shiny Pikachu"
+        "<gray>Left Click for a normal Pikachu",
+        "<gray>Right Click for a <gold>shiny Pikachu"
       ],
       "nbt": {
         "cobblemon:pokemon_item": {
@@ -95,7 +95,7 @@
       "item": "cobblemon:poke_ball",
       "slots": [12],
       "name": "<blue><b>Random Pokemon",
-      "lore": ["<gray><italic>Click for a random Pokemon"],
+      "lore": ["<gray>Click for a random Pokemon"],
       "priority": 2,
       "nbt": {
         "minecraft:hide_additional_tooltip": {}
@@ -115,7 +115,7 @@
       "item": "cobblemon:master_ball",
       "slots": [12],
       "name": "<gold><b>Random Shiny Pokemon",
-      "lore": ["<gray><italic>Click for a random Shiny Pokemon"],
+      "lore": ["<gray>Click for a random Shiny Pokemon"],
       "priority": 1,
       "nbt": {
         "minecraft:hide_additional_tooltip": {}

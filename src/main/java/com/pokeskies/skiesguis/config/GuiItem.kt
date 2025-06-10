@@ -8,12 +8,14 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
+import net.minecraft.ChatFormatting
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.StringTag
+import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
@@ -120,7 +122,12 @@ class GuiItem(
                     parsedLore.add(line)
                 }
             }
-            dataComponents.set(DataComponents.LORE, ItemLore(parsedLore.stream().map { Utils.deserializeText(it) }.toList()))
+            dataComponents.set(DataComponents.LORE, ItemLore(
+                parsedLore.stream().map { line ->
+                    Component.empty().withStyle { it.withItalic(false) }
+                        .append(Utils.deserializeText(line))
+                }.toList() as List<Component>
+            ))
         }
 
         stack.applyComponents(dataComponents.build())
