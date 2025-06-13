@@ -9,12 +9,10 @@ import net.minecraft.server.level.ServerPlayer
 class PlaceholderManager {
     private val services: MutableList<IPlaceholderService> = mutableListOf()
 
-    init {
-        services.add(DefaultPlaceholderService())
-    }
-
     fun registerServices() {
-        for (service in PlaceholderMod.values()) {
+        services.clear()
+        services.add(DefaultPlaceholderService())
+        for (service in PlaceholderMod.entries) {
             if (service.isModPresent()) {
                 services.add(getServiceForType(service))
             }

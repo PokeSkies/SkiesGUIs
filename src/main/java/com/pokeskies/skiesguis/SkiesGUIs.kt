@@ -85,7 +85,6 @@ class SkiesGUIs : ModInitializer {
     fun reload() {
         this.configManager.reload()
         this.economyServices = IEconomyService.getLoadedEconomyServices()
-        this.placeholderManager = PlaceholderManager()
     }
 
     fun getLoadedEconomyServices(): Map<EconomyType, IEconomyService> {
