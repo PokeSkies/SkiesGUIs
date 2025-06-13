@@ -1,26 +1,31 @@
 package com.pokeskies.skiesguis.config.requirements.types.internal
 
+import com.google.gson.annotations.JsonAdapter
+import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
+import com.pokeskies.skiesguis.config.requirements.PermissionMode
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.server.level.ServerPlayer
 
 class PermissionRequirement(
     type: RequirementType = RequirementType.PERMISSION,
     comparison: ComparisonType = ComparisonType.EQUALS,
-    private val permission: String = ""
+    @JsonAdapter(FlexibleListAdaptorFactory::class) @SerializedName("permissions",  alternate = ["permission"])
+    private val permissions: List<String> = listOf(),
+    private val mode: PermissionMode = PermissionMode.ALL,
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
         if (!checkComparison()) return false
 
-        if (permission.isEmpty()) {
+        if (permissions.isEmpty()) {
             Utils.printError("[REQUIREMENT - ${type?.name}] Permission field was empty? Why?: $this")
             return false
         }
 
-        val value = Permissions.check(player, permission)
+        val value = mode.check(permissions, player)
 
         Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Permission Check($value): $this")
 
@@ -32,6 +37,6 @@ class PermissionRequirement(
     }
 
     override fun toString(): String {
-        return "PermissionRequirement(comparison=$comparison, permission='$permission')"
+        return "PermissionRequirement(comparison=$comparison, permission=$permissions, mode=$mode)"
     }
 }
