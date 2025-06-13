@@ -17,7 +17,7 @@ class CommandPlayer(
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),
-    @JsonAdapter(FlexibleListAdaptorFactory::class)
+    @JsonAdapter(FlexibleListAdaptorFactory::class) @SerializedName("commands",  alternate = ["command"])
     private val commands: List<String> = emptyList(),
     @SerializedName("permission_level")
     private val permissionLevel: Int? = null
