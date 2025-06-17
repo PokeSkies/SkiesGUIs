@@ -39,7 +39,7 @@ class PlaySound(
 
         player.server.executeIfPossible {
             player.playNotifySound(
-                SoundEvent.createVariableRangeEvent(ResourceLocation.parse(sound)),
+                soundEvent,
                 category,
                 volume,
                 pitch,
