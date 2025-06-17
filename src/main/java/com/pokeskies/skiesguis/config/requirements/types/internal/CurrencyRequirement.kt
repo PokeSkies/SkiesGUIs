@@ -10,7 +10,7 @@ import net.minecraft.server.level.ServerPlayer
 
 class CurrencyRequirement(
     type: RequirementType = RequirementType.CURRENCY,
-    comparison: ComparisonType = ComparisonType.EQUALS,
+    comparison: ComparisonType = ComparisonType.GREATER_THAN_OR_EQUALS,
     private val currency: String = "",
     private val amount: Double = 0.0,
     private val economy: EconomyType? = null
