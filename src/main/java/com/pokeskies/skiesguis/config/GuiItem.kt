@@ -3,6 +3,9 @@ package com.pokeskies.skiesguis.config
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import com.mojang.authlib.GameProfile
+import com.mojang.authlib.properties.Property
+import com.mojang.authlib.properties.PropertyMap
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
@@ -49,28 +52,40 @@ class GuiItem(
         if (item.isEmpty()) return ItemStack(Items.BARRIER, amount)
 
         val parsedItem = Utils.parsePlaceholders(player, item)
+        val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
 
         // Handles player head parsing
-        if (parsedItem.contains("playerhead", true)) {
+        if (parsedItem.startsWith("playerhead", true)) {
             var uuid: UUID? = null
             if (parsedItem.contains("-")) {
                 val arg = parsedItem.replace("playerhead-", "")
                 if (arg.isNotEmpty()) {
                     if (arg.contains("-")) {
+                        // CASE: UUID format
                         try {
                             uuid = UUID.fromString(arg)
                         } catch (_: Exception) {}
-                    } else {
+                    } else if (arg.length <= 16) {
+                        // CASE: Player name format
                         val targetPlayer = SkiesGUIs.INSTANCE.server.playerList?.getPlayerByName(arg)
                         if (targetPlayer != null) {
                             uuid = targetPlayer.uuid
                         }
+                    } else {
+                        // CASE: Game Profile format
+                        val properties = PropertyMap()
+                        properties.put("textures", Property("textures", arg))
+                        itemStack.applyComponents(DataComponentPatch.builder()
+                            .set(DataComponents.PROFILE, ResolvableProfile(Optional.empty(), Optional.empty(), properties))
+                            .build())
+                        return itemStack
                     }
                 }
             } else {
+                // CASE: Only "playerhead" is provided, use the viewing player's UUID
                 uuid = player.uuid
             }
-            val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
+
             if (uuid != null) {
                 val gameProfile = SkiesGUIs.INSTANCE.server.profileCache?.get(uuid)
                 if (gameProfile != null && gameProfile.isPresent) {
