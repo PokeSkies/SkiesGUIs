@@ -15,6 +15,7 @@ import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.config.tooltips.TooltipConfig
 import com.pokeskies.skiesguis.economy.EconomyType
+import com.pokeskies.skiesguis.utils.CompoundTagAdaptor
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.nbt.CompoundTag
@@ -39,7 +40,7 @@ class ConfigManager(private val configDir: File) {
         .registerTypeAdapter(EconomyType::class.java, EconomyType.EconomyTypeAdaptor())
         .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(BuiltInRegistries.ITEM))
         .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(BuiltInRegistries.SOUND_EVENT))
-        .registerTypeHierarchyAdapter(CompoundTag::class.java, Utils.CodecSerializer(CompoundTag.CODEC))
+        .registerTypeAdapter(CompoundTag::class.java, CompoundTagAdaptor())
         .create()
 
     companion object {

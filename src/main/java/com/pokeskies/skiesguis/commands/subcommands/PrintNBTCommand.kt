@@ -44,15 +44,7 @@ class PrintNBTCommand : SubCommand {
 
                 val tag = dataResult.result().get() as CompoundTag
 
-                val result = JsonOps.INSTANCE.withEncoder(CompoundTag.CODEC)
-                    .apply(tag)
-                    .result()
-                if (result.isEmpty) {
-                    player.sendMessage(Component.text("There was an error while encoding this Item's NBT! Does it not have any?").color(NamedTextColor.RED))
-                    return 1
-                }
-
-                val jsonOutput = SkiesGUIs.INSTANCE.configManager.gson.toJson(result.get())
+                val jsonOutput = SkiesGUIs.INSTANCE.configManager.gson.toJson(tag)
 
                 val builder: TextComponent.Builder = Component.text()
                 jsonOutput.split("\n").let { list ->
