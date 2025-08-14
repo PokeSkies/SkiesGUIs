@@ -16,7 +16,7 @@ class GUICommands {
             for (command in guiEntry.value.aliasCommands) {
                 dispatcher.register(Commands.literal(command)
                     .requires { obj: CommandSourceStack -> obj.isPlayer }
-                    .requires(Permissions.require("skiesguis.open.${guiEntry.key}", 2))
+                    .requires { guiEntry.value.hasAliasPermission(it) }
                     .executes { ctx ->
                         val player = ctx.source.player
                         if (player == null) {
@@ -27,7 +27,7 @@ class GUICommands {
                             return@executes 1
                         }
 
-                        if (!Permissions.check(player, "skiesguis.open.${guiEntry.key}")) {
+                        if (!guiEntry.value.hasAliasPermission(player.createCommandSourceStack())) {
                             ctx.source.sendMessage(
                                 Component.text("You don't have permission to run this command!")
                                     .color(NamedTextColor.RED)

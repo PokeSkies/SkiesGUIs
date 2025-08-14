@@ -81,8 +81,11 @@ class ConfigManager(private val configDir: File) {
                     val id = file.name.substring(0, file.name.lastIndexOf(".json"))
                     val jsonReader = JsonReader(InputStreamReader(FileInputStream(file), Charsets.UTF_8))
                     try {
-                        GUIS[id] = gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)
-                        Utils.printInfo("Successfully read and loaded the file ${file.name}!")
+                        gson.fromJson(JsonParser.parseReader(jsonReader), GuiConfig::class.java)?.let { gui ->
+                            gui.id = id
+                            GUIS[id] = gui
+                            Utils.printInfo("Successfully read and loaded the file ${file.name}!")
+                        }
                     } catch (ex: Exception) {
                         Utils.printError("Error while trying to parse the file ${file.name} as a GUI!")
                         ex.printStackTrace()
