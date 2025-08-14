@@ -3,7 +3,6 @@ package com.pokeskies.skiesguis.config
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
-import com.mojang.authlib.GameProfile
 import com.mojang.authlib.properties.Property
 import com.mojang.authlib.properties.PropertyMap
 import com.pokeskies.skiesguis.SkiesGUIs
@@ -11,7 +10,6 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
-import net.minecraft.ChatFormatting
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
@@ -30,6 +28,7 @@ import java.util.*
 
 class GuiItem(
     val item: String = "",
+    @SerializedName("slots", alternate = ["slot"])
     @JsonAdapter(FlexibleListAdaptorFactory::class)
     val slots: List<Int> = emptyList(),
     val amount: Int = 1,
@@ -52,10 +51,11 @@ class GuiItem(
         if (item.isEmpty()) return ItemStack(Items.BARRIER, amount)
 
         val parsedItem = Utils.parsePlaceholders(player, item)
-        val itemStack = ItemStack(Items.PLAYER_HEAD, amount)
 
         // Handles player head parsing
         if (parsedItem.startsWith("playerhead", true)) {
+            val headStack = ItemStack(Items.PLAYER_HEAD, amount)
+
             var uuid: UUID? = null
             if (parsedItem.contains("-")) {
                 val arg = parsedItem.replace("playerhead-", "")
@@ -75,10 +75,10 @@ class GuiItem(
                         // CASE: Game Profile format
                         val properties = PropertyMap()
                         properties.put("textures", Property("textures", arg))
-                        itemStack.applyComponents(DataComponentPatch.builder()
+                        headStack.applyComponents(DataComponentPatch.builder()
                             .set(DataComponents.PROFILE, ResolvableProfile(Optional.empty(), Optional.empty(), properties))
                             .build())
-                        return itemStack
+                        return headStack
                     }
                 }
             } else {
@@ -89,15 +89,15 @@ class GuiItem(
             if (uuid != null) {
                 val gameProfile = SkiesGUIs.INSTANCE.server.profileCache?.get(uuid)
                 if (gameProfile != null && gameProfile.isPresent) {
-                    itemStack.applyComponents(DataComponentPatch.builder()
+                    headStack.applyComponents(DataComponentPatch.builder()
                         .set(DataComponents.PROFILE, ResolvableProfile(gameProfile.get()))
                         .build())
-                    return itemStack
+                    return headStack
                 }
             }
 
             Utils.printError("Error while attempting to parse Player Head: $parsedItem")
-            return itemStack
+            return headStack
         }
 
         val newItem = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(parsedItem))
