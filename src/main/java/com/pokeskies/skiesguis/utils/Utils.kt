@@ -4,7 +4,6 @@ import com.google.gson.*
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
-import com.pokeskies.skiesguis.utils.Utils.miniMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.minecraft.core.Registry

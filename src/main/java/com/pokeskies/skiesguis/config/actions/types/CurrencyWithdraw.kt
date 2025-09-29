@@ -1,11 +1,10 @@
 package com.pokeskies.skiesguis.config.actions.types
 
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
-import com.pokeskies.skiesguis.economy.EconomyType
+import com.pokeskies.skiesguis.economy.EconomyManager
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -17,12 +16,12 @@ class CurrencyWithdraw(
     requirements: RequirementOptions? = RequirementOptions(),
     private val currency: String = "",
     private val amount: Double = 0.0,
-    private val economy: EconomyType? = null
+    private val economy: String? = null
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer) {
-        val service = SkiesGUIs.INSTANCE.getEconomyServiceOrDefault(economy)
+        val service = EconomyManager.getService(economy)
         if (service == null) {
-            Utils.printError("[ACTION - CURRENCY_WITHDRAW] No Economy Service could be found from '$economy'! Valid services are: ${SkiesGUIs.INSTANCE.getLoadedEconomyServices().keys}")
+            Utils.printError("[ACTION - CURRENCY_WITHDRAW] No Economy Service could be found from '$economy'! Valid services are: ${EconomyManager.getServices().keys}")
             return
         }
 

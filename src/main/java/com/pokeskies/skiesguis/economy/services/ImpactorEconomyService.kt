@@ -12,10 +12,6 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 class ImpactorEconomyService : IEconomyService {
-    init {
-        Utils.printInfo("Impactor has been found and loaded for any Currency actions/requirements!")
-    }
-
     override fun balance(player: ServerPlayer, currency: String) : Double {
         return getAccount(player.uuid, getCurrency(currency)).thenCompose {
             CompletableFuture.completedFuture(it.balance())

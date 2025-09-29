@@ -11,7 +11,7 @@ interface IEconomyService {
     fun set(player: ServerPlayer, amount: Double, currency: String = "") : Boolean
 
     companion object {
-        private fun getEconomyService(economyType: EconomyType) : IEconomyService? {
+        private fun getEconomyService(economyType: InternalEconomyTypes) : IEconomyService? {
             if (!economyType.isModPresent()) return null
 
             return try {
@@ -23,8 +23,8 @@ interface IEconomyService {
             }
         }
 
-        fun getLoadedEconomyServices() : Map<EconomyType, IEconomyService> {
-            return EconomyType.entries.mapNotNull { key ->
+        fun getLoadedEconomyServices() : Map<InternalEconomyTypes, IEconomyService> {
+            return InternalEconomyTypes.entries.mapNotNull { key ->
                 getEconomyService(key)?.let { key to it }
             }.toMap()
         }

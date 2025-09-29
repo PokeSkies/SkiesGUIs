@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher
 import com.pokeskies.skiesguis.api.SkiesGUIsAPI
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.Utils
-import me.lucko.fabric.api.permissions.v0.Permissions
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.commands.CommandSourceStack

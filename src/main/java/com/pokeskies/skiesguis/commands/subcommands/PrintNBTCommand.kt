@@ -2,7 +2,6 @@ package com.pokeskies.skiesguis.commands.subcommands
 
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
-import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.utils.SubCommand
 import me.lucko.fabric.api.permissions.v0.Permissions

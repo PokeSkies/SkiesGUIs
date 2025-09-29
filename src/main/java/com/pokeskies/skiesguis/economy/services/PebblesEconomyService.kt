@@ -1,15 +1,10 @@
 package com.pokeskies.skiesguis.economy.services
 
 import com.pokeskies.skiesguis.economy.IEconomyService
-import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 import tech.sethi.pebbleseconomy.PebblesEconomyInitializer
 
 class PebblesEconomyService : IEconomyService {
-    init {
-        Utils.printInfo("PebblesEconomy has been found and loaded for any Currency actions/requirements!")
-    }
-
     override fun balance(player: ServerPlayer, currency: String) : Double {
         return PebblesEconomyInitializer.economy.getBalance(player.uuid)
     }

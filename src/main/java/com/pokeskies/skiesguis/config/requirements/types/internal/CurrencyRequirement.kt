@@ -1,10 +1,9 @@
 package com.pokeskies.skiesguis.config.requirements.types.internal
 
-import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.economy.EconomyType
+import com.pokeskies.skiesguis.economy.EconomyManager
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -13,14 +12,14 @@ class CurrencyRequirement(
     comparison: ComparisonType = ComparisonType.GREATER_THAN_OR_EQUALS,
     private val currency: String = "",
     private val amount: Double = 0.0,
-    private val economy: EconomyType? = null
+    private val economy: String? = null
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer): Boolean {
         if (!checkComparison()) return false
 
-        val service = SkiesGUIs.INSTANCE.getEconomyServiceOrDefault(economy)
+        val service = EconomyManager.getService(economy)
         if (service == null) {
-            Utils.printError("[REQUIREMENT - ${type?.name}] No Economy Service could be found from '$economy'! Valid services are: ${SkiesGUIs.INSTANCE.getLoadedEconomyServices().keys}")
+            Utils.printError("[REQUIREMENT - ${type?.name}] No Economy Service could be found from '$economy'! Valid services are: ${EconomyManager.getServices().keys}")
             return false
         }
 

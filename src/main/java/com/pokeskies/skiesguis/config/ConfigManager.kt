@@ -14,7 +14,6 @@ import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.config.tooltips.TooltipConfig
-import com.pokeskies.skiesguis.economy.EconomyType
 import com.pokeskies.skiesguis.utils.CompoundTagAdaptor
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.registries.BuiltInRegistries
@@ -37,7 +36,6 @@ class ConfigManager(private val configDir: File) {
         .registerTypeAdapter(Requirement::class.java, RequirementType.RequirementTypeAdaptor())
         .registerTypeAdapter(ClickType::class.java, ClickType.ClickTypeAdaptor())
         .registerTypeAdapter(ComparisonType::class.java, ComparisonType.ComparisonTypeAdaptor())
-        .registerTypeAdapter(EconomyType::class.java, EconomyType.EconomyTypeAdaptor())
         .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(BuiltInRegistries.ITEM))
         .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(BuiltInRegistries.SOUND_EVENT))
         .registerTypeAdapter(CompoundTag::class.java, CompoundTagAdaptor())

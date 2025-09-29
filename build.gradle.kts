@@ -39,6 +39,7 @@ repositories {
             password = project.findProperty("pokeskiesPassword") as String?
         }
     }
+    maven("https://repo.lucko.me")
 }
 
 loom {

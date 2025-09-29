@@ -3,8 +3,7 @@ package com.pokeskies.skiesguis
 import com.pokeskies.skiesguis.commands.BaseCommands
 import com.pokeskies.skiesguis.commands.GUICommands
 import com.pokeskies.skiesguis.config.ConfigManager
-import com.pokeskies.skiesguis.economy.EconomyType
-import com.pokeskies.skiesguis.economy.IEconomyService
+import com.pokeskies.skiesguis.economy.EconomyManager
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.placeholders.PlaceholderManager
 import com.pokeskies.skiesguis.utils.Scheduler
@@ -35,7 +34,6 @@ class SkiesGUIs : ModInitializer {
     lateinit var configDir: File
     lateinit var configManager: ConfigManager
 
-    private var economyServices: Map<EconomyType, IEconomyService> = emptyMap()
     lateinit var placeholderManager: PlaceholderManager
 
     var adventure: FabricServerAudiences? = null
@@ -52,8 +50,8 @@ class SkiesGUIs : ModInitializer {
         this.configDir = File(FabricLoader.getInstance().configDirectory, MOD_ID)
         this.configManager = ConfigManager(configDir)
 
-        this.economyServices = IEconomyService.getLoadedEconomyServices()
         this.placeholderManager = PlaceholderManager()
+        EconomyManager.init()
 
         this.graalEngine = Engine.newBuilder()
             .option("engine.WarnInterpreterOnly", "false")
@@ -84,18 +82,5 @@ class SkiesGUIs : ModInitializer {
 
     fun reload() {
         this.configManager.reload()
-        this.economyServices = IEconomyService.getLoadedEconomyServices()
-    }
-
-    fun getLoadedEconomyServices(): Map<EconomyType, IEconomyService> {
-        return this.economyServices
-    }
-
-    fun getEconomyService(economyType: EconomyType?): IEconomyService? {
-        return economyType?.let { this.economyServices[it] }
-    }
-
-    fun getEconomyServiceOrDefault(economyType: EconomyType?): IEconomyService? {
-        return economyType?.let { this.economyServices[it] } ?: this.economyServices.values.firstOrNull()
     }
 }

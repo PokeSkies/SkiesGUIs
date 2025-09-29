@@ -1,16 +1,11 @@
 package com.pokeskies.skiesguis.economy.services
 
 import com.pokeskies.skiesguis.economy.IEconomyService
-import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 import org.beconomy.api.BEconomy
 import java.math.BigDecimal
 
 class BEconomyEconomyService : IEconomyService {
-    init {
-        Utils.printInfo("BEconomy has been found and loaded for any Currency actions/requirements!")
-    }
-
     override fun balance(player: ServerPlayer, currency: String) : Double {
         return BEconomy.getAPI().getBalance(player.uuid, currency).toDouble()
     }
