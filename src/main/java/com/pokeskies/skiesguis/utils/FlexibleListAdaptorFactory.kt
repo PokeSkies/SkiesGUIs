@@ -11,8 +11,10 @@ import com.google.gson.stream.MalformedJsonException
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import kotlin.jvm.Throws
+import kotlin.jvm.java
 
-// Sourced from https://stackoverflow.com/questions/43412261/make-gson-accept-single-objects-where-it-expects-arrays
+// Sourced and modified from https://stackoverflow.com/questions/43412261/make-gson-accept-single-objects-where-it-expects-arrays
 internal class FlexibleListAdaptorFactory<E> private constructor() : TypeAdapterFactory {
     override fun <T> create(gson: Gson, typeToken: TypeToken<T>): TypeAdapter<T>? {
         // If it's not a List -- just delegate the job to Gson and let it pick the best type adapter itself
@@ -44,14 +46,27 @@ internal class FlexibleListAdaptorFactory<E> private constructor() : TypeAdapter
                 this.elementTypeAdapter = elementTypeAdapter
             }
 
-            override fun write(out: JsonWriter?, list: List<E>?) {
-                throw UnsupportedOperationException()
+            override fun write(out: JsonWriter, list: List<E>?) {
+                if (list == null) {
+                    out.nullValue()
+                    return
+                }
+
+                if (list.size == 1) {
+                    elementTypeAdapter.write(out, list[0])
+                } else {
+                    out.beginArray()
+                    for (element in list) {
+                        elementTypeAdapter.write(out, element)
+                    }
+                    out.endArray()
+                }
             }
 
             @Throws(IOException::class)
             override fun read(`in`: JsonReader): List<E> {
                 // This is where we detect the list "type"
-                val list: MutableList<E> = ArrayList()
+                val list: MutableList<E> = kotlin.collections.ArrayList()
                 val token: JsonToken = `in`.peek()
                 when (token) {
                     JsonToken.BEGIN_ARRAY -> {
@@ -66,9 +81,9 @@ internal class FlexibleListAdaptorFactory<E> private constructor() : TypeAdapter
                     JsonToken.BEGIN_OBJECT, JsonToken.STRING, JsonToken.NUMBER, JsonToken.BOOLEAN ->
                         list.add(elementTypeAdapter.read(`in`))
 
-                    JsonToken.NULL -> throw AssertionError("Must never happen: check if the type adapter configured with .nullSafe()")
+                    JsonToken.NULL -> throw kotlin.AssertionError("Must never happen: check if the type adapter configured with .nullSafe()")
                     JsonToken.NAME, JsonToken.END_ARRAY, JsonToken.END_OBJECT, JsonToken.END_DOCUMENT -> throw MalformedJsonException("Unexpected token: $token")
-                    else -> throw AssertionError("Must never happen: $token")
+                    else -> throw kotlin.AssertionError("Must never happen: $token")
                 }
                 return list
             }
