@@ -5,6 +5,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -16,7 +17,7 @@ class OpenGUI(
     requirements: RequirementOptions? = RequirementOptions(),
     private val id: String = ""
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer) {
+    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
         val gui = SkiesGUIsAPI.getGUIConfig(id)
         if (gui == null) {
             Utils.printError("[ACTION - ${type.name}] There was an error while executing for player ${player.name}: Could not find a GUI with the ID $id!")

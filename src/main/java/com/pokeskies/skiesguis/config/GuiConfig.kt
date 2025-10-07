@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.config
 
-import ca.landonjw.gooeylibs2.api.UIManager
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
@@ -31,14 +30,14 @@ class GuiConfig(
     lateinit var id: String
 
     fun openGUI(player: ServerPlayer, id: String) {
-        if (openRequirements?.checkRequirements(player) == false) {
-            openRequirements.executeDenyActions(player)
+        val gui = ChestGUI(player, id, this)
+        if (openRequirements?.checkRequirements(player, gui) == false) {
+            openRequirements.executeDenyActions(player, gui)
             return
         }
-        val gui = ChestGUI(player, id, this)
-        openRequirements?.executeSuccessActions(player)
-        UIManager.openUIForcefully(player, gui)
-        Scheduler.scheduleTask(1, Scheduler.DelayedAction({ executeOpenActions(player) }))
+        openRequirements?.executeSuccessActions(player, gui)
+        gui.open()
+        Scheduler.scheduleTask(1, Scheduler.DelayedAction({ executeOpenActions(player, gui) }))
     }
 
     fun hasAliasPermission(ctx: CommandSourceStack): Boolean {
@@ -46,15 +45,15 @@ class GuiConfig(
         return Permissions.check(ctx, aliasPermission, 2)
     }
 
-    private fun executeOpenActions(player: ServerPlayer) {
+    private fun executeOpenActions(player: ServerPlayer, gui: ChestGUI) {
         for (actionEntry in openActions) {
-            actionEntry.value.attemptExecution(player)
+            actionEntry.value.attemptExecution(player, gui)
         }
     }
 
-    fun executeCloseActions(player: ServerPlayer) {
+    fun executeCloseActions(player: ServerPlayer, gui: ChestGUI) {
         for (actionEntry in closeActions) {
-            actionEntry.value.attemptExecution(player)
+            actionEntry.value.attemptExecution(player, gui)
         }
     }
 

@@ -4,6 +4,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -16,7 +17,7 @@ class GiveXP(
     private val amount: Int = 0,
     private val level: Boolean = false
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer) {
+    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
         Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
         if (level) {
             player.giveExperienceLevels(amount)

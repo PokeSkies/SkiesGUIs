@@ -8,9 +8,135 @@
     }
   },
   "items": {
+    "party_not_shiny_1": {
+      "priority": 1,
+      "item": "minecraft:redstone_block",
+      "slots": [1],
+      "name": "<red>Your 1st party Pokemon is not shiny!"
+    },
+    "party_shiny_1": {
+      "priority": 0,
+      "item": "minecraft:gold_block",
+      "slots": [1],
+      "name": "<gold>Your 1st party Pokemon is shiny!",
+      "view_requirements": {
+        "requirements": {
+          "cobblemon": {
+            "type": "MOLANG",
+            "script": "t.party = q.gui.player.party; t.pokemon = t.party.get_pokemon(0); t.pokemon.is_shiny;",
+            "output": "1"
+          }
+        }
+      }
+    },
+    "party_not_shiny_2": {
+      "priority": 1,
+      "item": "minecraft:redstone_block",
+      "slots": [2],
+      "name": "<red>Your 2nd party Pokemon is not shiny!"
+    },
+    "party_shiny_2": {
+      "priority": 0,
+      "item": "minecraft:gold_block",
+      "slots": [2],
+      "name": "<gold>Your 2nd party Pokemon is shiny!",
+      "view_requirements": {
+        "requirements": {
+          "cobblemon": {
+            "type": "MOLANG",
+            "script": "t.party = q.gui.player.party; t.pokemon = t.party.get_pokemon(1); t.pokemon.is_shiny;",
+            "output": "1"
+          }
+        }
+      }
+    },
+    "party_not_shiny_3": {
+      "priority": 1,
+      "item": "minecraft:redstone_block",
+      "slots": [3],
+      "name": "<red>Your 3rd party Pokemon is not shiny!"
+    },
+    "party_shiny_3": {
+      "priority": 0,
+      "item": "minecraft:gold_block",
+      "slots": [3],
+      "name": "<gold>Your 3rd party Pokemon is shiny!",
+      "view_requirements": {
+        "requirements": {
+          "cobblemon": {
+            "type": "MOLANG",
+            "script": "t.party = q.gui.player.party; t.pokemon = t.party.get_pokemon(2); t.pokemon.is_shiny;",
+            "output": "1"
+          }
+        }
+      }
+    },
+    "party_not_shiny_4": {
+      "priority": 1,
+      "item": "minecraft:redstone_block",
+      "slots": [5],
+      "name": "<red>Your 4th party Pokemon is not shiny!"
+    },
+    "party_shiny_4": {
+      "priority": 0,
+      "item": "minecraft:gold_block",
+      "slots": [5],
+      "name": "<gold>Your 4th party Pokemon is shiny!",
+      "view_requirements": {
+        "requirements": {
+          "cobblemon": {
+            "type": "MOLANG",
+            "script": "t.party = q.gui.player.party; t.pokemon = t.party.get_pokemon(3); t.pokemon.is_shiny;",
+            "output": "1"
+          }
+        }
+      }
+    },
+    "party_not_shiny_5": {
+      "priority": 1,
+      "item": "minecraft:redstone_block",
+      "slots": [6],
+      "name": "<red>Your 5th party Pokemon is not shiny!"
+    },
+    "party_shiny_5": {
+      "priority": 0,
+      "item": "minecraft:gold_block",
+      "slots": [6],
+      "name": "<gold>Your 5th party Pokemon is shiny!",
+      "view_requirements": {
+        "requirements": {
+          "cobblemon": {
+            "type": "MOLANG",
+            "script": "t.party = q.gui.player.party; t.pokemon = t.party.get_pokemon(4); t.pokemon.is_shiny;",
+            "output": "1"
+          }
+        }
+      }
+    },
+    "party_not_shiny_6": {
+      "priority": 1,
+      "item": "minecraft:redstone_block",
+      "slots": [7],
+      "name": "<red>Your 6th party Pokemon is not shiny!"
+    },
+    "party_shiny_6": {
+      "priority": 0,
+      "item": "minecraft:gold_block",
+      "slots": [7],
+      "name": "<gold>Your 6th party Pokemon is shiny!",
+      "view_requirements": {
+        "requirements": {
+          "cobblemon": {
+            "type": "MOLANG",
+            "script": "t.party = q.gui.player.party; t.pokemon = t.party.get_pokemon(5); t.pokemon.is_shiny;",
+            "output": "1"
+          }
+        }
+      }
+    },
     "background": {
       "item": "minecraft:blue_stained_glass_pane",
-      "slots": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "slots": [0, 4, 8],
       "nbt": {
         "minecraft:hide_tooltip": {}
       }

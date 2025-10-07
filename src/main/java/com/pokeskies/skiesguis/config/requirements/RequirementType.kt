@@ -3,6 +3,7 @@ package com.pokeskies.skiesguis.config.requirements
 import com.google.gson.*
 import com.pokeskies.skiesguis.config.requirements.types.extensions.plan.PlanPlaytimeRequirement
 import com.pokeskies.skiesguis.config.requirements.types.internal.*
+import net.fabricmc.loader.api.FabricLoader
 import java.lang.reflect.Type
 
 enum class RequirementType(val identifier: String, val clazz: Class<*>) {
@@ -13,13 +14,14 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
     DIMENSION("dimension", DimensionRequirement::class.java),
     PLACEHOLDER("placeholder", PlaceholderRequirement::class.java),
     JAVASCRIPT("javascript", JavaScriptRequirement::class.java),
+    MOLANG("molang", MolangRequirement::class.java),
 
     // Extensions
     PLAN_PLAYTIME("plan_playtime", PlanPlaytimeRequirement::class.java);
 
     companion object {
         fun valueOfAnyCase(name: String): RequirementType? {
-            for (type in values()) {
+            for (type in RequirementType.entries) {
                 if (name.equals(type.identifier, true)) return type
             }
             return null
@@ -33,7 +35,11 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
 
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Requirement {
             val jsonObject: JsonObject = json.getAsJsonObject()
-            val type: RequirementType? = RequirementType.valueOfAnyCase(jsonObject.get("type").asString)
+            val value = jsonObject.get("type").asString
+            if (value == "molang" && !FabricLoader.getInstance().isModLoaded("cobblemon")) {
+                throw JsonParseException("Molang action is not supported without the Cobblemon mod")
+            }
+            val type: RequirementType? = RequirementType.valueOfAnyCase(value)
             return try {
                 context.deserialize(json, type!!.clazz)
             } catch (e: NullPointerException) {

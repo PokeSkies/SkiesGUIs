@@ -4,6 +4,7 @@ import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.economy.EconomyManager
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -14,7 +15,7 @@ class CurrencyRequirement(
     private val amount: Double = 0.0,
     private val economy: String? = null
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
         if (!checkComparison()) return false
 
         val service = EconomyManager.getService(economy)

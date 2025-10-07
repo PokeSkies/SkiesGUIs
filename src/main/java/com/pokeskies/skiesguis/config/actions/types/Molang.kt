@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.config.actions.types
 
-import ca.landonjw.gooeylibs2.api.container.GooeyContainer
 import com.cobblemon.mod.common.api.molang.MoLangFunctions.asMoLangValue
 import com.cobblemon.mod.common.util.asExpressionLike
 import com.cobblemon.mod.common.util.resolve
@@ -14,7 +13,7 @@ import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
-class MolangAction(
+class Molang(
     type: ActionType = ActionType.MOLANG,
     click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
@@ -29,14 +28,9 @@ class MolangAction(
     chance,
     requirements
 ) {
-    override fun executeAction(player: ServerPlayer) {
-        val screen = if (player.containerMenu is GooeyContainer && ((player.containerMenu!! as GooeyContainer).page is ChestGUI)) {
-            (player.containerMenu!! as GooeyContainer).page as ChestGUI
-        } else {
-            return
-        }
+    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
         Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
-        screen.manager?.runtime?.resolve(
+        gui.manager?.runtime?.resolve(
             script.asExpressionLike(),
             mapOf("player" to player.asMoLangValue())
         )

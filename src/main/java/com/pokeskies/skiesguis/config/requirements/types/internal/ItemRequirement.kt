@@ -5,6 +5,7 @@ import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
@@ -24,7 +25,7 @@ class ItemRequirement(
     val customModelData: Int? = null,
     val strict: Boolean = true
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
         if (!checkComparison()) return false
 
         val targetAmount = amount ?: 1

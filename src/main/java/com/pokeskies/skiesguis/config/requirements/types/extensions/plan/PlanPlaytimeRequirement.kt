@@ -3,6 +3,7 @@ package com.pokeskies.skiesguis.config.requirements.types.extensions.plan
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.PlanExtensionHelper
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
@@ -12,7 +13,7 @@ class PlanPlaytimeRequirement(
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val time: Long = 0
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
         if (!checkComparison()) return false
 
         val playtime = PlanExtensionHelper.getPlaytime(player.uuid)

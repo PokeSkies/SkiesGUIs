@@ -2,6 +2,7 @@ package com.pokeskies.skiesguis.config.requirements
 
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
+import com.pokeskies.skiesguis.gui.ChestGUI
 import net.minecraft.server.level.ServerPlayer
 
 class RequirementOptions(
@@ -15,10 +16,10 @@ class RequirementOptions(
     @SerializedName("stop_at_success")
     val stopAtSuccess: Boolean = false
 ) {
-    fun checkRequirements(player: ServerPlayer): Boolean {
+    fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
         var successes = 0
         for (requirement in requirements) {
-            if (requirement.value.checkRequirements(player)) {
+            if (requirement.value.checkRequirements(player, gui)) {
                 successes++
                 if (minimumRequirements != null && stopAtSuccess && successes >= minimumRequirements) {
                     return true
@@ -28,15 +29,15 @@ class RequirementOptions(
         return if (minimumRequirements == null) successes == requirements.size else successes >= minimumRequirements
     }
 
-    fun executeDenyActions(player: ServerPlayer) {
-        for ((id, action) in denyActions) {
-            action.attemptExecution(player)
+    fun executeDenyActions(player: ServerPlayer, gui: ChestGUI) {
+        for ((_, action) in denyActions) {
+            action.attemptExecution(player, gui)
         }
     }
 
-    fun executeSuccessActions(player: ServerPlayer) {
-        for ((id, action) in successActions) {
-            action.attemptExecution(player)
+    fun executeSuccessActions(player: ServerPlayer, gui: ChestGUI) {
+        for ((_, action) in successActions) {
+            action.attemptExecution(player, gui)
         }
     }
     override fun toString(): String {

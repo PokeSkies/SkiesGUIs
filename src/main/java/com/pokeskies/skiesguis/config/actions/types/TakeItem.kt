@@ -6,6 +6,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
 import com.pokeskies.skiesguis.config.actions.ClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
+import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
@@ -28,7 +29,7 @@ class TakeItem(
     val customModelData: Int? = null,
     val strict: Boolean = true
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer) {
+    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
         var removed = 0
         for ((i, stack) in player.inventory.items.withIndex()) {
             if (!stack.isEmpty) {

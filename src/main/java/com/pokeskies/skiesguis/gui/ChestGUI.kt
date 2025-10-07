@@ -1,5 +1,6 @@
 package com.pokeskies.skiesguis.gui
 
+import ca.landonjw.gooeylibs2.api.UIManager
 import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import ca.landonjw.gooeylibs2.api.data.UpdateEmitter
 import ca.landonjw.gooeylibs2.api.page.Page
@@ -28,7 +29,7 @@ class ChestGUI(
     private val template: ChestTemplate =
         ChestTemplate.Builder(config.size)
             .build()
-    private val playerInventory: InventoryTemplate
+    private val playerInventory: InventoryTemplate = InventoryTemplate.builder().build()
     var title = config.title
 
     val tooltipOverrides: MutableMap<Int, TooltipBuilder> = mutableMapOf()
@@ -44,8 +45,6 @@ class ChestGUI(
     val items: TreeMap<Int, TreeMap<Int, Pair<String, GuiItem>>> = TreeMap()
 
     init {
-        controller.subscribe(this, Runnable { refresh() })
-        SkiesGUIs.INSTANCE.inventoryControllers[player.uuid] = controller
         for (entry in config.items) {
             for (slot in entry.value.slots) {
                 val priorities = items.getOrDefault(slot, TreeMap())
@@ -53,8 +52,15 @@ class ChestGUI(
                 items[slot] = priorities
             }
         }
-        playerInventory = InventoryTemplate.builder().build()
+    }
+
+    fun open() {
+        controller.subscribe(this, Runnable { refresh() })
+        SkiesGUIs.INSTANCE.inventoryControllers[player.uuid] = controller
+
         refresh()
+
+        UIManager.openUIForcefully(player, this)
     }
 
     fun refresh() {
@@ -68,8 +74,8 @@ class ChestGUI(
         for ((slot, slotEntry) in items) {
             for ((_, itemEntry) in slotEntry) {
                 val guiItem = itemEntry.second
-                if (guiItem.viewRequirements?.checkRequirements(player) != false) {
-                    guiItem.viewRequirements?.executeSuccessActions(player)
+                if (guiItem.viewRequirements?.checkRequirements(player, this) != false) {
+                    guiItem.viewRequirements?.executeSuccessActions(player, this)
                     template.set(slot, guiItem.createButton(player).also {
                         if (tooltipOverrides[slot] != null) {
                             val tooltip = tooltipOverrides[slot]!!.buildTooltip(player)
@@ -77,21 +83,21 @@ class ChestGUI(
                         }
                     }
                         .onClick { ctx ->
-                            if (guiItem.clickRequirements?.checkRequirements(player) != false) {
-                                guiItem.clickRequirements?.executeSuccessActions(player)
+                            if (guiItem.clickRequirements?.checkRequirements(player, this) != false) {
+                                guiItem.clickRequirements?.executeSuccessActions(player, this)
                                 for (actionEntry in guiItem.clickActions) {
                                     val action = actionEntry.value
                                     if (action.matchesClick(ctx.clickType)) {
-                                        if (action.requirements?.checkRequirements(player) != false) {
-                                            action.attemptExecution(player)
-                                            action.requirements?.executeSuccessActions(player)
+                                        if (action.requirements?.checkRequirements(player, this) != false) {
+                                            action.attemptExecution(player, this)
+                                            action.requirements?.executeSuccessActions(player, this)
                                         } else {
-                                            action.requirements.executeDenyActions(player)
+                                            action.requirements.executeDenyActions(player, this)
                                         }
                                     }
                                 }
                             } else {
-                                guiItem.clickRequirements.executeDenyActions(player)
+                                guiItem.clickRequirements.executeDenyActions(player, this)
                             }
                         }
                         .build())
@@ -99,7 +105,7 @@ class ChestGUI(
                     // Since the slot is being filled at the highest priority, all remaining entries are lower priority
                     break
                 } else {
-                    guiItem.viewRequirements.executeDenyActions(player)
+                    guiItem.viewRequirements.executeDenyActions(player, this)
                 }
             }
         }
@@ -110,7 +116,7 @@ class ChestGUI(
     }
 
     override fun onClose(action: PageAction) {
-        config.executeCloseActions(player)
+        config.executeCloseActions(player, this)
         SkiesGUIs.INSTANCE.inventoryControllers.remove(player.uuid, controller)
     }
 
