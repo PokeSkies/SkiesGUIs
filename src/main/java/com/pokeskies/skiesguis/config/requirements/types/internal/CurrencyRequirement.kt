@@ -18,7 +18,7 @@ class CurrencyRequirement(
     override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
         if (!checkComparison()) return false
 
-        val service = EconomyManager.getService(economy)
+        val service = EconomyManager.getServiceOrDefault(economy)
         if (service == null) {
             Utils.printError("[REQUIREMENT - ${type?.name}] No Economy Service could be found from '$economy'! Valid services are: ${EconomyManager.getServices().keys}")
             return false

@@ -20,7 +20,7 @@ class CurrencySet(
     private val economy: String? = null
 ) : Action(type, click, delay, chance, requirements) {
     override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
-        val service = EconomyManager.getService(economy)
+        val service = EconomyManager.getServiceOrDefault(economy)
         if (service == null) {
             Utils.printError("[ACTION - CURRENCY_SET] No Economy Service could be found from '$economy'! Valid services are: ${EconomyManager.getServices().keys}")
             return

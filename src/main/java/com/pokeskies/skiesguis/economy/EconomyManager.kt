@@ -33,6 +33,11 @@ object EconomyManager {
         return services[name.lowercase()]
     }
 
+    fun getServiceOrDefault(name: String?): IEconomyService? {
+        if (name.isNullOrEmpty()) return services.entries.firstOrNull()?.value
+        return services[name.lowercase()] ?: services.entries.firstOrNull()?.value
+    }
+
     fun getServices(): Map<String, IEconomyService> {
         return services.toMap()
     }
