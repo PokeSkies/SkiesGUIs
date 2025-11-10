@@ -14,6 +14,7 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
     DIMENSION("dimension", DimensionRequirement::class.java),
     PLACEHOLDER("placeholder", PlaceholderRequirement::class.java),
     JAVASCRIPT("javascript", JavaScriptRequirement::class.java),
+    XP("xp", XPRequirement::class.java),
     MOLANG("molang", MolangRequirement::class.java),
 
     // Extensions

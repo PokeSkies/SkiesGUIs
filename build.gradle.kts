@@ -88,6 +88,7 @@ dependencies {
 
     modImplementation("com.github.plan-player-analytics:Plan:5.6.2883")
     modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
+
     modCompileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
 
