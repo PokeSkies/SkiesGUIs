@@ -2,10 +2,7 @@ package com.pokeskies.skiesguis.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.tree.LiteralCommandNode
-import com.pokeskies.skiesguis.commands.subcommands.DebugCommand
-import com.pokeskies.skiesguis.commands.subcommands.OpenCommand
-import com.pokeskies.skiesguis.commands.subcommands.PrintNBTCommand
-import com.pokeskies.skiesguis.commands.subcommands.ReloadCommand
+import com.pokeskies.skiesguis.commands.subcommands.*
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 
@@ -22,6 +19,7 @@ class BaseCommands {
             ReloadCommand().build(),
             DebugCommand().build(),
             PrintNBTCommand().build(),
+            MetadataCommand().build(),
         )
 
         rootCommands.forEach { root ->

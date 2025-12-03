@@ -43,7 +43,7 @@ class PrintNBTCommand : SubCommand {
 
                 val tag = dataResult.result().get() as CompoundTag
 
-                val jsonOutput = SkiesGUIs.INSTANCE.configManager.gson.toJson(tag)
+                val jsonOutput = SkiesGUIs.INSTANCE.gson.toJson(tag)
 
                 val builder: TextComponent.Builder = Component.text()
                 jsonOutput.split("\n").let { list ->

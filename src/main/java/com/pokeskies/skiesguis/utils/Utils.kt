@@ -4,6 +4,7 @@ import com.google.gson.*
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
+import com.pokeskies.skiesguis.config.ConfigManager
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.minecraft.core.Registry
@@ -25,7 +26,7 @@ object Utils {
     }
 
     fun printDebug(message: String, bypassCheck: Boolean = false) {
-        if (bypassCheck || SkiesGUIs.INSTANCE.configManager.config.debug)
+        if (bypassCheck || ConfigManager.CONFIG.debug)
             SkiesGUIs.LOGGER.info("[SkiesGUIs] DEBUG: $message")
     }
 

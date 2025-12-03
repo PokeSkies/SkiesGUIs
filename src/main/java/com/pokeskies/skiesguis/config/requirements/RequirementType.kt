@@ -16,6 +16,7 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
     JAVASCRIPT("javascript", JavaScriptRequirement::class.java),
     XP("xp", XPRequirement::class.java),
     MOLANG("molang", MolangRequirement::class.java),
+    METADATA("metadata", MetadataRequirement::class.java),
 
     // Extensions
     PLAN_PLAYTIME("plan_playtime", PlanPlaytimeRequirement::class.java);
@@ -29,7 +30,7 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
         }
     }
 
-    internal class RequirementTypeAdaptor : JsonSerializer<Requirement>, JsonDeserializer<Requirement> {
+    internal class Adapter : JsonSerializer<Requirement>, JsonDeserializer<Requirement> {
         override fun serialize(src: Requirement, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
             return context.serialize(src, src::class.java)
         }

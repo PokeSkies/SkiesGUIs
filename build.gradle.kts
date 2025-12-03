@@ -1,11 +1,15 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     java
     idea
     id("quiet-fabric-loom") version ("1.7-SNAPSHOT")
     id("org.jetbrains.kotlin.jvm").version("2.0.0")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
+
 val modId = project.properties["mod_id"].toString()
 version = project.properties["mod_version"].toString()
 group = project.properties["mod_group"].toString()
@@ -51,6 +55,10 @@ loom {
     }
 }
 
+val shade: Configuration by configurations.creating {
+    isTransitive = false
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
     mappings(loom.layered {
@@ -89,6 +97,18 @@ dependencies {
     modImplementation("com.github.plan-player-analytics:Plan:5.6.2883")
     modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
 
+    // Database
+    implementation("org.mongodb:mongodb-driver-sync:5.6.1")?.let { shade(it) }
+    implementation("org.mongodb:mongodb-driver-core:5.6.1")?.let { shade(it) }
+    implementation("org.mongodb:bson:5.6.1")?.let { shade(it) }
+
+    // SQL Storage
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.6")?.let { shade(it) }
+    implementation("com.zaxxer:HikariCP:7.0.2")?.let { shade(it) }
+    implementation("org.xerial:sqlite-jdbc:3.51.1.0")?.let { shade(it) }
+    implementation("com.h2database:h2:2.4.240")?.let { shade(it) }
+    implementation("com.mysql:mysql-connector-j:9.5.0")?.let { shade(it) }
+
     modCompileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
 
@@ -104,7 +124,26 @@ tasks.processResources {
     }
 }
 
+tasks.named<ShadowJar>("shadowJar") {
+    isZip64 = true
+    archiveClassifier.set("")
+    mergeServiceFiles()
+
+    configurations = listOf(shade)
+
+    val shadedBase = "${project.group}.shaded"
+    relocate("org.mariadb", "$shadedBase.org.mariadb")
+    relocate("org.bson", "$shadedBase.org.bson")
+    relocate("org.h2", "$shadedBase.org.h2")
+    relocate("org.sqlite", "$shadedBase.org.sqlite")
+    relocate("com.mongodb", "$shadedBase.com.mongodb")
+    relocate("com.zaxxer", "$shadedBase.com.zaxxer")
+    relocate("com.mysql", "$shadedBase.com.mysql")
+}
+
+// Ensure Loom remapping consumes the shaded jar produced by shadow
 tasks.remapJar {
+    dependsOn(tasks.named("shadowJar"))
     archiveFileName.set("${project.name}-fabric-${project.properties["minecraft_version"]}-${project.version}.jar")
 }
 

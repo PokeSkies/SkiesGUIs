@@ -1,4 +1,25 @@
 {
   "debug": false,
-  "economy": "IMPACTOR"
+  "storage": {
+    "type": "SQLITE",
+    "host": "localhost",
+    "port": 27017,
+    "database": "skiesguis",
+    "username": "root",
+    "password": "",
+    "table_prefix": "skiesguis_",
+    "properties": {
+      "useUnicode": "true",
+      "characterEncoding": "utf8"
+    },
+    "pool_settings": {
+      "maximum_pool_size": 10,
+      "minimum_idle": 10,
+      "keepalive_time": 0,
+      "connection_timeout": 30000,
+      "idle_timeout": 600000,
+      "max_lifetime": 1800000
+    },
+    "url_override": ""
+  }
 }

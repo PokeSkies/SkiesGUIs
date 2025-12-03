@@ -2,7 +2,7 @@ package com.pokeskies.skiesguis.commands.subcommands
 
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
-import com.pokeskies.skiesguis.SkiesGUIs
+import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.utils.SubCommand
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.kyori.adventure.text.Component
@@ -20,9 +20,9 @@ class DebugCommand : SubCommand {
 
     companion object {
         fun debug(ctx: CommandContext<CommandSourceStack>): Int {
-            val newMode = !SkiesGUIs.INSTANCE.configManager.config.debug
-            SkiesGUIs.INSTANCE.configManager.config.debug = newMode
-            SkiesGUIs.INSTANCE.configManager.saveFile("config.json", SkiesGUIs.INSTANCE.configManager.config)
+            val newMode = !ConfigManager.CONFIG.debug
+            ConfigManager.CONFIG.debug = newMode
+            ConfigManager.saveFile("config.json", ConfigManager.CONFIG)
 
             if (newMode) {
                 ctx.source.sendMessage(Component.text("Debug mode has been enabled!").color(NamedTextColor.GREEN))

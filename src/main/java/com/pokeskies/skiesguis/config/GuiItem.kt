@@ -60,12 +60,10 @@ class GuiItem(
             if (parsedItem.contains("-")) {
                 val arg = parsedItem.replace("playerhead-", "")
                 if (arg.isNotEmpty()) {
-                    println("Args - $arg")
                     if (arg.contains("-")) {
                         // CASE: UUID format
                         try {
                             uuid = UUID.fromString(arg)
-                            println("UUID - $uuid")
                         } catch (_: Exception) {}
                     } else if (arg.length <= 16) {
                         // CASE: Player name format

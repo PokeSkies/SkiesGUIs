@@ -11,8 +11,6 @@ import com.google.gson.stream.MalformedJsonException
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import kotlin.jvm.Throws
-import kotlin.jvm.java
 
 // Sourced and modified from https://stackoverflow.com/questions/43412261/make-gson-accept-single-objects-where-it-expects-arrays
 internal class FlexibleListAdaptorFactory<E> private constructor() : TypeAdapterFactory {

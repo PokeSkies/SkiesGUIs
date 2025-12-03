@@ -20,8 +20,12 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
     CURRENCY_WITHDRAW("currency_withdraw", CurrencyWithdraw::class.java),
     CURRENCY_SET("currency_set", CurrencySet::class.java),
     GIVE_ITEM("give_item", GiveItem::class.java),
+    TAKE_ITEM("take_item", TakeItem::class.java),
     MOLANG("molang", Molang::class.java),
-    TAKE_ITEM("take_item", TakeItem::class.java);
+    METADATA_SET("metadata_set", MetadataSet::class.java),
+    METADATA_REMOVE("metadata_remove", MetadataRemove::class.java),
+    METADATA_TOGGLE("metadata_toggle", MetadataToggle::class.java),
+    METADATA_SHIFT("metadata_shift", MetadataShift::class.java);
 
     companion object {
         fun valueOfAnyCase(name: String): ActionType? {
@@ -32,7 +36,7 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
         }
     }
 
-    internal class ActionTypeAdaptor : JsonSerializer<Action>, JsonDeserializer<Action> {
+    internal class Adapter : JsonSerializer<Action>, JsonDeserializer<Action> {
         override fun serialize(src: Action, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
             return context.serialize(src, src::class.java)
         }
