@@ -51,7 +51,7 @@ class AdvancementRequirement(
     }
 
     override fun toString(): String {
-        return "PlaceholderRequirement(comparison=$comparison, advancement='$advancement', progress=$progress)"
+        return "AdvancementRequirement(comparison=$comparison, advancement='$advancement', progress=$progress)"
     }
 
 }
