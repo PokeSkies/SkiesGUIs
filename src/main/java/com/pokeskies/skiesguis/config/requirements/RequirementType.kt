@@ -16,6 +16,7 @@ enum class RequirementType(val identifier: String, val clazz: Class<*>) {
     JAVASCRIPT("javascript", JavaScriptRequirement::class.java),
     XP("xp", XPRequirement::class.java),
     MOLANG("molang", MolangRequirement::class.java),
+    ADVANCEMENT("advancement", AdvancementRequirement::class.java),
 
     // Extensions
     PLAN_PLAYTIME("plan_playtime", PlanPlaytimeRequirement::class.java);
