@@ -8,17 +8,17 @@ import com.pokeskies.skiesguis.commands.GUICommands
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.actions.GenericClickType
+import com.pokeskies.skiesguis.config.actions.InventoryType
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.data.MetadataValue
 import com.pokeskies.skiesguis.economy.EconomyManager
-import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.placeholders.PlaceholderManager
 import com.pokeskies.skiesguis.storage.IStorage
 import com.pokeskies.skiesguis.storage.StorageType
-import com.pokeskies.skiesguis.utils.CompoundTagAdaptor
+import com.pokeskies.skiesguis.utils.CompoundTagAdapter
 import com.pokeskies.skiesguis.utils.Scheduler
 import com.pokeskies.skiesguis.utils.Utils
 import net.fabricmc.api.ModInitializer
@@ -40,7 +40,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.graalvm.polyglot.Engine
 import java.io.File
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -62,8 +61,6 @@ class SkiesGUIs : ModInitializer {
 
     lateinit var graalEngine: Engine
 
-    var inventoryControllers: MutableMap<UUID, ChestGUI.InventoryController> = mutableMapOf()
-
     val asyncExecutor: ExecutorService = Executors.newFixedThreadPool(8, ThreadFactoryBuilder()
         .setNameFormat("SkiesGUIs-Async-%d")
         .setDaemon(true)
@@ -72,10 +69,11 @@ class SkiesGUIs : ModInitializer {
     var gson: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping()
         .registerTypeAdapter(Action::class.java, ActionType.Adapter())
         .registerTypeAdapter(Requirement::class.java, RequirementType.Adapter())
-        .registerTypeAdapter(ClickType::class.java, ClickType.ClickTypeAdaptor())
-        .registerTypeAdapter(ComparisonType::class.java, ComparisonType.ComparisonTypeAdaptor())
+        .registerTypeAdapter(GenericClickType::class.java, GenericClickType.Adapter())
+        .registerTypeAdapter(InventoryType::class.java, InventoryType.Adapter())
+        .registerTypeAdapter(ComparisonType::class.java, ComparisonType.Adapter())
         .registerTypeAdapter(StorageType::class.java, StorageType.Adapter())
-        .registerTypeAdapter(CompoundTag::class.java, CompoundTagAdaptor())
+        .registerTypeAdapter(CompoundTag::class.java, CompoundTagAdapter())
         .registerTypeAdapter(MetadataValue::class.java, MetadataValue.Adapter())
         .registerTypeHierarchyAdapter(Item::class.java, Utils.RegistrySerializer(BuiltInRegistries.ITEM))
         .registerTypeHierarchyAdapter(SoundEvent::class.java, Utils.RegistrySerializer(BuiltInRegistries.SOUND_EVENT))

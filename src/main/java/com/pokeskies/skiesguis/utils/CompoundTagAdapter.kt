@@ -4,7 +4,7 @@ import com.google.gson.*
 import net.minecraft.nbt.*
 import java.lang.reflect.Type
 
-class CompoundTagAdaptor : JsonSerializer<CompoundTag>, JsonDeserializer<CompoundTag> {
+class CompoundTagAdapter : JsonSerializer<CompoundTag>, JsonDeserializer<CompoundTag> {
     @Throws(JsonParseException::class)
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): CompoundTag {
         val tag = CompoundTag()

@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.config
 
-import ca.landonjw.gooeylibs2.api.button.GooeyButton
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.mojang.authlib.properties.Property
@@ -10,6 +9,7 @@ import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
+import eu.pb4.sgui.api.elements.GuiElementBuilder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
@@ -110,7 +110,7 @@ class GuiItem(
         return ItemStack(newItem.get(), amount)
     }
 
-    fun createButton(player: ServerPlayer): GooeyButton.Builder {
+    fun createButton(player: ServerPlayer): GuiElementBuilder {
         val stack = getItemStack(player)
 
         if (components != null) {
@@ -147,7 +147,7 @@ class GuiItem(
 
         stack.applyComponents(dataComponents.build())
 
-        return GooeyButton.builder().display(stack)
+        return GuiElementBuilder(stack)
     }
 
     private fun parseNBT(player: ServerPlayer, tag: CompoundTag): CompoundTag {

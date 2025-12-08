@@ -2,7 +2,7 @@ package com.pokeskies.skiesguis.config.actions.types
 
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.actions.GenericClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.economy.EconomyManager
 import com.pokeskies.skiesguis.gui.ChestGUI
@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer
 
 class CurrencyDeposit(
     type: ActionType = ActionType.CURRENCY_DEPOSIT,
-    click: List<ClickType> = listOf(ClickType.ANY),
+    click: List<GenericClickType> = listOf(GenericClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

@@ -4,7 +4,7 @@ import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.ClickType
+import com.pokeskies.skiesguis.config.actions.GenericClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer
 
 class MessagePlayer(
     type: ActionType = ActionType.MESSAGE,
-    click: List<ClickType> = listOf(ClickType.ANY),
+    click: List<GenericClickType> = listOf(GenericClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,
     requirements: RequirementOptions? = RequirementOptions(),

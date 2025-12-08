@@ -77,7 +77,7 @@ dependencies {
         include(it)
     }
 
-    modImplementation("ca.landonjw.gooeylibs:fabric-api-repack:3.1.0-1.21.1-SNAPSHOT@jar")?.let {
+    modImplementation("eu.pb4:sgui:1.6.1+1.21.1")?.let {
         include(it)
     }
 

@@ -1,6 +1,5 @@
 package com.pokeskies.skiesguis.gui
 
-import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate
 import com.bedrockk.molang.runtime.MoLangRuntime
 import com.bedrockk.molang.runtime.MoParams
 import com.bedrockk.molang.runtime.struct.QueryStruct
@@ -10,6 +9,7 @@ import com.cobblemon.mod.common.api.molang.MoLangFunctions.asMoLangValue
 import com.cobblemon.mod.common.api.molang.MoLangFunctions.setup
 import com.pokeskies.skiesguis.config.tooltips.TooltipBuilder
 import com.pokeskies.skiesguis.config.tooltips.TooltipConfig
+import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.ItemStack
 
@@ -28,13 +28,13 @@ class MolangManager(gui: ChestGUI) {
                     hashMapOf(
                         "size" to Function { DoubleValue(gui.items.size) },
                         "items" to Function { params ->
-                            val map = hashMapOf<String, java.util.function.Function<MoParams, Any>>()
+                            val map = hashMapOf<String, Function<MoParams, Any>>()
                             for ((slot, slotEntry) in gui.items) {
-                                val slotMap = hashMapOf<String, java.util.function.Function<MoParams, Any>>()
+                                val slotMap = hashMapOf<String, Function<MoParams, Any>>()
                                 for ((_, itemEntry) in slotEntry) {
                                     val guiItem = itemEntry.second
                                     slotMap[guiItem.item] = Function { params ->
-                                        stackMolangValue(guiItem.createButton(gui.player).build().display)
+                                        stackMolangValue(guiItem.createButton(gui.player).build().itemStack)
                                     }
                                 }
                                 map[slot.toString()] = Function { params ->
@@ -47,7 +47,7 @@ class MolangManager(gui: ChestGUI) {
                 )
             },
             "get_title" to Function { StringValue(gui.config.title) },
-            "get_size" to Function { DoubleValue(gui.config.size) },
+            "get_size" to Function { DoubleValue(gui.config.type.slots) },
             "get_id" to Function { StringValue(gui.guiId) },
             "set_slot" to Function { params ->
                 val slot = params.getInt(0) ?: return@Function null
@@ -71,12 +71,12 @@ class MolangManager(gui: ChestGUI) {
             },
             "clear_slots" to Function { params ->
                 gui.items.clear()
-                (gui.template as ChestTemplate).clear()
+                (0..gui.virtualSize).forEach { i -> gui.clearSlot(i) }
                 gui.refresh()
             },
             "player" to Function { gui.player.asMoLangValue() },
             "set_title" to Function { params ->
-                gui.title = params.getString(0) ?: return@Function null
+                gui.title = params.getString(0)?.let { Utils.deserializeText(it) } ?: return@Function null
                 gui.refresh()
             },
             "set_tooltip" to Function { params ->

@@ -21,7 +21,7 @@ enum class ComparisonType(val identifier: String) {
         }
     }
 
-    internal class ComparisonTypeAdaptor : JsonSerializer<ComparisonType>, JsonDeserializer<ComparisonType> {
+    internal class Adapter : JsonSerializer<ComparisonType>, JsonDeserializer<ComparisonType> {
         override fun serialize(src: ComparisonType, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
             return JsonPrimitive(src.identifier)
         }

@@ -1,19 +1,19 @@
 package com.pokeskies.skiesguis.config.actions
 
-import ca.landonjw.gooeylibs2.api.button.ButtonClick
-import ca.landonjw.gooeylibs2.api.tasks.Task
 import com.google.gson.annotations.JsonAdapter
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.gui.ChestGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
+import com.pokeskies.skiesguis.utils.Scheduler
 import com.pokeskies.skiesguis.utils.Utils
+import eu.pb4.sgui.api.ClickType
 import net.minecraft.server.level.ServerPlayer
 import kotlin.random.Random
 
 abstract class Action(
     val type: ActionType,
     @JsonAdapter(FlexibleListAdaptorFactory::class)
-    val click: List<ClickType> = listOf(ClickType.ANY),
+    val click: List<GenericClickType> = listOf(GenericClickType.ANY),
     val delay: Long = 0,
     val chance: Double = 0.0,
     val requirements: RequirementOptions? = RequirementOptions()
@@ -35,19 +35,16 @@ abstract class Action(
         }
         Utils.printDebug("Delay found for $type Action. Waiting $delay ticks before execution.")
 
-        Task.builder()
-            .execute { task ->
-                player.server.executeIfPossible {
-                    executeAction(player, gui)
-                }
+        Scheduler.scheduleTask(delay.toInt(), Scheduler.DelayedAction({
+            player.server.executeIfPossible {
+                executeAction(player, gui)
             }
-            .delay(delay)
-            .build()
+        }))
     }
 
     abstract fun executeAction(player: ServerPlayer, gui: ChestGUI)
 
-    fun matchesClick(buttonClick: ButtonClick): Boolean {
+    fun matchesClick(buttonClick: ClickType): Boolean {
         return click.any { it.buttonClicks.contains(buttonClick) }
     }
 
