@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.GenericClickType
+import com.pokeskies.skiesguis.gui.GenericClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
@@ -23,7 +23,7 @@ class CommandPlayer(
     @SerializedName("permission_level")
     private val permissionLevel: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
+    override fun executeAction(player: ServerPlayer, gui: GenericGUI) {
         val parsedCommands = commands.map { Utils.parsePlaceholders(player, it) }
 
         var source = player.createCommandSourceStack()

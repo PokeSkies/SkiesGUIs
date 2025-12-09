@@ -6,7 +6,7 @@ import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.PermissionMode
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
@@ -18,7 +18,7 @@ class PermissionRequirement(
     private val permissions: List<String> = listOf(),
     private val mode: PermissionMode = PermissionMode.ALL,
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: GenericGUI): Boolean {
         if (!checkComparison()) return false
 
         if (permissions.isEmpty()) {

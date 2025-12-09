@@ -1,4 +1,4 @@
-package com.pokeskies.skiesguis.config.actions
+package com.pokeskies.skiesguis.gui
 
 import com.google.gson.*
 import com.pokeskies.skiesguis.utils.Utils

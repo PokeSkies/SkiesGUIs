@@ -6,7 +6,7 @@ import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
 import com.pokeskies.skiesguis.data.MetadataType
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -18,7 +18,7 @@ class MetadataRequirement(
     private val key: String = "",
     private val value: String = ""
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: GenericGUI): Boolean {
         if (!checkComparison()) return false
 
         Utils.printDebug("[REQUIREMENT - ${type?.name}] Player(${player.gameProfile.name}), Metadata Type($metaType): $this")

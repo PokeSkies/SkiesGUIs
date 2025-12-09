@@ -16,12 +16,12 @@ import net.minecraft.world.item.ItemStack
 import java.util.*
 import java.util.function.Function
 
-class MolangManager(gui: ChestGUI) {
+class MolangManager(gui: GenericGUI) {
     val runtime: MoLangRuntime = MoLangRuntime().setup().also {
         it.environment.query.addFunction("gui") { guiMolangStruct(gui) }
     }
 
-    fun guiMolangStruct(gui: ChestGUI): QueryStruct = QueryStruct(
+    fun guiMolangStruct(gui: GenericGUI): QueryStruct = QueryStruct(
         hashMapOf(
             "slots" to Function { params ->
                 QueryStruct(

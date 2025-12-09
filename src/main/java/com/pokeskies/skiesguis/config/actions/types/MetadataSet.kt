@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.GenericClickType
+import com.pokeskies.skiesguis.gui.GenericClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.data.MetadataType
 import com.pokeskies.skiesguis.data.MetadataValue
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -23,7 +23,7 @@ class MetadataSet(
     private val key: String = "",
     private val value: String = ""
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
+    override fun executeAction(player: ServerPlayer, gui: GenericGUI) {
         Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}): $this")
 
         val storage = SkiesGUIs.INSTANCE.storage ?: run {

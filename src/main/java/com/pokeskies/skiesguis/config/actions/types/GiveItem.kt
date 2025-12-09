@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.GenericClickType
+import com.pokeskies.skiesguis.gui.GenericClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
@@ -27,7 +27,7 @@ class GiveItem(
     @SerializedName("custom_model_data")
     val customModelData: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
+    override fun executeAction(player: ServerPlayer, gui: GenericGUI) {
         val newItem = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(item))
         if (newItem.isEmpty) {
             Utils.printDebug("[ACTION - ${type.name}] Failed due to an empty or invalid item ID. Item ID: $item, returned: $newItem")

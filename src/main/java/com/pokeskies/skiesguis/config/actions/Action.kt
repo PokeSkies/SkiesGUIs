@@ -2,7 +2,8 @@ package com.pokeskies.skiesguis.config.actions
 
 import com.google.gson.annotations.JsonAdapter
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
+import com.pokeskies.skiesguis.gui.GenericClickType
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Scheduler
 import com.pokeskies.skiesguis.utils.Utils
@@ -19,7 +20,7 @@ abstract class Action(
     val requirements: RequirementOptions? = RequirementOptions()
 ) {
     // Will do a chance check and then apply any delay
-    open fun attemptExecution(player: ServerPlayer, gui: ChestGUI) {
+    open fun attemptExecution(player: ServerPlayer, gui: GenericGUI) {
         if (chance > 0.0 && chance < 1.0) {
             val roll = Random.nextFloat()
             Utils.printDebug("Attempting chance roll for $type Action. Result is: $roll <= $chance = ${roll <= chance}.")
@@ -42,7 +43,7 @@ abstract class Action(
         }))
     }
 
-    abstract fun executeAction(player: ServerPlayer, gui: ChestGUI)
+    abstract fun executeAction(player: ServerPlayer, gui: GenericGUI)
 
     fun matchesClick(buttonClick: ClickType): Boolean {
         return click.any { it.buttonClicks.contains(buttonClick) }

@@ -1,4 +1,4 @@
-package com.pokeskies.skiesguis.config.actions
+package com.pokeskies.skiesguis.gui
 
 import com.cobblemon.mod.common.util.isInt
 import com.google.gson.TypeAdapter

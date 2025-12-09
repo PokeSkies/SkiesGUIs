@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.component.ItemLore
 import java.util.*
 
-class ChestGUI(
+class GenericGUI(
     player: ServerPlayer,
     val guiId: String,
     val config: GuiConfig

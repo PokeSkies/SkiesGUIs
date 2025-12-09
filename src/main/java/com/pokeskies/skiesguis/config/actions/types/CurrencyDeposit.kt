@@ -2,10 +2,10 @@ package com.pokeskies.skiesguis.config.actions.types
 
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.GenericClickType
+import com.pokeskies.skiesguis.gui.GenericClickType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
 import com.pokeskies.skiesguis.economy.EconomyManager
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -19,7 +19,7 @@ class CurrencyDeposit(
     private val amount: Double = 0.0,
     private val economy: String? = null
 ) : Action(type, click, delay, chance, requirements) {
-    override fun executeAction(player: ServerPlayer, gui: ChestGUI) {
+    override fun executeAction(player: ServerPlayer, gui: GenericGUI) {
         val service = EconomyManager.getServiceOrDefault(economy)
         if (service == null) {
             Utils.printError("[ACTION - CURRENCY_DEPOSIT] No Economy Service could be found from '$economy'! Valid services are: ${EconomyManager.getServices().keys}")

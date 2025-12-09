@@ -3,7 +3,7 @@ package com.pokeskies.skiesguis.config.requirements.types.internal
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
@@ -13,7 +13,7 @@ class XPRequirement(
     private val level: Boolean = true,
     private val amount: Int = 0,
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: GenericGUI): Boolean {
         if (!checkComparison()) return false
 
         val experience = if (level) player.experienceLevel else player.totalExperience

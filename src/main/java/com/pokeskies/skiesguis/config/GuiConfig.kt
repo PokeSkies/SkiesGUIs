@@ -3,9 +3,9 @@ package com.pokeskies.skiesguis.config
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
-import com.pokeskies.skiesguis.config.actions.InventoryType
+import com.pokeskies.skiesguis.gui.InventoryType
 import com.pokeskies.skiesguis.config.requirements.RequirementOptions
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Scheduler
 import me.lucko.fabric.api.permissions.v0.Permissions
@@ -34,7 +34,7 @@ class GuiConfig(
     lateinit var id: String
 
     fun openGUI(player: ServerPlayer, id: String) {
-        val gui = ChestGUI(player, id, this)
+        val gui = GenericGUI(player, id, this)
         if (openRequirements?.checkRequirements(player, gui) == false) {
             openRequirements.executeDenyActions(player, gui)
             return
@@ -49,13 +49,13 @@ class GuiConfig(
         return Permissions.check(ctx, aliasPermission, 2)
     }
 
-    private fun executeOpenActions(player: ServerPlayer, gui: ChestGUI) {
+    private fun executeOpenActions(player: ServerPlayer, gui: GenericGUI) {
         for (actionEntry in openActions) {
             actionEntry.value.attemptExecution(player, gui)
         }
     }
 
-    fun executeCloseActions(player: ServerPlayer, gui: ChestGUI) {
+    fun executeCloseActions(player: ServerPlayer, gui: GenericGUI) {
         for (actionEntry in closeActions) {
             actionEntry.value.attemptExecution(player, gui)
         }

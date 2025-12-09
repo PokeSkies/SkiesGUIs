@@ -8,8 +8,8 @@ import com.pokeskies.skiesguis.commands.GUICommands
 import com.pokeskies.skiesguis.config.ConfigManager
 import com.pokeskies.skiesguis.config.actions.Action
 import com.pokeskies.skiesguis.config.actions.ActionType
-import com.pokeskies.skiesguis.config.actions.GenericClickType
-import com.pokeskies.skiesguis.config.actions.InventoryType
+import com.pokeskies.skiesguis.gui.GenericClickType
+import com.pokeskies.skiesguis.gui.InventoryType
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType

@@ -2,7 +2,7 @@ package com.pokeskies.skiesguis.config.requirements
 
 import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.actions.Action
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import net.minecraft.server.level.ServerPlayer
 
 class RequirementOptions(
@@ -16,7 +16,7 @@ class RequirementOptions(
     @SerializedName("stop_at_success")
     val stopAtSuccess: Boolean = false
 ) {
-    fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
+    fun checkRequirements(player: ServerPlayer, gui: GenericGUI): Boolean {
         var successes = 0
         for (requirement in requirements) {
             if (requirement.value.checkRequirements(player, gui)) {
@@ -29,13 +29,13 @@ class RequirementOptions(
         return if (minimumRequirements == null) successes == requirements.size else successes >= minimumRequirements
     }
 
-    fun executeDenyActions(player: ServerPlayer, gui: ChestGUI) {
+    fun executeDenyActions(player: ServerPlayer, gui: GenericGUI) {
         for ((_, action) in denyActions) {
             action.attemptExecution(player, gui)
         }
     }
 
-    fun executeSuccessActions(player: ServerPlayer, gui: ChestGUI) {
+    fun executeSuccessActions(player: ServerPlayer, gui: GenericGUI) {
         for ((_, action) in successActions) {
             action.attemptExecution(player, gui)
         }

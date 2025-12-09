@@ -4,7 +4,7 @@ import com.pokeskies.skiesguis.SkiesGUIs
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 import org.graalvm.polyglot.Context
@@ -15,7 +15,7 @@ class JavaScriptRequirement(
     comparison: ComparisonType = ComparisonType.EQUALS,
     private val expression: String = ""
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: GenericGUI): Boolean {
         if (!checkComparison()) return false
 
         val context = Context.newBuilder()

@@ -4,7 +4,7 @@ import com.google.gson.annotations.JsonAdapter
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
-import com.pokeskies.skiesguis.gui.ChestGUI
+import com.pokeskies.skiesguis.gui.GenericGUI
 import com.pokeskies.skiesguis.utils.FlexibleListAdaptorFactory
 import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
@@ -17,7 +17,7 @@ class PlaceholderRequirement(
     private val output: List<String> = emptyList(),
     private val strict: Boolean = false
 ) : Requirement(type, comparison) {
-    override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
+    override fun checkRequirements(player: ServerPlayer, gui: GenericGUI): Boolean {
         if (!checkComparison()) return false
 
         val parsed = Utils.parsePlaceholders(player, input)
