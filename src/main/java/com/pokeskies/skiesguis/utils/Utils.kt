@@ -1,9 +1,11 @@
 package com.pokeskies.skiesguis.utils
 
+import com.cobblemon.mod.common.api.text.ITALIC
 import com.google.gson.*
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import com.pokeskies.skiesguis.SkiesGUIs
+import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.minecraft.core.Registry
@@ -21,7 +23,10 @@ object Utils {
     }
 
     fun deserializeText(text: String): Component {
-        return SkiesGUIs.INSTANCE.adventure!!.toNative(miniMessage.deserialize(text))
+        return SkiesGUIs.INSTANCE.adventure!!.toNative(
+            miniMessage.deserialize(text)
+                .applyFallbackStyle({it.decoration(TextDecoration.ITALIC, false)})
+        )
     }
 
     fun printDebug(message: String, bypassCheck: Boolean = false) {
@@ -46,6 +51,7 @@ object Utils {
                 printError("There was an error while deserializing a Registry Type: $registry")
             return parsed
         }
+
         override fun serialize(src: T, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
             return JsonPrimitive(registry.getId(src).toString())
         }
@@ -75,10 +81,12 @@ object Utils {
         }
     }
 }
+
 fun net.kyori.adventure.text.Component.toNative(): Component {
     return Component.empty().setStyle(Style.EMPTY.withItalic(false))
         .append(SkiesGUIs.INSTANCE.adventure!!.toNative(this))
 }
+
 fun String.parseMiniMessage(vararg placeholders: TagResolver): net.kyori.adventure.text.Component {
     return Utils.miniMessage.deserialize(this, *placeholders)
 }
