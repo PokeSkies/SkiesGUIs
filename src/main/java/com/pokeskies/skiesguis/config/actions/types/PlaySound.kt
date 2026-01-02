@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundSource
+import java.util.concurrent.RejectedExecutionException
 
 class PlaySound(
     type: ActionType = ActionType.PLAYSOUND,
@@ -38,14 +39,16 @@ class PlaySound(
 
         Utils.printDebug("[ACTION - ${type.name}] Player(${player.gameProfile.name}), SoundEvent($soundEvent), Category($category): $this")
 
-        player.server.executeIfPossible {
-            player.playNotifySound(
-                soundEvent,
-                category,
-                volume,
-                pitch,
-            )
-        }
+        try {
+            player.server.executeIfPossible {
+                player.playNotifySound(
+                    soundEvent,
+                    category,
+                    volume,
+                    pitch,
+                )
+            }
+        } catch (_: RejectedExecutionException) {}
     }
 
     override fun toString(): String {
