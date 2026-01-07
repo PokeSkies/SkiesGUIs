@@ -2,7 +2,7 @@ package com.pokeskies.skiesguis.economy.services
 
 import com.pokeskies.skiesguis.economy.IEconomyService
 import net.minecraft.server.level.ServerPlayer
-import org.beconomy.api.BEconomy
+import org.krripe.beconomy.api.BEconomy
 import java.math.BigDecimal
 
 class BEconomyEconomyService : IEconomyService {

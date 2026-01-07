@@ -76,31 +76,29 @@ class ChestGUI(
                 val guiItem = itemEntry.second
                 if (guiItem.viewRequirements?.checkRequirements(player, this) != false) {
                     guiItem.viewRequirements?.executeSuccessActions(player, this)
-                    template.set(slot, guiItem.createButton(player).also {
+                    template[slot] = guiItem.createButton(player).also {
                         if (tooltipOverrides[slot] != null) {
                             val tooltip = tooltipOverrides[slot]!!.buildTooltip(player)
                             it.with(DataComponents.LORE, ItemLore(tooltip))
                         }
-                    }
-                        .onClick { ctx ->
-                            if (guiItem.clickRequirements?.checkRequirements(player, this) != false) {
-                                guiItem.clickRequirements?.executeSuccessActions(player, this)
-                                for (actionEntry in guiItem.clickActions) {
-                                    val action = actionEntry.value
-                                    if (action.matchesClick(ctx.clickType)) {
-                                        if (action.requirements?.checkRequirements(player, this) != false) {
-                                            action.attemptExecution(player, this)
-                                            action.requirements?.executeSuccessActions(player, this)
-                                        } else {
-                                            action.requirements.executeDenyActions(player, this)
-                                        }
+                    }.onClick { ctx ->
+                        if (guiItem.clickRequirements?.checkRequirements(player, this) != false) {
+                            guiItem.clickRequirements?.executeSuccessActions(player, this)
+                            for (actionEntry in guiItem.clickActions) {
+                                val action = actionEntry.value
+                                if (action.matchesClick(ctx.clickType)) {
+                                    if (action.requirements?.checkRequirements(player, this) != false) {
+                                        action.attemptExecution(player, this)
+                                        action.requirements?.executeSuccessActions(player, this)
+                                    } else {
+                                        action.requirements.executeDenyActions(player, this)
                                     }
                                 }
-                            } else {
-                                guiItem.clickRequirements.executeDenyActions(player, this)
                             }
+                        } else {
+                            guiItem.clickRequirements.executeDenyActions(player, this)
                         }
-                        .build())
+                    }.build()
 
                     // Since the slot is being filled at the highest priority, all remaining entries are lower priority
                     break

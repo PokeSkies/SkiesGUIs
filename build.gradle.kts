@@ -3,8 +3,8 @@
 plugins {
     java
     idea
-    id("quiet-fabric-loom") version ("1.7-SNAPSHOT")
-    id("org.jetbrains.kotlin.jvm").version("2.0.0")
+    id("quiet-fabric-loom") version ("1.13-SNAPSHOT")
+    id("org.jetbrains.kotlin.jvm").version("2.3.0")
 }
 val modId = project.properties["mod_id"].toString()
 version = project.properties["mod_version"].toString()
@@ -120,6 +120,8 @@ java {
 }
 
 tasks.withType<AbstractArchiveTask> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     from("LICENSE") {
         rename { "${it}_${modId}" }
     }
