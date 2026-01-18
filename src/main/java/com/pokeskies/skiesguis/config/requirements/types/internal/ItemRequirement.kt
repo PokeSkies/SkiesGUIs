@@ -20,7 +20,8 @@ class ItemRequirement(
     comparison: ComparisonType = ComparisonType.EQUALS,
     val item: String = "",
     val amount: Int? = null,
-    val nbt: CompoundTag? = null,
+    @SerializedName("components", alternate = ["nbt"])
+    val components: CompoundTag? = null,
     @SerializedName("custom_model_data")
     val customModelData: Int? = null,
     val strict: Boolean = true
@@ -44,16 +45,16 @@ class ItemRequirement(
         return when (comparison) {
             ComparisonType.EQUALS -> {
                 if (amount != null) {
-                    return amountFound == amount
+                    amountFound == amount
                 } else {
-                    return amountFound >= 1
+                    amountFound >= 1
                 }
             }
             ComparisonType.NOT_EQUALS -> {
                 if (amount != null) {
-                    return amountFound != amount
+                    amountFound != amount
                 } else {
-                    return amountFound == 0
+                    amountFound == 0
                 }
             }
             ComparisonType.GREATER_THAN -> amountFound > targetAmount
@@ -74,7 +75,7 @@ class ItemRequirement(
             return false
         }
 
-        var nbtCopy = nbt?.copy()
+        var nbtCopy = components?.copy()
 
         if (customModelData != null) {
             if (nbtCopy != null) {
@@ -103,6 +104,6 @@ class ItemRequirement(
     }
 
     override fun toString(): String {
-        return "ItemRequirement(comparison=$comparison, item=$item, amount=$amount, nbt=$nbt, strict=$strict)"
+        return "ItemRequirement(comparison=$comparison, item=$item, amount=$amount, nbt=$components, strict=$strict)"
     }
 }

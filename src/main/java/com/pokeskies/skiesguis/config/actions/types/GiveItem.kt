@@ -23,7 +23,8 @@ class GiveItem(
     requirements: RequirementOptions? = RequirementOptions(),
     val item: String = "",
     val amount: Int = 1,
-    val nbt: CompoundTag? = null,
+    @SerializedName("components", alternate = ["nbt"])
+    val components: CompoundTag? = null,
     @SerializedName("custom_model_data")
     val customModelData: Int? = null
 ) : Action(type, click, delay, chance, requirements) {
@@ -35,7 +36,7 @@ class GiveItem(
         }
         val itemStack = ItemStack(newItem.get(), amount)
 
-        var nbtCopy = nbt?.copy()
+        var nbtCopy = components?.copy()
 
         if (customModelData != null) {
             if (nbtCopy != null) {
@@ -60,7 +61,7 @@ class GiveItem(
 
     override fun toString(): String {
         return "GiveItem(click=$click, delay=$delay, chance=$chance, requirements=$requirements, " +
-                "item=$item, amount=$amount, nbt=$nbt)"
+                "item=$item, amount=$amount, nbt=$components)"
     }
 
 }

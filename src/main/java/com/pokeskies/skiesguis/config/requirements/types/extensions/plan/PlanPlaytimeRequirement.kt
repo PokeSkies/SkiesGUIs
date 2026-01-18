@@ -9,8 +9,8 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
 class PlanPlaytimeRequirement(
-    type: RequirementType = RequirementType.PERMISSION,
-    comparison: ComparisonType = ComparisonType.EQUALS,
+    type: RequirementType = RequirementType.PLAN_PLAYTIME,
+    comparison: ComparisonType = ComparisonType.GREATER_THAN_OR_EQUALS,
     private val time: Long = 0
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {

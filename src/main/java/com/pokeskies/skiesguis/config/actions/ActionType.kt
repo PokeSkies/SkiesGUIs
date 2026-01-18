@@ -20,8 +20,10 @@ enum class ActionType(val identifier: String, val clazz: Class<*>) {
     CURRENCY_WITHDRAW("currency_withdraw", CurrencyWithdraw::class.java),
     CURRENCY_SET("currency_set", CurrencySet::class.java),
     GIVE_ITEM("give_item", GiveItem::class.java),
-    MOLANG("molang", Molang::class.java),
-    TAKE_ITEM("take_item", TakeItem::class.java);
+    TAKE_ITEM("take_item", TakeItem::class.java),
+
+    // Extensions
+    MOLANG("molang", Molang::class.java);
 
     companion object {
         fun valueOfAnyCase(name: String): ActionType? {

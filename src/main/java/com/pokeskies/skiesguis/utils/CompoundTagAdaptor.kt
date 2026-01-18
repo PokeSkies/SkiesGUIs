@@ -156,4 +156,13 @@ class CompoundTagAdaptor : JsonSerializer<CompoundTag>, JsonDeserializer<Compoun
         }.toSet()
         return if (types.size == 1) types.first() else InternalListType.STRING
     }
+
+    enum class InternalListType {
+        NUMBER,
+        STRING,
+        BOOLEAN,
+        OBJECT,
+        ARRAY,
+        UNKNOWN;
+    }
 }

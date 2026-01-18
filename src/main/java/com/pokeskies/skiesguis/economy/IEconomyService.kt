@@ -22,11 +22,5 @@ interface IEconomyService {
                 null
             }
         }
-
-        fun getLoadedEconomyServices() : Map<InternalEconomyTypes, IEconomyService> {
-            return InternalEconomyTypes.entries.mapNotNull { key ->
-                getEconomyService(key)?.let { key to it }
-            }.toMap()
-        }
     }
 }

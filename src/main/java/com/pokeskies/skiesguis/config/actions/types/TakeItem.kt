@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack
 import kotlin.jvm.optionals.getOrNull
 
 class TakeItem(
-    type: ActionType = ActionType.GIVE_XP,
+    type: ActionType = ActionType.TAKE_ITEM,
     click: List<ClickType> = listOf(ClickType.ANY),
     delay: Long = 0,
     chance: Double = 0.0,

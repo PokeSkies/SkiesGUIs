@@ -1,5 +1,6 @@
 package com.pokeskies.skiesguis.config.requirements.types.internal
 
+import com.google.gson.annotations.SerializedName
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement
 import com.pokeskies.skiesguis.config.requirements.RequirementType
@@ -13,14 +14,15 @@ class CurrencyRequirement(
     comparison: ComparisonType = ComparisonType.GREATER_THAN_OR_EQUALS,
     private val currency: String = "",
     private val amount: Double = 0.0,
-    private val economy: String? = null
+    @SerializedName("provider", alternate = ["economy"])
+    private val provider: String? = null
 ) : Requirement(type, comparison) {
     override fun checkRequirements(player: ServerPlayer, gui: ChestGUI): Boolean {
         if (!checkComparison()) return false
 
-        val service = EconomyManager.getServiceOrDefault(economy)
+        val service = EconomyManager.getServiceOrDefault(provider)
         if (service == null) {
-            Utils.printError("[REQUIREMENT - ${type?.name}] No Economy Service could be found from '$economy'! Valid services are: ${EconomyManager.getServices().keys}")
+            Utils.printError("[REQUIREMENT - ${type?.name}] No Economy Service could be found from '$provider'! Valid services are: ${EconomyManager.getServices().keys}")
             return false
         }
 
@@ -43,6 +45,6 @@ class CurrencyRequirement(
     }
 
     override fun toString(): String {
-        return "CurrencyRequirement(comparison=$comparison, currency='$currency', amount=$amount, economy=$economy)"
+        return "CurrencyRequirement(comparison=$comparison, currency='$currency', amount=$amount, economy=$provider)"
     }
 }
