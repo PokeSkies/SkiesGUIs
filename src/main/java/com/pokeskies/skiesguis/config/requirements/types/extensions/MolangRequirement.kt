@@ -1,4 +1,4 @@
-package com.pokeskies.skiesguis.config.requirements.types.internal
+package com.pokeskies.skiesguis.config.requirements.types.extensions
 
 import com.cobblemon.mod.common.api.molang.MoLangFunctions.asMoLangValue
 import com.cobblemon.mod.common.util.asExpressionLike
@@ -13,7 +13,7 @@ import com.pokeskies.skiesguis.utils.Utils
 import net.minecraft.server.level.ServerPlayer
 
 class MolangRequirement(
-    type: RequirementType = RequirementType.PLACEHOLDER,
+    type: RequirementType = RequirementType.MOLANG,
     comparison: ComparisonType = ComparisonType.EQUALS,
     @JsonAdapter(FlexibleListAdaptorFactory::class)
     val script: List<String> = listOf(),

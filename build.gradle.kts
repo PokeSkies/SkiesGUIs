@@ -33,7 +33,7 @@ repositories {
     }
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://maven.impactdev.net/repository/development/")
-    maven("https://maven.pokeskies.com/repository/maven-snapshots/") {
+    maven("https://maven.pokeskies.com/releases/") {
         credentials {
             username = project.findProperty("pokeskiesUsername") as String?
             password = project.findProperty("pokeskiesPassword") as String?

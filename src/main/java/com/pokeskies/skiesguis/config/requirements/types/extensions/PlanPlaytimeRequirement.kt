@@ -1,4 +1,4 @@
-package com.pokeskies.skiesguis.config.requirements.types.extensions.plan
+package com.pokeskies.skiesguis.config.requirements.types.extensions
 
 import com.pokeskies.skiesguis.config.requirements.ComparisonType
 import com.pokeskies.skiesguis.config.requirements.Requirement

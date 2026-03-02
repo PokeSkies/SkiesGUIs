@@ -1,7 +1,7 @@
 package com.pokeskies.skiesguis.config.requirements
 
 import com.google.gson.*
-import com.pokeskies.skiesguis.config.requirements.types.extensions.plan.PlanPlaytimeRequirement
+import com.pokeskies.skiesguis.config.requirements.types.extensions.*
 import com.pokeskies.skiesguis.config.requirements.types.internal.*
 import net.fabricmc.loader.api.FabricLoader
 import java.lang.reflect.Type
